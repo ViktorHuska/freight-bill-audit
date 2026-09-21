@@ -1,0 +1,1589 @@
+{
+  "audit": {
+    "batch": "invoices",
+    "invoices": [
+      {
+        "approved_total_usd": 5513.87,
+        "currency": "EUR",
+        "duplicate_of": null,
+        "invoice_date": "2024-03-26",
+        "invoice_number": "ATL-A-0106",
+        "invoice_total_usd": 6586.13,
+        "lines": [
+          {
+            "billed_amount": 1904.32,
+            "billed_amount_original": 1760.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "OFR",
+            "container_no": "ATLU2403100",
+            "decision": "APPROVE",
+            "expected_amount": 1904.32,
+            "line_no": 1,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 314.86,
+            "billed_amount_original": 291.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "BAF",
+            "container_no": "ATLU2403100",
+            "decision": "APPROVE",
+            "expected_amount": 314.86,
+            "line_no": 2,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 243.45,
+            "billed_amount_original": 225.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "THC_O",
+            "container_no": "ATLU2403100",
+            "decision": "APPROVE",
+            "expected_amount": 243.45,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 16.23,
+            "billed_amount_original": 15.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "SEAL",
+            "container_no": "ATLU2403100",
+            "decision": "APPROVE",
+            "expected_amount": 16.23,
+            "line_no": 4,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 1904.32,
+            "billed_amount_original": 1760.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "OFR",
+            "container_no": "ATLU2403200",
+            "decision": "APPROVE",
+            "expected_amount": 1904.32,
+            "line_no": 5,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 314.86,
+            "billed_amount_original": 291.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "BAF",
+            "container_no": "ATLU2403200",
+            "decision": "APPROVE",
+            "expected_amount": 314.86,
+            "line_no": 6,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 243.45,
+            "billed_amount_original": 225.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "THC_O",
+            "container_no": "ATLU2403200",
+            "decision": "APPROVE",
+            "expected_amount": 243.45,
+            "line_no": 7,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 16.23,
+            "billed_amount_original": 15.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "SEAL",
+            "container_no": "ATLU2403200",
+            "decision": "APPROVE",
+            "expected_amount": 16.23,
+            "line_no": 8,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 1082.0,
+            "billed_amount_original": 1000.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "DET",
+            "container_no": "ATLU2403100",
+            "decision": "DISPUTE",
+            "expected_amount": 335.42,
+            "line_no": 9,
+            "reason": "FREE_TIME_MISCOUNT",
+            "variance": 746.58
+          },
+          {
+            "billed_amount": 459.85,
+            "billed_amount_original": 425.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "DET",
+            "container_no": "ATLU2403200",
+            "decision": "DISPUTE",
+            "expected_amount": 134.17,
+            "line_no": 10,
+            "reason": "FREE_TIME_MISCOUNT",
+            "variance": 325.68
+          },
+          {
+            "billed_amount": 86.56,
+            "billed_amount_original": 80.0,
+            "bl_number": "ATL2403BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "APPROVE",
+            "expected_amount": 86.56,
+            "line_no": 11,
+            "reason": "OK",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2403"
+        ],
+        "status": "PARTIALLY_DISPUTED",
+        "vendor": "ATLASOCEAN"
+      },
+      {
+        "approved_total_usd": 7726.69,
+        "currency": "EUR",
+        "duplicate_of": null,
+        "invoice_date": "2024-04-03",
+        "invoice_number": "ATL-A-0112",
+        "invoice_total_usd": 7965.31,
+        "lines": [
+          {
+            "billed_amount": 2971.8,
+            "billed_amount_original": 2740.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "OFR",
+            "container_no": "ATLU2405100",
+            "decision": "APPROVE",
+            "expected_amount": 2971.8,
+            "line_no": 1,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 319.96,
+            "billed_amount_original": 295.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "THC_O",
+            "container_no": "ATLU2405100",
+            "decision": "APPROVE",
+            "expected_amount": 319.96,
+            "line_no": 2,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 16.27,
+            "billed_amount_original": 15.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "SEAL",
+            "container_no": "ATLU2405100",
+            "decision": "APPROVE",
+            "expected_amount": 16.27,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 2971.8,
+            "billed_amount_original": 2740.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "OFR",
+            "container_no": "ATLU2405200",
+            "decision": "APPROVE",
+            "expected_amount": 2971.8,
+            "line_no": 4,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 319.96,
+            "billed_amount_original": 295.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "THC_O",
+            "container_no": "ATLU2405200",
+            "decision": "APPROVE",
+            "expected_amount": 319.96,
+            "line_no": 5,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 16.27,
+            "billed_amount_original": 15.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "SEAL",
+            "container_no": "ATLU2405200",
+            "decision": "APPROVE",
+            "expected_amount": 16.27,
+            "line_no": 6,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 631.24,
+            "billed_amount_original": 582.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "BAF",
+            "container_no": "ATLU2405100",
+            "decision": "DISPUTE",
+            "expected_amount": 511.93,
+            "line_no": 7,
+            "reason": "RATE_MISMATCH",
+            "variance": 119.31
+          },
+          {
+            "billed_amount": 631.24,
+            "billed_amount_original": 582.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "BAF",
+            "container_no": "ATLU2405200",
+            "decision": "DISPUTE",
+            "expected_amount": 511.93,
+            "line_no": 8,
+            "reason": "RATE_MISMATCH",
+            "variance": 119.31
+          },
+          {
+            "billed_amount": 86.77,
+            "billed_amount_original": 80.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "APPROVE",
+            "expected_amount": 86.77,
+            "line_no": 9,
+            "reason": "OK",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2405"
+        ],
+        "status": "PARTIALLY_DISPUTED",
+        "vendor": "ATLASOCEAN"
+      },
+      {
+        "approved_total_usd": -119.31,
+        "currency": "EUR",
+        "duplicate_of": null,
+        "invoice_date": "2024-04-17",
+        "invoice_number": "ATL-A-0115",
+        "invoice_total_usd": -119.31,
+        "lines": [
+          {
+            "billed_amount": -119.31,
+            "billed_amount_original": -110.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "BAF",
+            "container_no": "ATLU2405100",
+            "decision": "APPROVE",
+            "expected_amount": -119.31,
+            "line_no": 1,
+            "reason": "CREDIT_NOTE",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2405"
+        ],
+        "status": "CREDIT_NOTE",
+        "vendor": "ATLASOCEAN"
+      },
+      {
+        "approved_total_usd": 1405.0,
+        "currency": "USD",
+        "duplicate_of": null,
+        "invoice_date": "2024-04-20",
+        "invoice_number": "HAR-A-0130",
+        "invoice_total_usd": 1625.0,
+        "lines": [
+          {
+            "billed_amount": 315.0,
+            "billed_amount_original": 315.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "THC_D",
+            "container_no": "NVKU2404100",
+            "decision": "APPROVE",
+            "expected_amount": 315.0,
+            "line_no": 1,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 240.0,
+            "billed_amount_original": 240.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "THC_D",
+            "container_no": "NVKU2404200",
+            "decision": "APPROVE",
+            "expected_amount": 240.0,
+            "line_no": 2,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 110.0,
+            "billed_amount_original": 110.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "DOC",
+            "container_no": "NVKU2404100",
+            "decision": "APPROVE",
+            "expected_amount": 110.0,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 110.0,
+            "billed_amount_original": 110.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "DOC",
+            "container_no": "NVKU2404200",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 4,
+            "reason": "BASIS_ERROR",
+            "variance": 110.0
+          },
+          {
+            "billed_amount": 315.0,
+            "billed_amount_original": 315.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "THC_D",
+            "container_no": "ATLU2405100",
+            "decision": "APPROVE",
+            "expected_amount": 315.0,
+            "line_no": 5,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 315.0,
+            "billed_amount_original": 315.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "THC_D",
+            "container_no": "ATLU2405200",
+            "decision": "APPROVE",
+            "expected_amount": 315.0,
+            "line_no": 6,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 110.0,
+            "billed_amount_original": 110.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "DOC",
+            "container_no": "ATLU2405100",
+            "decision": "APPROVE",
+            "expected_amount": 110.0,
+            "line_no": 7,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 110.0,
+            "billed_amount_original": 110.0,
+            "bl_number": "ATL2405BL",
+            "charge_code": "DOC",
+            "container_no": "ATLU2405200",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 8,
+            "reason": "BASIS_ERROR",
+            "variance": 110.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2404",
+          "BK2405"
+        ],
+        "status": "PARTIALLY_DISPUTED",
+        "vendor": "HARBORLINK"
+      },
+      {
+        "approved_total_usd": 0.0,
+        "currency": "USD",
+        "duplicate_of": null,
+        "invoice_date": "2024-04-24",
+        "invoice_number": "HAR-A-0133",
+        "invoice_total_usd": 740.0,
+        "lines": [
+          {
+            "billed_amount": 315.0,
+            "billed_amount_original": 315.0,
+            "bl_number": "HLK2409BL",
+            "charge_code": "THC_D",
+            "container_no": "HLXU2409100",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 1,
+            "reason": "UNMATCHED",
+            "variance": 315.0
+          },
+          {
+            "billed_amount": 315.0,
+            "billed_amount_original": 315.0,
+            "bl_number": "HLK2409BL",
+            "charge_code": "THC_D",
+            "container_no": "HLXU2409200",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 2,
+            "reason": "UNMATCHED",
+            "variance": 315.0
+          },
+          {
+            "billed_amount": 110.0,
+            "billed_amount_original": 110.0,
+            "bl_number": "HLK2409BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 3,
+            "reason": "UNMATCHED",
+            "variance": 110.0
+          }
+        ],
+        "matched_bookings": [],
+        "status": "UNMATCHED",
+        "vendor": "HARBORLINK"
+      },
+      {
+        "approved_total_usd": 8321.0,
+        "currency": "USD",
+        "duplicate_of": null,
+        "invoice_date": "2024-02-27",
+        "invoice_number": "NOR-A-0101",
+        "invoice_total_usd": 8501.0,
+        "lines": [
+          {
+            "billed_amount": 3050.0,
+            "billed_amount_original": 3050.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2401100",
+            "decision": "APPROVE",
+            "expected_amount": 3050.0,
+            "line_no": 1,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 705.0,
+            "billed_amount_original": 705.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2401100",
+            "decision": "APPROVE",
+            "expected_amount": 705.0,
+            "line_no": 2,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 340.0,
+            "billed_amount_original": 340.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2401100",
+            "decision": "APPROVE",
+            "expected_amount": 340.0,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2401100",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 4,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 3050.0,
+            "billed_amount_original": 3050.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2401200",
+            "decision": "APPROVE",
+            "expected_amount": 3050.0,
+            "line_no": 5,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 705.0,
+            "billed_amount_original": 705.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2401200",
+            "decision": "APPROVE",
+            "expected_amount": 705.0,
+            "line_no": 6,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 340.0,
+            "billed_amount_original": 340.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2401200",
+            "decision": "APPROVE",
+            "expected_amount": 340.0,
+            "line_no": 7,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2401200",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 8,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 180.0,
+            "billed_amount_original": 180.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "CGS",
+            "container_no": "NVKU2401100",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 9,
+            "reason": "UNAUTHORIZED_CHARGE",
+            "variance": 180.0
+          },
+          {
+            "billed_amount": 95.0,
+            "billed_amount_original": 95.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "APPROVE",
+            "expected_amount": 95.0,
+            "line_no": 10,
+            "reason": "OK",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2401"
+        ],
+        "status": "PARTIALLY_DISPUTED",
+        "vendor": "NORDVIK"
+      },
+      {
+        "approved_total_usd": 4807.0,
+        "currency": "USD",
+        "duplicate_of": null,
+        "invoice_date": "2024-03-08",
+        "invoice_number": "NOR-A-0104",
+        "invoice_total_usd": 5195.0,
+        "lines": [
+          {
+            "billed_amount": 1920.0,
+            "billed_amount_original": 1920.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2402100",
+            "decision": "DISPUTE",
+            "expected_amount": 1780.0,
+            "line_no": 1,
+            "reason": "RATE_MISMATCH",
+            "variance": 140.0
+          },
+          {
+            "billed_amount": 352.0,
+            "billed_amount_original": 352.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2402100",
+            "decision": "DISPUTE",
+            "expected_amount": 298.0,
+            "line_no": 2,
+            "reason": "RATE_MISMATCH",
+            "variance": 54.0
+          },
+          {
+            "billed_amount": 260.0,
+            "billed_amount_original": 260.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2402100",
+            "decision": "APPROVE",
+            "expected_amount": 260.0,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2402100",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 4,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 1920.0,
+            "billed_amount_original": 1920.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2402200",
+            "decision": "DISPUTE",
+            "expected_amount": 1780.0,
+            "line_no": 5,
+            "reason": "RATE_MISMATCH",
+            "variance": 140.0
+          },
+          {
+            "billed_amount": 352.0,
+            "billed_amount_original": 352.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2402200",
+            "decision": "DISPUTE",
+            "expected_amount": 298.0,
+            "line_no": 6,
+            "reason": "RATE_MISMATCH",
+            "variance": 54.0
+          },
+          {
+            "billed_amount": 260.0,
+            "billed_amount_original": 260.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2402200",
+            "decision": "APPROVE",
+            "expected_amount": 260.0,
+            "line_no": 7,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2402200",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 8,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 95.0,
+            "billed_amount_original": 95.0,
+            "bl_number": "NOR2402BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "APPROVE",
+            "expected_amount": 95.0,
+            "line_no": 9,
+            "reason": "OK",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2402"
+        ],
+        "status": "PARTIALLY_DISPUTED",
+        "vendor": "NORDVIK"
+      },
+      {
+        "approved_total_usd": 6885.0,
+        "currency": "USD",
+        "duplicate_of": null,
+        "invoice_date": "2024-03-30",
+        "invoice_number": "NOR-A-0109",
+        "invoice_total_usd": 6885.0,
+        "lines": [
+          {
+            "billed_amount": 3120.0,
+            "billed_amount_original": 3120.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2404100",
+            "decision": "APPROVE",
+            "expected_amount": 3120.0,
+            "line_no": 1,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 596.0,
+            "billed_amount_original": 596.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2404100",
+            "decision": "APPROVE",
+            "expected_amount": 596.0,
+            "line_no": 2,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2404100",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 1990.0,
+            "billed_amount_original": 1990.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2404200",
+            "decision": "APPROVE",
+            "expected_amount": 1990.0,
+            "line_no": 4,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 298.0,
+            "billed_amount_original": 298.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2404200",
+            "decision": "APPROVE",
+            "expected_amount": 298.0,
+            "line_no": 5,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2404200",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 6,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 340.0,
+            "billed_amount_original": 340.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2404100",
+            "decision": "APPROVE",
+            "expected_amount": 370.0,
+            "line_no": 7,
+            "reason": "UNDERBILLED",
+            "variance": -30.0
+          },
+          {
+            "billed_amount": 150.0,
+            "billed_amount_original": 150.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "OWS",
+            "container_no": "NVKU2404100",
+            "decision": "APPROVE",
+            "expected_amount": 150.0,
+            "line_no": 8,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 260.0,
+            "billed_amount_original": 260.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2404200",
+            "decision": "APPROVE",
+            "expected_amount": 285.0,
+            "line_no": 9,
+            "reason": "UNDERBILLED",
+            "variance": -25.0
+          },
+          {
+            "billed_amount": 95.0,
+            "billed_amount_original": 95.0,
+            "bl_number": "NOR2404BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "APPROVE",
+            "expected_amount": 95.0,
+            "line_no": 10,
+            "reason": "OK",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2404"
+        ],
+        "status": "APPROVED",
+        "vendor": "NORDVIK"
+      },
+      {
+        "approved_total_usd": 0.0,
+        "currency": "USD",
+        "duplicate_of": "NOR-A-0101",
+        "invoice_date": "2024-03-14",
+        "invoice_number": "NOR-A-0118",
+        "invoice_total_usd": 8501.0,
+        "lines": [
+          {
+            "billed_amount": 3050.0,
+            "billed_amount_original": 3050.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2401100",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 1,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 3050.0
+          },
+          {
+            "billed_amount": 705.0,
+            "billed_amount_original": 705.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2401100",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 2,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 705.0
+          },
+          {
+            "billed_amount": 340.0,
+            "billed_amount_original": 340.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2401100",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 3,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 340.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2401100",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 4,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 18.0
+          },
+          {
+            "billed_amount": 3050.0,
+            "billed_amount_original": 3050.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2401200",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 5,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 3050.0
+          },
+          {
+            "billed_amount": 705.0,
+            "billed_amount_original": 705.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2401200",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 6,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 705.0
+          },
+          {
+            "billed_amount": 340.0,
+            "billed_amount_original": 340.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2401200",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 7,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 340.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2401200",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 8,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 18.0
+          },
+          {
+            "billed_amount": 180.0,
+            "billed_amount_original": 180.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "CGS",
+            "container_no": "NVKU2401100",
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 9,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 180.0
+          },
+          {
+            "billed_amount": 95.0,
+            "billed_amount_original": 95.0,
+            "bl_number": "NOR2401BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "DISPUTE",
+            "expected_amount": 0.0,
+            "line_no": 10,
+            "reason": "DUPLICATE_INVOICE",
+            "variance": 95.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2401"
+        ],
+        "status": "DUPLICATE",
+        "vendor": "NORDVIK"
+      },
+      {
+        "approved_total_usd": 2851.0,
+        "currency": "USD",
+        "duplicate_of": null,
+        "invoice_date": "2024-04-06",
+        "invoice_number": "NOR-A-0120",
+        "invoice_total_usd": 2851.0,
+        "lines": [
+          {
+            "billed_amount": 2180.0,
+            "billed_amount_original": 2180.0,
+            "bl_number": "NOR2406BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2406100",
+            "decision": "APPROVE",
+            "expected_amount": 2180.0,
+            "line_no": 1,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 298.0,
+            "billed_amount_original": 298.0,
+            "bl_number": "NOR2406BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2406100",
+            "decision": "APPROVE",
+            "expected_amount": 298.0,
+            "line_no": 2,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 260.0,
+            "billed_amount_original": 260.0,
+            "bl_number": "NOR2406BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2406100",
+            "decision": "APPROVE",
+            "expected_amount": 260.0,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2406BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2406100",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 4,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 95.0,
+            "billed_amount_original": 95.0,
+            "bl_number": "NOR2406BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "APPROVE",
+            "expected_amount": 95.0,
+            "line_no": 5,
+            "reason": "OK",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2406"
+        ],
+        "status": "APPROVED",
+        "vendor": "NORDVIK"
+      },
+      {
+        "approved_total_usd": 7195.0,
+        "currency": "USD",
+        "duplicate_of": null,
+        "invoice_date": "2024-04-12",
+        "invoice_number": "NOR-A-0123",
+        "invoice_total_usd": 7195.0,
+        "lines": [
+          {
+            "billed_amount": 2180.0,
+            "billed_amount_original": 2180.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2406200",
+            "decision": "APPROVE",
+            "expected_amount": 2180.0,
+            "line_no": 1,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 298.0,
+            "billed_amount_original": 298.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2406200",
+            "decision": "APPROVE",
+            "expected_amount": 298.0,
+            "line_no": 2,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 260.0,
+            "billed_amount_original": 260.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2406200",
+            "decision": "APPROVE",
+            "expected_amount": 260.0,
+            "line_no": 3,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2406200",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 4,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 3390.0,
+            "billed_amount_original": 3390.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "OFR",
+            "container_no": "NVKU2407100",
+            "decision": "APPROVE",
+            "expected_amount": 3390.0,
+            "line_no": 5,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 596.0,
+            "billed_amount_original": 596.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "BAF",
+            "container_no": "NVKU2407100",
+            "decision": "APPROVE",
+            "expected_amount": 596.0,
+            "line_no": 6,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 340.0,
+            "billed_amount_original": 340.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2407100",
+            "decision": "APPROVE",
+            "expected_amount": 340.0,
+            "line_no": 7,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 18.0,
+            "billed_amount_original": 18.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "SEAL",
+            "container_no": "NVKU2407100",
+            "decision": "APPROVE",
+            "expected_amount": 18.0,
+            "line_no": 8,
+            "reason": "OK",
+            "variance": 0.0
+          },
+          {
+            "billed_amount": 95.0,
+            "billed_amount_original": 95.0,
+            "bl_number": "NOR2407BL",
+            "charge_code": "DOC",
+            "container_no": null,
+            "decision": "APPROVE",
+            "expected_amount": 95.0,
+            "line_no": 9,
+            "reason": "OK",
+            "variance": 0.0
+          }
+        ],
+        "matched_bookings": [
+          "BK2407"
+        ],
+        "status": "APPROVED",
+        "vendor": "NORDVIK"
+      }
+    ]
+  },
+  "landed_cost": {
+    "SO-2416": {
+      "accessorials": 172.46,
+      "detention": 0.0,
+      "ocean_freight": 1297.15,
+      "surcharges": 299.83,
+      "total": 1769.44
+    },
+    "SO-2417": {
+      "accessorials": 135.16,
+      "detention": 0.0,
+      "ocean_freight": 1016.67,
+      "surcharges": 235.0,
+      "total": 1386.83
+    },
+    "SO-2418": {
+      "accessorials": 97.88,
+      "detention": 0.0,
+      "ocean_freight": 736.18,
+      "surcharges": 170.17,
+      "total": 1004.23
+    },
+    "SO-2420": {
+      "accessorials": 172.46,
+      "detention": 0.0,
+      "ocean_freight": 1297.16,
+      "surcharges": 299.84,
+      "total": 1769.46
+    },
+    "SO-2421": {
+      "accessorials": 135.18,
+      "detention": 0.0,
+      "ocean_freight": 1016.73,
+      "surcharges": 235.01,
+      "total": 1386.92
+    },
+    "SO-2422": {
+      "accessorials": 97.86,
+      "detention": 0.0,
+      "ocean_freight": 736.11,
+      "surcharges": 170.15,
+      "total": 1004.12
+    },
+    "SO-2428": {
+      "accessorials": 182.47,
+      "detention": 0.0,
+      "ocean_freight": 997.86,
+      "surcharges": 167.06,
+      "total": 1347.39
+    },
+    "SO-2429": {
+      "accessorials": 143.03,
+      "detention": 0.0,
+      "ocean_freight": 782.14,
+      "surcharges": 130.94,
+      "total": 1056.11
+    },
+    "SO-2432": {
+      "accessorials": 182.48,
+      "detention": 0.0,
+      "ocean_freight": 997.91,
+      "surcharges": 167.07,
+      "total": 1347.46
+    },
+    "SO-2433": {
+      "accessorials": 143.02,
+      "detention": 0.0,
+      "ocean_freight": 782.09,
+      "surcharges": 130.93,
+      "total": 1056.04
+    },
+    "SO-2440": {
+      "accessorials": 169.84,
+      "detention": 188.04,
+      "ocean_freight": 1067.57,
+      "surcharges": 176.51,
+      "total": 1601.96
+    },
+    "SO-2441": {
+      "accessorials": 133.12,
+      "detention": 147.38,
+      "ocean_freight": 836.75,
+      "surcharges": 138.35,
+      "total": 1255.6
+    },
+    "SO-2444": {
+      "accessorials": 169.85,
+      "detention": 75.22,
+      "ocean_freight": 1067.64,
+      "surcharges": 176.52,
+      "total": 1489.23
+    },
+    "SO-2445": {
+      "accessorials": 133.11,
+      "detention": 58.95,
+      "ocean_freight": 836.68,
+      "surcharges": 138.34,
+      "total": 1167.08
+    },
+    "SO-2452": {
+      "accessorials": 329.81,
+      "detention": 0.0,
+      "ocean_freight": 1326.88,
+      "surcharges": 317.26,
+      "total": 1973.95
+    },
+    "SO-2453": {
+      "accessorials": 258.51,
+      "detention": 0.0,
+      "ocean_freight": 1040.05,
+      "surcharges": 248.68,
+      "total": 1547.24
+    },
+    "SO-2454": {
+      "accessorials": 187.18,
+      "detention": 0.0,
+      "ocean_freight": 753.07,
+      "surcharges": 180.06,
+      "total": 1120.31
+    },
+    "SO-2456": {
+      "accessorials": 347.86,
+      "detention": 0.0,
+      "ocean_freight": 1115.64,
+      "surcharges": 167.07,
+      "total": 1630.57
+    },
+    "SO-2457": {
+      "accessorials": 272.64,
+      "detention": 0.0,
+      "ocean_freight": 874.36,
+      "surcharges": 130.93,
+      "total": 1277.93
+    },
+    "SO-2464": {
+      "accessorials": 318.79,
+      "detention": 0.0,
+      "ocean_freight": 1263.87,
+      "surcharges": 166.98,
+      "total": 1749.64
+    },
+    "SO-2465": {
+      "accessorials": 249.88,
+      "detention": 0.0,
+      "ocean_freight": 990.65,
+      "surcharges": 130.88,
+      "total": 1371.41
+    },
+    "SO-2466": {
+      "accessorials": 180.94,
+      "detention": 0.0,
+      "ocean_freight": 717.28,
+      "surcharges": 94.76,
+      "total": 992.98
+    },
+    "SO-2468": {
+      "accessorials": 318.79,
+      "detention": 0.0,
+      "ocean_freight": 1263.84,
+      "surcharges": 217.71,
+      "total": 1800.34
+    },
+    "SO-2469": {
+      "accessorials": 249.86,
+      "detention": 0.0,
+      "ocean_freight": 990.6,
+      "surcharges": 170.64,
+      "total": 1411.1
+    },
+    "SO-2470": {
+      "accessorials": 180.97,
+      "detention": 0.0,
+      "ocean_freight": 717.36,
+      "surcharges": 123.58,
+      "total": 1021.91
+    },
+    "SO-2476": {
+      "accessorials": 209.11,
+      "detention": 0.0,
+      "ocean_freight": 1222.17,
+      "surcharges": 167.07,
+      "total": 1598.35
+    },
+    "SO-2477": {
+      "accessorials": 163.89,
+      "detention": 0.0,
+      "ocean_freight": 957.83,
+      "surcharges": 130.93,
+      "total": 1252.65
+    },
+    "SO-2480": {
+      "accessorials": 182.47,
+      "detention": 0.0,
+      "ocean_freight": 1222.07,
+      "surcharges": 167.05,
+      "total": 1571.59
+    },
+    "SO-2481": {
+      "accessorials": 143.03,
+      "detention": 0.0,
+      "ocean_freight": 957.93,
+      "surcharges": 130.95,
+      "total": 1231.91
+    },
+    "SO-2488": {
+      "accessorials": 172.44,
+      "detention": 0.0,
+      "ocean_freight": 1441.63,
+      "surcharges": 253.45,
+      "total": 1867.52
+    },
+    "SO-2489": {
+      "accessorials": 135.17,
+      "detention": 0.0,
+      "ocean_freight": 1130.06,
+      "surcharges": 198.68,
+      "total": 1463.91
+    },
+    "SO-2490": {
+      "accessorials": 97.89,
+      "detention": 0.0,
+      "ocean_freight": 818.31,
+      "surcharges": 143.87,
+      "total": 1060.07
+    }
+  },
+  "trap_index": {
+    "T01": [
+      [
+        "NOR-A-0104",
+        1
+      ],
+      [
+        "NOR-A-0104",
+        2
+      ],
+      [
+        "NOR-A-0104",
+        5
+      ],
+      [
+        "NOR-A-0104",
+        6
+      ]
+    ],
+    "T02": [
+      [
+        "NOR-A-0109",
+        7
+      ],
+      [
+        "NOR-A-0109",
+        9
+      ]
+    ],
+    "T03": [
+      [
+        "ATL-A-0112",
+        7
+      ],
+      [
+        "ATL-A-0112",
+        8
+      ]
+    ],
+    "T04": [
+      [
+        "ATL-A-0106",
+        9
+      ],
+      [
+        "ATL-A-0106",
+        10
+      ]
+    ],
+    "T05": [
+      [
+        "HAR-A-0130",
+        4
+      ],
+      [
+        "HAR-A-0130",
+        8
+      ]
+    ],
+    "T06": [
+      [
+        "NOR-A-0123",
+        1
+      ],
+      [
+        "NOR-A-0123",
+        2
+      ],
+      [
+        "NOR-A-0123",
+        3
+      ],
+      [
+        "NOR-A-0123",
+        4
+      ]
+    ],
+    "T07": [
+      [
+        "NOR-A-0109",
+        8
+      ]
+    ],
+    "T08": [
+      [
+        "NOR-A-0101",
+        1
+      ],
+      [
+        "NOR-A-0101",
+        5
+      ]
+    ],
+    "T09": [
+      [
+        "NOR-A-0101",
+        9
+      ]
+    ],
+    "T10": [
+      [
+        "NOR-A-0118",
+        1
+      ],
+      [
+        "NOR-A-0118",
+        2
+      ],
+      [
+        "NOR-A-0118",
+        3
+      ],
+      [
+        "NOR-A-0118",
+        4
+      ],
+      [
+        "NOR-A-0118",
+        5
+      ],
+      [
+        "NOR-A-0118",
+        6
+      ],
+      [
+        "NOR-A-0118",
+        7
+      ],
+      [
+        "NOR-A-0118",
+        8
+      ],
+      [
+        "NOR-A-0118",
+        9
+      ],
+      [
+        "NOR-A-0118",
+        10
+      ]
+    ],
+    "T11": [
+      [
+        "ATL-A-0115",
+        1
+      ]
+    ],
+    "T12": [
+      [
+        "HAR-A-0133",
+        1
+      ],
+      [
+        "HAR-A-0133",
+        2
+      ],
+      [
+        "HAR-A-0133",
+        3
+      ]
+    ],
+    "T13": [
+      [
+        "ATL-A-0106",
+        1
+      ],
+      [
+        "ATL-A-0106",
+        5
+      ]
+    ]
+  }
+}

@@ -15,12 +15,12 @@ version = "1.0.0"
 description = "Audit a batch of ocean-freight invoices against rate contracts and shipment data, then allocate approved cost to sales orders."
 keywords = ["logistics", "freight-audit", "landed-cost"]
 [[task.authors]]
-name = "Viktor"
-email = "viktor@example.com"
+name = "Viktor Huska"
+email = "viktorguska67@gmail.com"
 
 [metadata]
-author_name = "Viktor"
-author_email = "viktor@example.com"
+author_name = "Viktor Huska"
+author_email = "viktorguska67@gmail.com"
 author_organization = ""
 category = "Operations"
 subcategory = "Logistics"

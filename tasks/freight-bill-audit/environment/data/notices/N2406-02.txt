@@ -1,0 +1,7 @@
+From: NORDVIK Customer Service
+Ref: N2406-02
+Date: 2024-03-21
+Subject: Roll advice — container NVKU2406200
+
+Container NVKU2406200 could not be loaded on booking BK2406 owing to a weight restriction on the vessel.
+The unit has been rolled and now moves under booking BK2407. All other units are unaffected.

@@ -2,6 +2,12 @@
 
 Everything here is dev tooling. It never ships into the task directory; only the
 files it *produces* (data + truth) are committed there.
+
+The central idea of the task lives in this module: several objects carry both a
+*register* value and an *actual* value. The register is what the ERP export
+(`shipments.json`) says; the actual is what the controlling source in policy §2
+says (a terminal move log, or a later carrier notice). A tool that reads only
+the register gets a self-consistent but wrong answer.
 """
 from __future__ import annotations
 
@@ -14,33 +20,32 @@ Basis = Literal["per_container", "per_bl", "per_shipment"]
 Decision = Literal["APPROVE", "DISPUTE"]
 Reason = Literal[
     "OK",
-    "WITHIN_TOLERANCE", 
-    "UNDERBILLED", 
-    "RATE_MISMATCH", 
-    "WRONG_SURCHARGE_PERIOD",
-    "CONTRACT_VERSION", 
-    "FREE_TIME_MISCOUNT", 
-    "BASIS_ERROR", 
+    "WITHIN_TOLERANCE",
+    "UNDERBILLED",
+    "RATE_MISMATCH",
+    "BASIS_ERROR",
     "UNAUTHORIZED_CHARGE",
-    "FX_RATE", 
-    "DUPLICATE_INVOICE", 
-    "UNMATCHED", 
+    "FREE_TIME_MISCOUNT",
+    "DUPLICATE_INVOICE",
+    "UNMATCHED",
     "CREDIT_NOTE",
 ]
 Status = Literal["APPROVED", "PARTIALLY_DISPUTED", "DISPUTED", "DUPLICATE", "CREDIT_NOTE", "UNMATCHED"]
 
-# Charge codes and the landed-cost category each maps to (policy §7.6).
+# Charge code -> landed-cost category (policy §7.6). Anything not listed here is
+# an accessorial; UNAUTHORIZED codes never allocate because they price to 0.00.
 CHARGE_CATEGORY = {
     "OFR": "ocean_freight",
-    "BAF": "surcharges", 
-    "EIS": "surcharges", 
+    "BAF": "surcharges",
+    "EIS": "surcharges",
     "OWS": "surcharges",
-    "DOC": "accessorials", 
-    "THC_O": "accessorials", 
-    "THC_D": "accessorials", 
-    "SEAL": "accessorials",
     "DET": "detention",
 }
+DEFAULT_CATEGORY = "accessorials"
+
+
+def category_of(code: str) -> str:
+    return CHARGE_CATEGORY.get(code, DEFAULT_CATEGORY)
 
 
 # ---------------------------------------------------------------- world ----
@@ -56,42 +61,68 @@ class SalesOrderLine:
 class Container:
     container_no: str
     ctype: Literal["20DV", "40HC"]
-    booked_kg: int          # weight on the booking confirmation
-    gross_kg: int           # actual packing-list weight (drives overweight, T12)
+    booked_kg: int
     cbm: Decimal
-    gate_out: Optional[date]
-    empty_return: Optional[date]
-    terminal: str           # key into contract.detention.terminals and holidays.json
+    terminal: str
     lines: list[SalesOrderLine] = field(default_factory=list)
+
+    # --- register view (shipments.json) ---
+    reg_booking_id: str = ""
+    reg_gross_kg: int = 0
+    reg_gate_out: Optional[date] = None
+    reg_empty_return: Optional[date] = None
+
+    # --- controlling view (terminal_moves.csv / notices) ---
+    act_booking_id: str = ""
+    act_gross_kg: int = 0
+    act_gate_out: Optional[date] = None
+    act_empty_return: Optional[date] = None
+    # A container only appears in terminal_moves.csv once it has been returned.
+    in_move_log: bool = True
+
+    @property
+    def reassigned(self) -> bool:
+        return self.act_booking_id != self.reg_booking_id
 
 
 @dataclass
 class Booking:
     booking_id: str
-    vendor: str             # contract vendor code of the carrier that moves it
+    vendor: str
     bl_number: str
     pol: str
     pod: str
-    sailing: date
     eta: date
-    containers: list[Container] = field(default_factory=list)
+    reg_sailing: date
+    act_sailing: date
 
     @property
     def lane(self) -> str:
         return f"{self.pol}-{self.pod}"
+
+    @property
+    def amended(self) -> bool:
+        return self.act_sailing != self.reg_sailing
+
+
+@dataclass
+class Terminal:
+    code: str
+    weekend: list[str]          # e.g. ["Fri", "Sat"] — policy §3.7
+    closures: list[date]
 
 
 @dataclass
 class ContractVersion:
     valid_from: date
     valid_to: date
-    lanes: dict[str, dict[str, Decimal]]          # lane -> ctype -> rate
-    min_ofr: dict[str, Decimal]                   # ctype -> minimum ocean freight
-    index_surcharges: dict[str, dict[str, dict[str, Decimal]]]  # code -> "YYYY-MM" -> ctype -> amount
-    accessorials: dict[str, tuple[Basis, dict[str, Decimal] | Decimal]]  # code -> (basis, amount or per-ctype)
-    overweight: Optional[tuple[int, dict[str, Decimal]]]        # (threshold_kg, ctype -> amount)
+    lanes: dict[str, dict[str, Decimal]]                        # lane -> ctype -> rate
+    min_ofr: dict[str, Decimal]                                 # ctype -> minimum
+    index_surcharges: dict[str, dict[str, dict[str, Decimal]]]  # code -> "YYYY-MM" -> ctype -> amt
+    accessorials: dict[str, tuple[Basis, Decimal | dict[str, Decimal]]]
+    overweight: Optional[tuple[int, dict[str, Decimal]]]        # (threshold_kg, ctype -> amt)
     detention_free_days: int
-    detention_tiers: list[tuple[int, Optional[int], dict[str, Decimal]]]  # (from_day, to_day|None, ctype->rate)
+    detention_tiers: list[tuple[int, Optional[int], dict[str, Decimal]]]
     terminal_modes: dict[str, Literal["calendar", "working"]]
 
 
@@ -103,12 +134,66 @@ class Contract:
 
 
 @dataclass
+class Revision:
+    """One line of a tariff circular (policy §3.2)."""
+    charge_code: str
+    lane: Optional[str]                     # None = all lanes
+    amount: Decimal | dict[str, Decimal]    # flat, or per container type
+
+
+@dataclass
+class Circular:
+    circular_id: str
+    vendor: str
+    issued: date
+    effective_from: date
+    revisions: list[Revision]
+    subject: str
+
+
+@dataclass
+class Notice:
+    """Carrier/forwarder correspondence written to notices/*.txt."""
+    notice_id: str
+    vendor: str
+    notice_date: date
+    kind: Literal["sailing_amendment", "container_reassign", "credit_advice", "circular", "noise"]
+    subject: str
+    body: str
+    # Structured payload the renderer turns into prose; also used by truth.
+    booking_id: Optional[str] = None
+    container_no: Optional[str] = None
+    new_sailing: Optional[date] = None
+    new_booking_id: Optional[str] = None
+    circular_id: Optional[str] = None
+
+
+@dataclass
 class World:
     seed: int
     bookings: list[Booking]
+    containers: list[Container]
     contracts: dict[str, Contract]
-    holidays: dict[str, list[date]]              # terminal -> dates
-    fx: dict[date, Decimal]                      # date -> EUR_USD
+    circulars: list[Circular]
+    notices: list[Notice]
+    terminals: dict[str, Terminal]
+    fx: dict[date, Decimal]
+
+    def booking(self, booking_id: str) -> Booking:
+        for b in self.bookings:
+            if b.booking_id == booking_id:
+                return b
+        raise KeyError(booking_id)
+
+    def container(self, container_no: str) -> Container:
+        for c in self.containers:
+            if c.container_no == container_no:
+                return c
+        raise KeyError(container_no)
+
+    def containers_of(self, booking_id: str, *, actual: bool = True) -> list[Container]:
+        key = "act_booking_id" if actual else "reg_booking_id"
+        return [c for c in self.containers if getattr(c, key) == booking_id]
 
 
 # -------------------------------------------------------------- invoices ----
@@ -118,22 +203,22 @@ class ChargeLine:
     description: str
     container_no: Optional[str]
     bl_number: Optional[str]
-    amount: Decimal                              # in invoice currency
+    amount: Decimal                              # in invoice currency, as printed
     # --- truth (hidden) ---
     expected_usd: Decimal = Decimal("0")
     decision: Decision = "APPROVE"
     reason: Reason = "OK"
-    trap: Optional[str] = None                   # trap id that produced this line's outcome
+    trap: Optional[str] = None
 
 
 @dataclass
 class Invoice:
     invoice_number: str
     vendor: str
-    layout: str                                  # renderer key
+    layout: str
     invoice_date: date
     currency: Literal["USD", "EUR"]
-    booking_ref: Optional[str]                   # as printed (may carry a typo, T09)
+    booking_ref: Optional[str]
     bl_ref: Optional[str]
     lines: list[ChargeLine] = field(default_factory=list)
     is_credit_note: bool = False

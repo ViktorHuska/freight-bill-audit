@@ -1,0 +1,95 @@
+{
+  "vendor": "ATLASOCEAN",
+  "currency": "EUR",
+  "versions": [
+    {
+      "valid_from": "2024-07-01",
+      "valid_to": "2024-12-28",
+      "lanes": {
+        "USSAV-SAJED": {
+          "20DV": 1760.0,
+          "40HC": 2870.0
+        },
+        "USHOU-PKQCT": {
+          "20DV": 1690.0,
+          "40HC": 2800.0
+        }
+      },
+      "minimum_ocean_freight": {
+        "20DV": 0.0,
+        "40HC": 0.0
+      },
+      "index_surcharges": {
+        "BAF": {
+          "2024-08": {
+            "20DV": 268.0,
+            "40HC": 536.0
+          },
+          "2024-09": {
+            "20DV": 291.0,
+            "40HC": 582.0
+          },
+          "2024-10": {
+            "20DV": 254.0,
+            "40HC": 508.0
+          }
+        }
+      },
+      "accessorials": {
+        "DOC": {
+          "basis": "per_bl",
+          "amount": 80.0
+        },
+        "THC_O": {
+          "basis": "per_container",
+          "amount": {
+            "20DV": 225.0,
+            "40HC": 295.0
+          }
+        },
+        "SEAL": {
+          "basis": "per_container",
+          "amount": 15.0
+        },
+        "DET": {
+          "basis": "per_container",
+          "amount": 0.0
+        }
+      },
+      "overweight": {
+        "threshold_kg": 20000,
+        "amount": {
+          "20DV": 105.0,
+          "40HC": 140.0
+        }
+      },
+      "detention": {
+        "free_days": 5,
+        "tiers": [
+          {
+            "from_day": 1,
+            "to_day": 5,
+            "rate": {
+              "20DV": 62.0,
+              "40HC": 94.0
+            }
+          },
+          {
+            "from_day": 6,
+            "to_day": null,
+            "rate": {
+              "20DV": 115.0,
+              "40HC": 168.0
+            }
+          }
+        ],
+        "terminal_mode": {
+          "AEJEA-T1": "calendar",
+          "AEJEA-T2": "working",
+          "SAJED-KCT": "working",
+          "PKQCT-QICT": "calendar"
+        }
+      }
+    }
+  ]
+}
