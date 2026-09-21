@@ -211,9 +211,9 @@ def derive(world: World, invoices: list[Invoice]) -> dict:
             if booking is not None and not unmatched:
                 basis = basis_of(world, inv.vendor, line.charge_code, sail)
                 if basis in ("per_bl", "per_shipment"):
-                    key = (line.charge_code,
-                           line.bl_number or booking.bl_number if basis == "per_bl"
-                           else booking.booking_id)
+                    unit = ((line.bl_number or booking.bl_number) if basis == "per_bl"
+                            else booking.booking_id)
+                    key = (line.charge_code, unit)
                     if key in seen_per_bl:
                         basis_excess = True
                     else:

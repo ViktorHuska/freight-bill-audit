@@ -33,10 +33,10 @@ import render  # noqa: E402
 import truth as truth_mod  # noqa: E402
 from world import BatchSpec, build_world  # noqa: E402
 
-# The canonical policy lives OUTSIDE the generated data directory: --data-out is
-# wiped on every run, and keeping the source inside it would delete the rulebook.
-POLICY_SRC = Path(__file__).resolve().parents[2] / \
-    "tasks/freight-bill-audit/environment/policy.md"
+# The canonical policy lives with the generator, OUTSIDE the task directory and
+# the regenerated data: --data-out is wiped on every run, and the task should
+# carry only the two byte-identical shipped copies (batch A and batch B).
+POLICY_SRC = Path(__file__).resolve().parent / "policy.md"
 
 # What each trap must produce. The generator refuses to write a batch whose
 # traps did not land exactly like this.
