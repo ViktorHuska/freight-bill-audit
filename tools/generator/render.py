@@ -119,9 +119,71 @@ def write_agreement(world, vendor: str, agreement_no: str, path: Path) -> None:
     c.save()
 
 
+def _consolidated_text(inv: Invoice) -> list[tuple[str, str]]:
+    """(style, text) rows of the forwarder's statement, in printed order."""
+    rows = [("title", "HARBORLINK LOGISTICS"),
+            ("small", "Freight forwarding and customs brokerage - Savannah GA"),
+            ("title", "CREDIT NOTE" if inv.is_credit_note else "STATEMENT OF CHARGES"),
+            ("text", f"Invoice number: {inv.invoice_number}"),
+            ("text", f"Invoice date: {inv.invoice_date.isoformat()}"),
+            ("text", f"Currency: {inv.currency}"),
+            ("text", f"Booking: {inv.booking_ref or '-'}"),
+            ("text", f"Bill of lading: {inv.bl_ref or '-'}"),
+            ("text", ""),
+            ("small", "Destination charges, grouped by bill of lading.")]
+    groups: dict[str, list] = {}
+    for line in inv.lines:
+        groups.setdefault(line.bl_number or "UNREFERENCED", []).append(line)
+    for bl, lines in groups.items():
+        rows.append(("bold", f"B/L {bl}"))
+        for line in lines:
+            rows.append(("line", (line.charge_code, line.description, line.container_no or "",
+                                  _us(line.amount))))
+        rows.append(("text", f"Subtotal {bl}  {_us(sum((l.amount for l in lines), Decimal('0')))}"))
+    rows.append(("bold", f"TOTAL DUE {_us(inv.total)} {inv.currency}"))
+    return rows
+
+
+def _consolidated_scan(inv: Invoice, path: Path) -> None:
+    """The forwarder's statements arrive as SCANS: an image-only PDF with a
+    slight skew and speckle, no text layer. Deterministic per invoice number."""
+    import time
+    import random
+    from PIL import Image, ImageDraw, ImageFont
+    import reportlab
+
+    fonts = Path(reportlab.__file__).parent / "fonts"
+    f_text = ImageFont.truetype(str(fonts / "Vera.ttf"), 24)
+    f_bold = ImageFont.truetype(str(fonts / "VeraBd.ttf"), 24)
+    f_title = ImageFont.truetype(str(fonts / "VeraBd.ttf"), 34)
+    f_small = ImageFont.truetype(str(fonts / "Vera.ttf"), 19)
+    W, H = 1700, 2200                                   # Letter at 200 dpi
+    img = Image.new("L", (W, H), 255)
+    d = ImageDraw.Draw(img)
+    y = 110
+    for style, text in _consolidated_text(inv):
+        if style == "line":
+            code, desc, cont, amt = text
+            d.text((150, y), code, font=f_text, fill=20)
+            d.text((300, y), desc, font=f_text, fill=20)
+            d.text((880, y), cont, font=f_text, fill=20)
+            d.text((W - 150, y), amt, font=f_text, fill=20, anchor="ra")
+        else:
+            font = {"title": f_title, "bold": f_bold, "small": f_small}.get(style, f_text)
+            d.text((110, y), text, font=font, fill=20)
+        y += 52 if style == "title" else 40
+    rng = random.Random(inv.invoice_number)
+    px = img.load()
+    for _ in range(3500):                               # speckle
+        px[rng.randrange(W), rng.randrange(H)] = rng.choice((90, 140, 190))
+    img = img.rotate(rng.uniform(-0.6, 0.6), resample=Image.BICUBIC, fillcolor=255)
+    stamp = time.gmtime(946684800)                      # fixed: byte-identical output
+    img.convert("RGB").save(path, "PDF", resolution=200.0, creationDate=stamp, modDate=stamp)
+
+
 def write_pdfs(invoices: list[Invoice], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    writers = {"table": _table, "lines": _lines, "consolidated": _consolidated}
+    writers = {"table": _table, "lines": _lines, "consolidated": _consolidated_scan}
     for inv in invoices:
         writers[inv.layout](inv, out_dir / f"{inv.vendor}_{inv.invoice_number}.pdf")
 

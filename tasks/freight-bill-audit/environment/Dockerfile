@@ -3,7 +3,7 @@
 FROM python:3.13-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends poppler-utils \
+    && apt-get install -y --no-install-recommends poppler-utils tesseract-ocr \
     && rm -rf /var/lib/apt/lists/*
 
 # Same PDF/tabular toolkit that the verifier bakes, so a tool written here runs there.

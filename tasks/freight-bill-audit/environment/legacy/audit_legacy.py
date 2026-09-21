@@ -22,6 +22,7 @@ import argparse
 import csv
 import json
 import re
+import sys
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from decimal import Decimal, ROUND_HALF_UP
@@ -387,7 +388,17 @@ def run(args) -> None:
         fx = {d(r["date"]): Decimal(r["EUR_USD"]) for r in csv.DictReader(f)}
     pricer = Pricer(facts, contracts, holidays, fx)
 
-    invoices = [parse_invoice(p, set(contracts)) for p in sorted(args.invoices.glob("*.pdf"))]
+    invoices = []
+    for p in sorted(args.invoices.glob("*.pdf")):
+        with pdfplumber.open(p) as pdf:
+            has_text = any((page.extract_text() or "").strip() for page in pdf.pages)
+        if not has_text:
+            # Some vendors now send scanned statements; those have no text to
+            # read and go to the desk for manual keying.
+            print(f"warning: {p.name} has no text layer (scanned?) - not audited",
+                  file=sys.stderr)
+            continue
+        invoices.append(parse_invoice(p, set(contracts)))
 
     # §5.1 duplicates: same vendor, containers and codes; totals within 0.01.
     duplicate_of: dict[str, str] = {}
