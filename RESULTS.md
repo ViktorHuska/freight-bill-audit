@@ -7,7 +7,7 @@ backend. Harbor 0.23.0, installed with `uv tool install harbor`. (TB3 CI pins `0
 
 | | |
 |---|---|
-| Task version evaluated | final: commit `3154205` for all standard and cheat trials. `f8bc5e0` then hardened `tests/test.sh` (ignores pre-existing reward files); oracle and nop were re-run on it. The agent never sees `tests/`. Earlier versions: see *Iteration history*. After the trials, the rubric review (§2) led to further verifier hardening and one agent-visible factual fix: \"two previous months\" became \"four\". The trial agents had found and used all four months regardless (\"44 historical invoices\"). |
+| Task version evaluated | final: commit `3154205` for all standard and cheat trials. `f8bc5e0` then hardened `tests/test.sh` (ignores pre-existing reward files); oracle and nop were re-run on it. The agent never sees `tests/`. Earlier versions: see *Iteration history*. After the trials, the rubric review (§2) led to further verifier hardening and one agent-visible factual fix: "two previous months" became "four". The trial agents had found and used all four months regardless ("44 historical invoices"). |
 | TB3 checks and prompts | `harbor-framework/terminal-bench` @ `2e5fd44` |
 | CI defaults mirrored | `.github/harbor-run-defaults.yml` at that commit: 3 trials per agent; claude-code `anthropic/claude-opus-5`, `reasoning_effort=max`, `CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000`; codex `openai/gpt-5.6-sol`, `reasoning_effort=xhigh` |
 
