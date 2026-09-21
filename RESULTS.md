@@ -261,6 +261,7 @@ not yet tested:
 | Agent | Trials | Reward | Wall time | Job |
 |---|---|---|---|---|
 | codex gpt-5.6-sol xhigh | 3 | **1.0 / 1.0 / 1.0** (42 passed, 2 skipped each) | 19 min 40 s | `jobs/2026-09-21__10-10-12-codex` |
+| claude-code opus-5 max | 3 | **1.0 / 1.0 / 1.0** (42 passed, 2 skipped each) | 1 h 14 min for the job, 2 in parallel | `jobs/2026-09-21__10-14-23-claude` |
 
 **The hypothesis was wrong for this model.** The agent's `audit.py`
 recognises `"per shipment"`, a phrase that never occurs in the visible data,
