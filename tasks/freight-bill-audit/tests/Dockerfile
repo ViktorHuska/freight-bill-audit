@@ -3,7 +3,7 @@
 FROM python:3.13-slim-bookworm
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends poppler-utils tesseract-ocr \
+    && apt-get install -y --no-install-recommends poppler-utils tesseract-ocr procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Identical toolkit to the environment image (the agent's tool runs here on the

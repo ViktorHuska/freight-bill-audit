@@ -7,7 +7,7 @@ backend. Harbor 0.23.0, installed with `uv tool install harbor`. (TB3 CI pins `0
 
 | | |
 |---|---|
-| Task version evaluated | final: commit `3154205` for all standard and cheat trials. `f8bc5e0` then hardened `tests/test.sh` (ignores pre-existing reward files); oracle and nop were re-run on it. The agent never sees `tests/`. Earlier versions: see *Iteration history* |
+| Task version evaluated | final: commit `3154205` for all standard and cheat trials. `f8bc5e0` then hardened `tests/test.sh` (ignores pre-existing reward files); oracle and nop were re-run on it. The agent never sees `tests/`. Earlier versions: see *Iteration history*. After the trials, the rubric review (§2) led to further verifier hardening and one agent-visible factual fix: \"two previous months\" became \"four\". The trial agents had found and used all four months regardless (\"44 historical invoices\"). |
 | TB3 checks and prompts | `harbor-framework/terminal-bench` @ `2e5fd44` |
 | CI defaults mirrored | `.github/harbor-run-defaults.yml` at that commit: 3 trials per agent; claude-code `anthropic/claude-opus-5`, `reasoning_effort=max`, `CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000`; codex `openai/gpt-5.6-sol`, `reasoning_effort=xhigh` |
 
@@ -29,10 +29,49 @@ avoid that; the results above come from that run.
 ## 2. Implementation rubric
 
 ```bash
-harbor check tasks/freight-bill-audit -r .tb3/docs/prompts/task-implementation.toml
+harbor check tasks/freight-bill-audit -r .tb3/docs/prompts/task-implementation.toml   -m claude-opus-4-8 --ae CLAUDE_FORCE_OAUTH=1 --ae CLAUDE_CODE_OAUTH_TOKEN=<token>
 ```
 
-Result: __pending__
+**`harbor check` cannot run on native Windows for this rubric.** It passes the
+whole reviewer instruction (the rubric plus the task) inline on a
+`docker compose exec` command line. That exceeds Windows' 32,767-character
+`CreateProcess` limit (`WinError 206`); Linux's ~2 MB limit is why CI never
+hits it. The crash happens before any verdict is produced (jobs `C:/hc/rc`,
+`jobs/rubric-check`).
+
+**Substitute: an independent reviewer agent**, given the rubric
+(`task-implementation.toml`) and the task files but not the author's
+conclusions, graded every criterion. Summary:
+
+| Outcome | Criteria |
+|---|---|
+| PASS (19) | verifiable, solvable, interesting, outcome_verified, anti_cheat_robustness, task_security, functional_verification, deterministic_reproducible, essential_difficulty, test_instruction_alignment (borderline), novel, agentic, solution_quality, separate_verifier_configured, environment_hygiene, structured_data_schema, typos, category_and_tags, task_name, resource_configuration, expert_time_estimate, ctrf_reporting, binary_reward |
+| N/A (2) | artifact_efficiency, do_not_modify_enforced |
+| FAIL, fixed | verifier_execution_isolation, no_extraneous_files, instruction accuracy ("two previous months": there are four), stale `solution/audit.py` docstring |
+| FAIL, author | task_readme, difficulty/solution/verification_explanation_quality, reviewable: the four README sections must be written by the author |
+| FAIL, acknowledged | **difficult**: the legacy tool shares the oracle's architecture, so the task reduces to finding its defects. The trials agree (§4). |
+| disputed | task_toml_schema: `network_mode = "public"` comes verbatim from TB3's own `docs/task-template.toml`; `os` was removed |
+
+**Fixes applied after the review:**
+- `tests/test.sh`: `/logs/verifier` is made `chmod 700` before the agent's tool
+  runs. The tool runs in its own session (`setsid`), and every `auditrun`
+  process is killed (`pkill -KILL -u auditrun`) before grading. `procps` was
+  added to the verifier image for `pkill`.
+- `__pycache__` removed from the task and an `environment/.dockerignore`
+  added (Docker ignores `.gitignore`, so local `.pyc` files were being copied
+  into the image); the stray `tests/data/truth/.gitkeep` removed.
+- `instruction.md`: "the two previous months" corrected to "four previous
+  months".
+- `solution/audit.py` docstring corrected; `os` removed from `task.toml`.
+
+Re-verified after the fixes: static checks 25/25, oracle 1.0, nop 0.0
+(`C:/hc/fo`, `C:/hc/fn`).
+
+**Untested schema fields.** The reviewer noted that `invoice_total_usd`,
+`currency`, `billed_amount_original` and literal two-decimal formatting are
+not asserted. They were deliberately left unasserted after the trials:
+adding assertions now would grade a different verifier from the one the
+trials ran against.
 
 ## 3. Oracle and nop
 
