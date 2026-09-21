@@ -103,6 +103,50 @@ runs per agent.
 | codex | | | |
 | claude-code | | | |
 
+## Iteration history
+
+### Iteration 1: task v2 (source precedence) @ `f112776`, 2026-09-21
+
+| Agent | Trials | Reward | Wall time | Job |
+|---|---|---|---|---|
+| codex gpt-5.6-sol xhigh | 3 | **1.0 / 1.0 / 1.0** (38/38 tests each, including hidden batch B) | 19 min for the whole job, 3 in parallel | `jobs/2026-09-21__00-52-12-codex` |
+| claude-code opus-5 max | 3 | __running__ | | `jobs/2026-09-21__00-52-15-claude` |
+
+**These are genuine passes.** Each agent's own `audit.py` ran on the hidden
+batch B in the verifier (exit 0) and matched the truth on every field. The
+truth never exists in the agent container.
+
+**What the trajectory shows (codex, `ptkAW7D`).** The agent ran **10 shell
+commands** in total:
+1. Listed `/app/data` and read `policy.md`.
+2. Dumped every JSON/CSV file and extracted every PDF with `pdftotext`.
+3. Wrote a ~900-line `audit.py` in essentially one pass.
+4. Ran it once and checked its own reconciliation, then stopped.
+
+After reading the data it named every trap in one sentence: *"a revised
+sailing changes contract version and FX date, one container is reassigned
+between bookings, terminal weighbridge weight overrides ERP weight, two
+tariff circulars override selected rates, detention…"*
+
+**Diagnosis.** v2 moved the difficulty from "rules stated in bold" to "sources
+that disagree", but it is still a **read-and-solve** task, which TB3's
+contributing guide names as the opposite of what makes tasks hard:
+
+1. **The policy is a complete algorithm.** The §2 precedence table says
+   exactly which source wins for each fact, so "conflicting evidence"
+   reduces to another rule to translate. In the merged Operations tasks,
+   precedence requires judgment across a rich environment; here it is a
+   lookup.
+2. **Everything is visible at once.** About 15 small files that fit in one
+   context. There is nothing to explore, no feedback loop, and no reason to
+   iterate.
+3. **Generalising is free.** Batch B has the same structure, and clean text
+   PDFs make the parsers straightforward.
+
+Adding traps, rules, invoices or precision would not change this. It is
+still read-and-solve, and that kind of difficulty is exactly what
+`essential_difficulty` rejects.
+
 ## 6. Failure analysis
 
 ```bash
