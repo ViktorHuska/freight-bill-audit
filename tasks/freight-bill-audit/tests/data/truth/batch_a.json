@@ -1,6 +1,6 @@
 {
   "audit": {
-    "batch": "invoices",
+    "batch": "inbox",
     "invoices": [
       {
         "approved_total_usd": 5513.87,
@@ -146,6 +146,7 @@
         "matched_bookings": [
           "BK2403"
         ],
+        "paid_to_date_usd": 5513.87,
         "status": "PARTIALLY_DISPUTED",
         "vendor": "ATLASOCEAN"
       },
@@ -269,6 +270,7 @@
         "matched_bookings": [
           "BK2405"
         ],
+        "paid_to_date_usd": 7726.69,
         "status": "PARTIALLY_DISPUTED",
         "vendor": "ATLASOCEAN"
       },
@@ -296,6 +298,7 @@
         "matched_bookings": [
           "BK2405"
         ],
+        "paid_to_date_usd": -119.31,
         "status": "CREDIT_NOTE",
         "vendor": "ATLASOCEAN"
       },
@@ -408,6 +411,7 @@
           "BK2404",
           "BK2405"
         ],
+        "paid_to_date_usd": 1405.0,
         "status": "PARTIALLY_DISPUTED",
         "vendor": "HARBORLINK"
       },
@@ -457,6 +461,7 @@
           }
         ],
         "matched_bookings": [],
+        "paid_to_date_usd": 0.0,
         "status": "UNMATCHED",
         "vendor": "HARBORLINK"
       },
@@ -592,6 +597,7 @@
         "matched_bookings": [
           "BK2401"
         ],
+        "paid_to_date_usd": 8321.0,
         "status": "PARTIALLY_DISPUTED",
         "vendor": "NORDVIK"
       },
@@ -715,6 +721,7 @@
         "matched_bookings": [
           "BK2402"
         ],
+        "paid_to_date_usd": 4807.0,
         "status": "PARTIALLY_DISPUTED",
         "vendor": "NORDVIK"
       },
@@ -722,7 +729,7 @@
         "approved_total_usd": 6885.0,
         "currency": "USD",
         "duplicate_of": null,
-        "invoice_date": "2024-03-30",
+        "invoice_date": "2024-03-31",
         "invoice_number": "NOR-A-0109",
         "invoice_total_usd": 6940.0,
         "lines": [
@@ -850,6 +857,7 @@
         "matched_bookings": [
           "BK2404"
         ],
+        "paid_to_date_usd": 6885.0,
         "status": "PARTIALLY_DISPUTED",
         "vendor": "NORDVIK"
       },
@@ -985,6 +993,7 @@
         "matched_bookings": [
           "BK2401"
         ],
+        "paid_to_date_usd": 0.0,
         "status": "DUPLICATE",
         "vendor": "NORDVIK"
       },
@@ -1060,6 +1069,7 @@
         "matched_bookings": [
           "BK2406"
         ],
+        "paid_to_date_usd": 2851.0,
         "status": "PARTIALLY_DISPUTED",
         "vendor": "NORDVIK"
       },
@@ -1183,6 +1193,7 @@
         "matched_bookings": [
           "BK2407"
         ],
+        "paid_to_date_usd": 7286.0,
         "status": "APPROVED",
         "vendor": "NORDVIK"
       }
@@ -1365,55 +1376,211 @@
       "total": 1021.91
     },
     "SO-2476": {
-      "accessorials": 209.11,
+      "accessorials": 182.48,
       "detention": 0.0,
       "ocean_freight": 1222.17,
       "surcharges": 167.07,
-      "total": 1598.35
+      "total": 1571.72
     },
     "SO-2477": {
-      "accessorials": 163.89,
+      "accessorials": 143.02,
       "detention": 0.0,
       "ocean_freight": 957.83,
       "surcharges": 130.93,
-      "total": 1252.65
+      "total": 1231.78
     },
     "SO-2480": {
-      "accessorials": 196.49,
+      "accessorials": 196.48,
       "detention": 0.0,
       "ocean_freight": 1222.07,
       "surcharges": 173.78,
-      "total": 1592.34
+      "total": 1592.33
     },
     "SO-2481": {
-      "accessorials": 154.01,
+      "accessorials": 154.02,
       "detention": 0.0,
       "ocean_freight": 957.93,
       "surcharges": 136.22,
-      "total": 1248.16
+      "total": 1248.17
     },
     "SO-2488": {
-      "accessorials": 185.2,
+      "accessorials": 205.4,
       "detention": 0.0,
       "ocean_freight": 1441.63,
       "surcharges": 263.66,
-      "total": 1890.49
+      "total": 1910.69
     },
     "SO-2489": {
-      "accessorials": 145.17,
+      "accessorials": 161.01,
       "detention": 0.0,
       "ocean_freight": 1130.06,
       "surcharges": 206.68,
-      "total": 1481.91
+      "total": 1497.75
     },
     "SO-2490": {
-      "accessorials": 105.13,
+      "accessorials": 116.59,
       "detention": 0.0,
       "ocean_freight": 818.31,
       "surcharges": 149.66,
-      "total": 1073.1
+      "total": 1084.56
     }
   },
+  "runs": [
+    {
+      "held": [],
+      "postings": [
+        {
+          "amount_usd": 8321.0,
+          "invoice_number": "NOR-A-0101",
+          "kind": "PAYMENT",
+          "vendor": "NORDVIK"
+        }
+      ],
+      "run_date": "2024-02-29"
+    },
+    {
+      "held": [],
+      "postings": [],
+      "run_date": "2024-03-01"
+    },
+    {
+      "held": [],
+      "postings": [
+        {
+          "amount_usd": 4807.0,
+          "invoice_number": "NOR-A-0104",
+          "kind": "PAYMENT",
+          "vendor": "NORDVIK"
+        }
+      ],
+      "run_date": "2024-03-08"
+    },
+    {
+      "held": [],
+      "postings": [
+        {
+          "amount_usd": 0.0,
+          "invoice_number": "NOR-A-0118",
+          "kind": "PAYMENT",
+          "vendor": "NORDVIK"
+        }
+      ],
+      "run_date": "2024-03-15"
+    },
+    {
+      "held": [],
+      "postings": [],
+      "run_date": "2024-03-22"
+    },
+    {
+      "held": [
+        "ATL-A-0106"
+      ],
+      "postings": [],
+      "run_date": "2024-03-29"
+    },
+    {
+      "held": [
+        "ATL-A-0106"
+      ],
+      "postings": [
+        {
+          "amount_usd": 6735.0,
+          "invoice_number": "NOR-A-0109",
+          "kind": "PAYMENT",
+          "vendor": "NORDVIK"
+        }
+      ],
+      "run_date": "2024-03-31"
+    },
+    {
+      "held": [
+        "ATL-A-0106"
+      ],
+      "postings": [
+        {
+          "amount_usd": 7726.69,
+          "invoice_number": "ATL-A-0112",
+          "kind": "PAYMENT",
+          "vendor": "ATLASOCEAN"
+        },
+        {
+          "amount_usd": 150.0,
+          "invoice_number": "NOR-A-0109",
+          "kind": "ADJUSTMENT",
+          "vendor": "NORDVIK"
+        }
+      ],
+      "run_date": "2024-04-05"
+    },
+    {
+      "held": [
+        "ATL-A-0106"
+      ],
+      "postings": [
+        {
+          "amount_usd": 2851.0,
+          "invoice_number": "NOR-A-0120",
+          "kind": "PAYMENT",
+          "vendor": "NORDVIK"
+        },
+        {
+          "amount_usd": 7249.0,
+          "invoice_number": "NOR-A-0123",
+          "kind": "PAYMENT",
+          "vendor": "NORDVIK"
+        }
+      ],
+      "run_date": "2024-04-12"
+    },
+    {
+      "held": [],
+      "postings": [
+        {
+          "amount_usd": 5513.87,
+          "invoice_number": "ATL-A-0106",
+          "kind": "PAYMENT",
+          "vendor": "ATLASOCEAN"
+        },
+        {
+          "amount_usd": -119.31,
+          "invoice_number": "ATL-A-0115",
+          "kind": "PAYMENT",
+          "vendor": "ATLASOCEAN"
+        },
+        {
+          "amount_usd": 37.0,
+          "invoice_number": "NOR-A-0123",
+          "kind": "ADJUSTMENT",
+          "vendor": "NORDVIK"
+        }
+      ],
+      "run_date": "2024-04-19"
+    },
+    {
+      "held": [],
+      "postings": [
+        {
+          "amount_usd": 1405.0,
+          "invoice_number": "HAR-A-0130",
+          "kind": "PAYMENT",
+          "vendor": "HARBORLINK"
+        },
+        {
+          "amount_usd": 0.0,
+          "invoice_number": "HAR-A-0133",
+          "kind": "PAYMENT",
+          "vendor": "HARBORLINK"
+        }
+      ],
+      "run_date": "2024-04-26"
+    },
+    {
+      "held": [],
+      "postings": [],
+      "run_date": "2024-04-30"
+    }
+  ],
   "trap_index": {
     "T01": [
       [

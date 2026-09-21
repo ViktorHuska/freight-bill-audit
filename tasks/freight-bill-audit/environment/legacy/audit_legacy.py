@@ -4,7 +4,8 @@
 """Freight invoice audit tool, international sales office.
 
 Written in 2022 for the monthly AP release and extended as vendors and
-contract terms changed; maintained by whoever was on the audit desk.
+contract terms changed; maintained by whoever was on the audit desk. It is run
+once, at month end, over everything in the inbox.
 
     Facts          shipment facts used for pricing
     parse_invoice  the three vendor invoice layouts (pdfplumber)
@@ -60,7 +61,7 @@ class Circular:
 class Facts:
     """Shipment facts for pricing, from the ERP register export."""
 
-    def __init__(self, register: dict, moves_path: Path, notices_dir: Path):
+    def __init__(self, register: dict, moves_path: Path | None, notices: list[Path]):
         self.bookings = {b["booking_id"]: b for b in register["bookings"]}
         self.containers: dict[str, dict] = {}
         self.container_booking: dict[str, str] = {}
@@ -73,20 +74,21 @@ class Facts:
         # Terminal move log: used to flag containers the terminal has not yet
         # reported as returned (detention may still be accruing on those).
         self.moves: dict[str, dict] = {}
-        with moves_path.open(newline="") as f:
-            for row in csv.DictReader(f):
-                self.moves[row["container_no"]] = row
+        if moves_path is not None:
+            with moves_path.open(newline="") as f:
+                for row in csv.DictReader(f):
+                    self.moves[row["container_no"]] = row
         self.not_returned = sorted(c for c in self.containers
                                    if not (self.moves.get(c) or {}).get("empty_return_date"))
 
         self.circulars: list[Circular] = []
-        self._load_circulars(notices_dir)
+        self._load_circulars(notices)
 
     # -- tariff circulars --------------------------------------------------
-    def _load_circulars(self, notices_dir: Path) -> None:
+    def _load_circulars(self, notices: list[Path]) -> None:
         """Pricing circulars arrive in the vendor correspondence folder with
         everything else; pick them out and keep the rest for the desk to read."""
-        for p in sorted(notices_dir.glob("*.txt")):
+        for p in notices:
             text = p.read_text(encoding="utf-8")
             if "TARIFF CIRCULAR" not in text:
                 continue
@@ -380,7 +382,10 @@ def weights_for(facts: Facts, containers: list[str]) -> dict[str, Fraction]:
 # ================================================================== audit ===
 def run(args) -> None:
     register = json.loads(args.shipments.read_text(encoding="utf-8"))
-    facts = Facts(register, args.moves, args.notices)
+    days = sorted(p for p in args.inbox.iterdir() if p.is_dir())
+    moves = [p / "terminal_moves.csv" for p in days if (p / "terminal_moves.csv").exists()]
+    facts = Facts(register, moves[-1] if moves else None,
+                  sorted(n for p in days for n in (p / "notices").glob("*.txt")))
     contracts = {p.stem: json.loads(p.read_text(encoding="utf-8"))
                  for p in sorted(args.contracts.glob("*.json"))}
     holidays = json.loads(args.holidays.read_text(encoding="utf-8"))
@@ -389,7 +394,7 @@ def run(args) -> None:
     pricer = Pricer(facts, contracts, holidays, fx)
 
     invoices = []
-    for p in sorted(args.invoices.glob("*.pdf")):
+    for p in sorted(n for day in days for n in (day / "invoices").glob("*.pdf")):
         with pdfplumber.open(p) as pdf:
             has_text = any((page.extract_text() or "").strip() for page in pdf.pages)
         if not has_text:
@@ -507,7 +512,7 @@ def run(args) -> None:
             "lines": lines_out,
         })
 
-    write_outputs(args.out, args.invoices.name, out, landed)
+    write_outputs(args.out, args.inbox.name, out, landed)
 
 
 # ================================================================ §8 output =
@@ -525,8 +530,7 @@ def write_outputs(out_dir: Path, batch: str, invoices: list[dict], landed: dict)
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Audit a batch of freight invoices (policy.md).")
-    for opt in ("invoices", "shipments", "moves", "notices", "contracts", "holidays", "fx",
-                "policy", "out"):
+    for opt in ("inbox", "shipments", "contracts", "holidays", "fx", "policy", "out"):
         ap.add_argument(f"--{opt}", type=Path, required=True)
     run(ap.parse_args())
 

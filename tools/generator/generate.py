@@ -30,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import invoices as invoices_mod  # noqa: E402
 import io_utils  # noqa: E402
 import render  # noqa: E402
+import timeline  # noqa: E402
 import truth as truth_mod  # noqa: E402
 from world import BatchSpec, build_world  # noqa: E402
 
@@ -65,6 +66,10 @@ EXPECTED = {
 HIDDEN_ONLY = {"T15", "T16"}
 
 
+def world_batch(truth: dict) -> str:
+    return truth["audit"]["invoices"][0]["invoice_number"].split("-")[1]
+
+
 def selfcheck(world, invs, truth: dict) -> None:
     by_inv = {i["invoice_number"]: i for i in truth["audit"]["invoices"]}
 
@@ -96,9 +101,28 @@ def selfcheck(world, invs, truth: dict) -> None:
                     f"expected the rolled container's booking {c.act_booking_id}"
                 )
 
-    approved = sum(Decimal(str(i["approved_total_usd"])) for i in truth["audit"]["invoices"])
+    # Everything is on file by the last run: nothing is still held, and what was
+    # paid on each invoice is its final approved amount.
+    for inv in truth["audit"]["invoices"]:
+        assert inv["status"] != "HELD", f"{inv['invoice_number']} still held at the last run"
+        assert inv["paid_to_date_usd"] == inv["approved_total_usd"], inv["invoice_number"]
+    paid = sum(Decimal(str(i["paid_to_date_usd"])) for i in truth["audit"]["invoices"]
+               if i["status"] not in ("DUPLICATE", "UNMATCHED"))
     landed = sum(Decimal(str(row["total"])) for row in truth["landed_cost"].values())
-    assert approved == landed, f"landed cost {landed} != approved total {approved}"
+    assert paid == landed, f"landed cost {landed} != paid {paid}"
+
+    # The run-by-run traps (policy §8) landed.
+    tag = world_batch(truth)
+    postings = [(r["run_date"], p["invoice_number"], p["kind"])
+                for r in truth["runs"] for p in r["postings"]]
+    held_runs = [r["run_date"] for r in truth["runs"] if f"ATL-{tag}-0106" in r["held"]]
+    assert held_runs, "the detention invoice was never held (T18)"
+    for no in (f"NOR-{tag}-0109", f"NOR-{tag}-0123"):
+        assert any(n == no and k == "ADJUSTMENT" for _, n, k in postings), (
+            f"{no}: no ADJUSTMENT after late evidence (T17)")
+    if tag == "B":
+        assert any(n == f"NOR-{tag}-0101" and k == "ADJUSTMENT" for _, n, k in postings), (
+            "B: the register-overweight OWS was never recovered (T15 x T17)")
 
     for inv in truth["audit"]["invoices"]:
         lines_sum = sum(
@@ -125,13 +149,15 @@ def main() -> None:
     spec = BatchSpec(args.batch)
     world = build_world(args.batch)
     invs = invoices_mod.build_invoices(world, spec)
-    truth = truth_mod.derive(world, invs)
+    runs = timeline.schedule(world, invs, args.batch)
+    truth = truth_mod.derive(world, invs, runs, lambda day: timeline.visible_world(world, day))
     selfcheck(world, invs, truth)
 
     if args.data_out.exists():
         shutil.rmtree(args.data_out)
-    io_utils.write_data(world, args.data_out)
-    render.write_pdfs(invs, args.data_out / "invoices")
+    io_utils.write_data(world, args.data_out, timeline.move_snapshots(world), runs)
+    for inv in invs:
+        render.write_pdfs([inv], args.data_out / "inbox" / inv.invoice_date.isoformat() / "invoices")
     if args.ledger:
         # History ships the settled outcome only: one paid total per invoice,
         # never line-level decisions. That is all AP's ledger would hold, and it
@@ -147,7 +173,9 @@ def main() -> None:
     disputed = sum(1 for i in truth["audit"]["invoices"] for l in i["lines"]
                    if l["decision"] == "DISPUTE")
     total_lines = sum(len(i["lines"]) for i in truth["audit"]["invoices"])
-    print(f"batch {args.batch}: {len(invs)} invoices, {total_lines} lines "
+    n_adj = sum(1 for r in truth["runs"] for p in r["postings"] if p["kind"] == "ADJUSTMENT")
+    print(f"batch {args.batch}: {len(runs)} runs, {n_adj} adjustments, "
+          f"{len(invs)} invoices, {total_lines} lines "
           f"({disputed} disputed), {len(truth['landed_cost'])} sales orders, "
           f"traps {sorted(truth['trap_index'])}")
 

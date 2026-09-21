@@ -183,49 +183,59 @@ def _circular_text(c: Circular) -> str:
 
 # ---------------------------------------------------------------- ledger ---
 def write_ledger(truth: dict, path: Path) -> None:
-    """AP ledger for a settled history month: what was actually paid per invoice
-    after the senior auditor's review (duplicates and unmatched pay 0.00, credit
-    notes are negative). Totals only; no lines, decisions or reasons."""
+    """AP ledger for a settled history month: every posting AP made, run by run,
+    after the senior auditor's review. A PAYMENT is an invoice's first decided
+    amount (0.00 for a duplicate or unmatched invoice, negative for a credit
+    note); an ADJUSTMENT settles a later change. Totals only: no lines,
+    decisions or reasons."""
     with path.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f, lineterminator=LF)
-        w.writerow(["invoice_number", "vendor", "invoice_date", "currency", "paid_usd"])
-        for inv in truth["audit"]["invoices"]:
-            w.writerow([inv["invoice_number"], inv["vendor"], inv["invoice_date"],
-                        inv["currency"], f"{inv['approved_total_usd']:.2f}"])
+        w.writerow(["run_date", "invoice_number", "vendor", "kind", "amount_usd"])
+        for run in truth["runs"]:
+            for p in run["postings"]:
+                w.writerow([run["run_date"], p["invoice_number"], p["vendor"], p["kind"],
+                            f"{p['amount_usd']:.2f}"])
 
 
 # ----------------------------------------------------------------- write ---
-def write_data(world: World, out: Path) -> None:
+def write_data(world: World, out: Path, snapshots: dict, runs: list) -> None:
+    """Static reference data at the batch root; everything that arrives during
+    the month in inbox/<arrival date>/ (policy §8)."""
     out.mkdir(parents=True, exist_ok=True)
     (out / "contracts").mkdir(exist_ok=True)
-    (out / "notices").mkdir(exist_ok=True)
-    (out / "invoices").mkdir(exist_ok=True)
+    inbox = out / "inbox"
+
+    def day_dir(day, sub=None):
+        p = inbox / day.isoformat()
+        if sub:
+            p = p / sub
+        p.mkdir(parents=True, exist_ok=True)
+        return p
 
     (out / "shipments.json").write_text(
-        json.dumps(_shipments(world), indent=2) + "\n", encoding="utf-8", newline=LF)
+        json.dumps(_shipments(world), indent=2) + LF, encoding="utf-8", newline=LF)
 
     import render  # local import: io_utils stays usable without reportlab
     for vendor in sorted(world.contracts):
         (out / "contracts" / f"{vendor}.json").write_text(
-            json.dumps(_contract(world, vendor), indent=2) + "\n", encoding="utf-8", newline=LF)
+            json.dumps(_contract(world, vendor), indent=2) + LF, encoding="utf-8", newline=LF)
         render.write_agreement(world, vendor, f"{vendor[:3]}-SC-{world.seed}",
                                out / "contracts" / f"{vendor}_agreement.pdf")
 
-    with (out / "terminal_moves.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f, lineterminator=LF)
-        w.writerow(["container_no", "terminal", "gate_out_date", "empty_return_date",
-                    "weighbridge_kg"])
-        for c in sorted(world.containers, key=lambda x: x.container_no):
-            if not c.in_move_log:
-                continue
-            w.writerow([c.container_no, c.terminal, _iso(c.act_gate_out) or "",
-                        _iso(c.act_empty_return) or "", c.act_gross_kg])
+    for day, rows in snapshots.items():
+        with (day_dir(day) / "terminal_moves.csv").open("w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f, lineterminator=LF)
+            w.writerow(["container_no", "terminal", "gate_out_date", "empty_return_date",
+                        "weighbridge_kg"])
+            for r in rows:
+                w.writerow([r["container_no"], r["terminal"], r["gate_out_date"],
+                            r["empty_return_date"], r["weighbridge_kg"]])
 
     holidays = {
         t.code: {"weekend": t.weekend, "closures": [d.isoformat() for d in sorted(t.closures)]}
         for t in sorted(world.terminals.values(), key=lambda t: t.code)
     }
-    (out / "holidays.json").write_text(json.dumps(holidays, indent=2) + "\n",
+    (out / "holidays.json").write_text(json.dumps(holidays, indent=2) + LF,
                                        encoding="utf-8", newline=LF)
 
     with (out / "fx.csv").open("w", newline="", encoding="utf-8") as f:
@@ -235,8 +245,11 @@ def write_data(world: World, out: Path) -> None:
             w.writerow([day.isoformat(), f"{world.fx[day]:.4f}"])
 
     for n in world.notices:
-        (out / "notices" / f"{n.notice_id}.txt").write_text(
+        (day_dir(n.notice_date, "notices") / f"{n.notice_id}.txt").write_text(
             CANARY + _notice_text(world, n), encoding="utf-8", newline=LF)
     for c in world.circulars:
-        (out / "notices" / f"{c.circular_id}.txt").write_text(
+        (day_dir(c.issued, "notices") / f"{c.circular_id}.txt").write_text(
             CANARY + _circular_text(c), encoding="utf-8", newline=LF)
+
+    (out / "payment_runs.txt").write_text(
+        CANARY + "".join(r.isoformat() + LF for r in runs), encoding="utf-8", newline=LF)
