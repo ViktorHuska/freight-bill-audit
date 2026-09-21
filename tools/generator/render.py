@@ -75,7 +75,7 @@ def _header(c, inv: Invoice, pagesize, company: str, strapline: str) -> float:
 
 
 def _table(inv: Invoice, path: Path) -> None:
-    c = rl_canvas.Canvas(str(path), pagesize=LETTER)
+    c = rl_canvas.Canvas(str(path), pagesize=LETTER, invariant=1)
     width, _ = LETTER
     y = _header(c, inv, LETTER, "NORDVIK LINE",
                 "Ocean transportation services - Atlanta GA")
@@ -107,7 +107,7 @@ def _table(inv: Invoice, path: Path) -> None:
 
 
 def _lines(inv: Invoice, path: Path) -> None:
-    c = rl_canvas.Canvas(str(path), pagesize=A4)
+    c = rl_canvas.Canvas(str(path), pagesize=A4, invariant=1)
     width, _ = A4
     y = _header(c, inv, A4, "ATLAS OCEAN NV",
                 "Zeevaartlaan 14, Antwerpen - VAT BE0844.219.771")
@@ -131,7 +131,7 @@ def _lines(inv: Invoice, path: Path) -> None:
 
 
 def _consolidated(inv: Invoice, path: Path) -> None:
-    c = rl_canvas.Canvas(str(path), pagesize=LETTER)
+    c = rl_canvas.Canvas(str(path), pagesize=LETTER, invariant=1)
     width, _ = LETTER
     y = _header(c, inv, LETTER, "HARBORLINK LOGISTICS",
                 "Freight forwarding and customs brokerage - Savannah GA")

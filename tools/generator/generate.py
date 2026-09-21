@@ -123,7 +123,7 @@ def main() -> None:
 
     args.truth_out.parent.mkdir(parents=True, exist_ok=True)
     args.truth_out.write_text(json.dumps(truth, indent=2, sort_keys=True) + "\n",
-                              encoding="utf-8")
+                              encoding="utf-8", newline="\n")
 
     disputed = sum(1 for i in truth["audit"]["invoices"] for l in i["lines"]
                    if l["decision"] == "DISPUTE")

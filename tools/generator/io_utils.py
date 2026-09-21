@@ -14,6 +14,9 @@ from pathlib import Path
 from models import Circular, Notice, World
 
 D = Decimal
+# Written explicitly so a batch generated on Windows is byte-identical to one
+# generated on Linux (the data files are committed).
+LF = "\n"
 
 
 def _money(x: Decimal) -> float:
@@ -171,14 +174,14 @@ def write_data(world: World, out: Path) -> None:
     (out / "invoices").mkdir(exist_ok=True)
 
     (out / "shipments.json").write_text(
-        json.dumps(_shipments(world), indent=2) + "\n", encoding="utf-8")
+        json.dumps(_shipments(world), indent=2) + "\n", encoding="utf-8", newline=LF)
 
     for vendor in sorted(world.contracts):
         (out / "contracts" / f"{vendor}.json").write_text(
-            json.dumps(_contract(world, vendor), indent=2) + "\n", encoding="utf-8")
+            json.dumps(_contract(world, vendor), indent=2) + "\n", encoding="utf-8", newline=LF)
 
     with (out / "terminal_moves.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator=LF)
         w.writerow(["container_no", "terminal", "gate_out_date", "empty_return_date",
                     "weighbridge_kg"])
         for c in sorted(world.containers, key=lambda x: x.container_no):
@@ -191,17 +194,18 @@ def write_data(world: World, out: Path) -> None:
         t.code: {"weekend": t.weekend, "closures": [d.isoformat() for d in sorted(t.closures)]}
         for t in sorted(world.terminals.values(), key=lambda t: t.code)
     }
-    (out / "holidays.json").write_text(json.dumps(holidays, indent=2) + "\n", encoding="utf-8")
+    (out / "holidays.json").write_text(json.dumps(holidays, indent=2) + "\n",
+                                       encoding="utf-8", newline=LF)
 
     with (out / "fx.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator=LF)
         w.writerow(["date", "EUR_USD"])
         for day in sorted(world.fx):
             w.writerow([day.isoformat(), f"{world.fx[day]:.4f}"])
 
     for n in world.notices:
         (out / "notices" / f"{n.notice_id}.txt").write_text(
-            _notice_text(world, n), encoding="utf-8")
+            _notice_text(world, n), encoding="utf-8", newline=LF)
     for c in world.circulars:
         (out / "notices" / f"{c.circular_id}.txt").write_text(
-            _circular_text(c), encoding="utf-8")
+            _circular_text(c), encoding="utf-8", newline=LF)
