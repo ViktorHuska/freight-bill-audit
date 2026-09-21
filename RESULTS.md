@@ -43,8 +43,8 @@ harbor run -p tasks/freight-bill-audit --agent nop    --env docker --yes
 
 | Agent | Reward | Runtime | Job |
 |---|---|---|---|
-| oracle | **1.000** | 1 m 48 s | `jobs/2026-09-21__00-01-22` |
-| nop | **0.000** | 35 s | `jobs/2026-09-21__00-03-55` |
+| oracle | **1.000** | ~1 min | `jobs/final-oracle` (final task incl. hardened `test.sh`); also `jobs/v4b-oracle` |
+| nop | **0.000** | ~35 s | `jobs/final-nop`; also `jobs/v4b-nop` |
 
 The oracle run covers the whole pipeline: `solve.sh` installs the reference
 tool and runs it on batch A in the agent container, then the separate verifier
@@ -77,16 +77,26 @@ authenticates from `~/.codex/auth.json` (`CODEX_FORCE_AUTH_JSON=1`).
 
 | Agent | Trial | Reward | Wall time | Genuine / infra | Failing tests |
 |---|---|---|---|---|---|
-| codex gpt-5.6-sol xhigh | 1 | | | | |
-| codex gpt-5.6-sol xhigh | 2 | | | | |
-| codex gpt-5.6-sol xhigh | 3 | | | | |
-| claude-code opus-5 max | 1 | | | | |
-| claude-code opus-5 max | 2 | | | | |
-| claude-code opus-5 max | 3 | | | | |
+| codex gpt-5.6-sol xhigh | 1 (`4e4oiPh`) | 1.0 | job 19 min 40 s (3 in parallel) | genuine pass | none: 42 passed, 2 skipped |
+| codex gpt-5.6-sol xhigh | 2 (`D9y5Pu3`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
+| codex gpt-5.6-sol xhigh | 3 (`euzZcYs`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
+| claude-code opus-5 max | 1 (`Ei7aKKR`) | 1.0 | job 1 h 14 min (2 in parallel) | genuine pass | none: 42 passed, 2 skipped |
+| claude-code opus-5 max | 2 (`oLGqyQH`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
+| claude-code opus-5 max | 3 (`qHSW8jX`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
 
-Jobs: `jobs/2026-09-21__00-52-12-codex`, `jobs/2026-09-21__00-52-15-claude`.
+Jobs: `jobs/2026-09-21__10-10-12-codex`, `jobs/2026-09-21__10-14-23-claude`. The
+2 skipped tests are the per-trap tests for T15/T16 on batch A, which plants
+neither (both are hidden-batch-only by design).
 
-Trials rerun because of infrastructure failures (rate limit, crash, timeout): __
+Every pass is genuine: each agent's own `audit.py` ran unchanged on hidden
+batch B in the verifier (tool exit 0) and matched the truth on every field.
+The truth never exists in the agent container.
+
+**The TB3 requirement that every standard trial fails is not met.**
+
+Trials rerun because of infrastructure failures: none on the final version.
+In iteration 1, the claude-code job was lost to a Harbor-on-Windows UTF-8 bug
+(see *Iteration history*); it was fixed before any later run.
 
 ## 5. Adversarial trials (`/cheat`)
 
