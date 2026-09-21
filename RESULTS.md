@@ -169,7 +169,9 @@ only the fully correct detention rule fits both months.
 | Agent | Trials | Reward | Wall time | Job |
 |---|---|---|---|---|
 | codex gpt-5.6-sol xhigh | 3 | 1.0 / 0.0 / 0.0 | 16 min for the whole job | `jobs/2026-09-21__01-29-00-codex` |
-| claude-code opus-5 max | 3 | __running__ | | `jobs/2026-09-21__01-29-02-claude` |
+| claude-code opus-5 max | 3 | 0.0 / 1.0 / 1.0 | 39 min for the whole job, 2 in parallel | `jobs/2026-09-21__01-29-02-claude` |
+
+Claude's single failure is the same allocation ambiguity (`SO-2452 accessorials`); every pricing, decision and trap test passed. The UTF-8 fix held, with no infra errors. **Counting honestly, claude-code also solved v3 3/3.**
 
 **Both codex failures were specification failures, not genuine ones.** They
 passed every pricing, decision and trap test and failed only
