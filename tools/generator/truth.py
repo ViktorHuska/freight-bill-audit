@@ -181,24 +181,37 @@ def allocate_line(amount: Decimal, weights: list[tuple[str, Fraction]]) -> dict[
     }
 
 
-# ----------------------------------------------------------------- derive --
-def derive(world: World, invoices: list[Invoice]) -> dict:
-    duplicates = find_duplicates(world, invoices)
-    audit = []
-    landed: dict[str, dict[str, Decimal]] = {}
-    trap_index: dict[str, list] = {}
+# --------------------------------------------------------------- evaluate --
+def _held(world: World, inv: Invoice) -> bool:
+    """Policy §8: detention is paid on the terminal's reported empty return
+    only. Until it is on file for every DET line, the invoice waits."""
+    for l in inv.lines:
+        if l.charge_code == "DET" and l.container_no:
+            try:
+                c = world.container(l.container_no)
+            except KeyError:
+                continue
+            if c.act_empty_return is None:
+                return True
+    return False
 
-    all_sos = sorted({sl.so for c in world.containers for sl in c.lines})
-    for so in all_sos:
-        landed[so] = {k: D("0.00") for k in
-                      ("ocean_freight", "surcharges", "accessorials", "detention")}
+
+def evaluate(world: World, invoices: list[Invoice]) -> dict[str, dict]:
+    """One audit of the invoices on file against the facts on file.
+
+    Returns {invoice_number: {"record", "held", "lines": [(approved, category,
+    weights or None)]}}; weights are the allocation shares on these facts."""
+    duplicates = find_duplicates(world, invoices)
+    out: dict[str, dict] = {}
 
     for inv in invoices:
         bookings = matched_bookings(world, inv)
         unmatched = not bookings
         dup_of = duplicates.get(inv.invoice_number)
+        held = (dup_of is None and not inv.is_credit_note and not unmatched
+                and _held(world, inv))
         seen_per_bl: set[tuple[str, str]] = set()
-        out_lines = []
+        out_lines, alloc = [], []
         billed_total = D("0.00")
         approved_total = D("0.00")
 
@@ -206,6 +219,16 @@ def derive(world: World, invoices: list[Invoice]) -> dict:
             booking = booking_for_line(world, inv, line)
             sail = booking.act_sailing if booking else inv.invoice_date
             billed = pricing.to_usd(world, inv.currency, line.amount, sail)
+            billed_total += billed
+            if held:
+                out_lines.append({
+                    "line_no": n, "charge_code": line.charge_code,
+                    "container_no": line.container_no, "bl_number": line.bl_number,
+                    "billed_amount_original": float(line.amount),
+                    "billed_amount": float(billed), "expected_amount": None,
+                    "variance": None, "decision": "HOLD", "reason": "AWAITING_EVIDENCE",
+                })
+                continue
 
             basis_excess = False
             if booking is not None and not unmatched:
@@ -225,7 +248,6 @@ def derive(world: World, invoices: list[Invoice]) -> dict:
                 duplicate=dup_of is not None, unmatched=unmatched, basis_excess=basis_excess,
             )
             approved = billed if decision == "APPROVE" else exp
-            billed_total += billed
             approved_total += approved
 
             out_lines.append({
@@ -240,16 +262,13 @@ def derive(world: World, invoices: list[Invoice]) -> dict:
                 "decision": decision,
                 "reason": reason,
             })
+            allocatable = booking is not None and not unmatched and dup_of is None
+            alloc.append((approved, category_of(line.charge_code),
+                          _line_weights(world, line, booking) if allocatable else None))
 
-            if line.trap:
-                trap_index.setdefault(line.trap, []).append([inv.invoice_number, n])
-
-            if approved != 0 and booking is not None and not unmatched and dup_of is None:
-                cat = category_of(line.charge_code)
-                for so, amt in allocate_line(approved, _line_weights(world, line, booking)).items():
-                    landed[so][cat] += amt
-
-        if dup_of is not None:
+        if held:
+            status = "HELD"
+        elif dup_of is not None:
             status = "DUPLICATE"
         elif inv.is_credit_note:
             status = "CREDIT_NOTE"
@@ -262,31 +281,87 @@ def derive(world: World, invoices: list[Invoice]) -> dict:
         else:
             status = "PARTIALLY_DISPUTED"
 
-        for t in {l.trap for l in inv.lines if l.trap}:
-            trap_index.setdefault(t, [])
+        out[inv.invoice_number] = {
+            "held": held,
+            "lines": alloc,
+            "record": {
+                "invoice_number": inv.invoice_number,
+                "vendor": inv.vendor,
+                "invoice_date": inv.invoice_date.isoformat(),
+                "currency": inv.currency,
+                "status": status,
+                "duplicate_of": dup_of,
+                "matched_bookings": bookings,
+                "invoice_total_usd": float(pricing.q(billed_total)),
+                "approved_total_usd": float(pricing.q(approved_total)),
+                "lines": out_lines,
+            },
+        }
+    return out
 
-        audit.append({
-            "invoice_number": inv.invoice_number,
-            "vendor": inv.vendor,
-            "invoice_date": inv.invoice_date.isoformat(),
-            "currency": inv.currency,
-            "status": status,
-            "duplicate_of": dup_of,
-            "matched_bookings": bookings,
-            "invoice_total_usd": float(pricing.q(billed_total)),
-            "approved_total_usd": float(pricing.q(approved_total)),
-            "lines": out_lines,
-        })
+
+# ----------------------------------------------------------------- derive --
+CATS = ("ocean_freight", "surcharges", "accessorials", "detention")
+
+
+def derive(world: World, invoices: list[Invoice], runs, visible_world) -> dict:
+    """Replay the payment runs (policy §8). At each run the invoices on file are
+    audited on the facts on file; a first decision is a PAYMENT, a later change
+    in any line's approved amount an ADJUSTMENT. Each posting is allocated on
+    the facts on file when it is made and never re-allocated."""
+    all_sos = sorted({sl.so for c in world.containers for sl in c.lines})
+    landed = {so: {k: D("0.00") for k in CATS} for so in all_sos}
+    paid: dict[str, list[Decimal]] = {}
+    run_out = []
+    ev: dict[str, dict] = {}
+
+    for run_date in runs:
+        w = visible_world(run_date)
+        on_file = [i for i in invoices if i.invoice_date <= run_date]
+        ev = evaluate(w, on_file)
+        postings, held = [], []
+        for inv in sorted(on_file, key=lambda i: i.invoice_number):
+            e = ev[inv.invoice_number]
+            no = inv.invoice_number
+            if e["held"]:
+                assert no not in paid, f"{no} was paid and then held"
+                held.append(no)
+                continue
+            now = [a for a, _, _ in e["lines"]]
+            if no not in paid:
+                kind, deltas = "PAYMENT", now
+            else:
+                deltas = [a - b for a, b in zip(now, paid[no])]
+                if not any(deltas):
+                    continue
+                kind = "ADJUSTMENT"
+            paid[no] = now
+            for delta, (_, cat, weights) in zip(deltas, e["lines"]):
+                if delta and weights:
+                    for so, amt in allocate_line(delta, weights).items():
+                        landed[so][cat] += amt
+            postings.append({"invoice_number": no, "vendor": inv.vendor, "kind": kind,
+                             "amount_usd": float(pricing.q(sum(deltas, D("0"))))})
+        run_out.append({"run_date": run_date.isoformat(), "postings": postings, "held": held})
+
+    audit, trap_index = [], {}
+    for inv in sorted(invoices, key=lambda i: i.invoice_number):
+        rec = dict(ev[inv.invoice_number]["record"])
+        rec["paid_to_date_usd"] = float(pricing.q(sum(paid.get(inv.invoice_number, []), D("0"))))
+        audit.append(rec)
+        for n, line in enumerate(inv.lines, 1):
+            if line.trap:
+                trap_index.setdefault(line.trap, []).append([inv.invoice_number, n])
 
     landed_out = {}
     for so in all_sos:
         cats = landed[so]
-        total = sum(cats.values())
         landed_out[so] = {k: float(v) for k, v in cats.items()}
-        landed_out[so]["total"] = float(total)
+        landed_out[so]["total"] = float(sum(cats.values()))
 
     return {
-        "audit": {"batch": "invoices", "invoices": sorted(audit, key=lambda i: i["invoice_number"])},
+        "audit": {"batch": "inbox", "invoices": audit},
         "landed_cost": landed_out,
+        "runs": run_out,
         "trap_index": {k: v for k, v in sorted(trap_index.items())},
     }

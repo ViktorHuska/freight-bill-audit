@@ -6,3 +6,4 @@ __pycache__/
 .venv/
 jobs_*.log
 .exploit/
+.gen/

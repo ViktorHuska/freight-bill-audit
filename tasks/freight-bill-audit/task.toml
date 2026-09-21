@@ -6,12 +6,13 @@ artifacts = [
   "/app/audit.py",
   "/app/output/audit.json",
   "/app/output/landed_cost.csv",
+  "/app/output/runs",
 ]
 
 [task]
 name = "terminal-bench/freight-bill-audit"
 version = "1.0.0"
-description = "Audit a batch of ocean-freight invoices against rate contracts and shipment data, then allocate approved cost to sales orders."
+description = "Audit a month of ocean-freight invoices payment run by payment run, against rate contracts and shipment evidence as it arrives, and allocate what is paid to sales orders."
 keywords = ["logistics", "freight-audit", "landed-cost"]
 [[task.authors]]
 name = "Viktor Huska"
