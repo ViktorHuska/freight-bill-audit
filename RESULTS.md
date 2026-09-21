@@ -157,6 +157,46 @@ Adding traps, rules, invoices or precision would not change this. It is
 still read-and-solve, and that kind of difficulty is exactly what
 `essential_difficulty` rejects.
 
+### Iteration 2: task v3 (repair a legacy tool against a settled AP ledger) @ `ae40ed9`, 2026-09-21
+
+v3 removed the pricing doctrine from the policy. Instead the agent gets the
+desk's legacy audit tool, which has four realistic defects, and two settled
+history months with an AP ledger of per-invoice paid totals. Before any
+trial ran, identifiability was verified: the correct tool reproduces both
+ledgers to the cent, every defect changes a paid total in both months, and
+only the fully correct detention rule fits both months.
+
+| Agent | Trials | Reward | Wall time | Job |
+|---|---|---|---|---|
+| codex gpt-5.6-sol xhigh | 3 | 1.0 / 0.0 / 0.0 | 16 min for the whole job | `jobs/2026-09-21__01-29-00-codex` |
+| claude-code opus-5 max | 3 | __running__ | | `jobs/2026-09-21__01-29-02-claude` |
+
+**Both codex failures were specification failures, not genuine ones.** They
+passed every pricing, decision and trap test and failed only
+`test_landed_cost`. The v3 policy rewrite had changed the allocation rule
+from basis-keyed wording ("a `per_bl` charge…") to "a charge on a
+container / on a B/L". That wording is ambiguous for the forwarder's per-B/L
+fee, which is printed against a container. Both agents allocated it to the
+named container: $110/2 × 37/87 = $23.40 on SO-2452, exactly the reported
+diff. Fixed in `cbb4201`. **Counting honestly, codex solved v3 3/3.**
+
+**How it solved it (`LMo4gtm`, 16 commands).** It did exactly what the
+design demands. It ran the legacy tool on both history months, diffed the
+results against the ledger, and traced each mismatch to its evidence. Then
+it stated all five rules correctly: *"vendor notices can revise a sailing
+or roll a container; terminal move dates and weighbridge weights supersede
+stale ERP movement facts; terminal-specific weekends matter for detention;
+and a per-B/L fee is allowed once for each B/L, not once for the whole
+invoice."* It reproduced 22/22 historical payments exactly before moving
+on.
+
+**Diagnosis.** Hiding the doctrine did not matter. The evidence describes
+itself: a notice saying *"the sailing date is now…"*, or a move log with a
+weighbridge column, points straight at its own relevance, and a frontier
+model already has the freight-audit background to act on it. With five
+rules, eleven invoices per month and totals that can be diffed with a
+script, the whole search takes minutes.
+
 ## 6. Failure analysis
 
 ```bash
