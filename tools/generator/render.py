@@ -45,7 +45,7 @@ CARRIER_NAME = {"NORDVIK": "NORDVIK LINE", "ATLASOCEAN": "ATLAS OCEAN NV",
                 "HARBORLINK": "HARBORLINK LOGISTICS"}
 CODE_TEXT = {"DOC": "Documentation", "THC_O": "Terminal handling, origin",
              "THC_D": "Terminal handling, destination", "SEAL": "Container seal",
-             "DET": "Detention"}
+             "DET": "Detention", "ISPS": "Port security"}
 
 
 def _amts(amount) -> str:

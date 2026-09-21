@@ -22,6 +22,8 @@ T11 credit note against an over-billed line
 T12 invoice that matches no booking in the register
 T13 EUR invoice converted at the sailing-date fixing (legitimate)
 T14 rate increase correctly in force once its 30-day notice period has run (legitimate)
+T15 (hidden batch only) overweight billed on register weight; weighbridge is below threshold
+T16 (hidden batch only) per-shipment fee billed once per container
 """
 from __future__ import annotations
 
@@ -44,6 +46,7 @@ DESCRIPTIONS = {
     "DET": "Detention",
     "OWS": "Overweight surcharge",
     "CGS": "Port congestion surcharge",
+    "ISPS": "Port security surcharge",
 }
 
 
@@ -116,6 +119,17 @@ def build_invoices(world: World, s: BatchSpec) -> list[Invoice]:
         if l.charge_code == "OFR":
             l.trap = "T08"
     lines.append(_line("CGS", containers(b1)[0].container_no, b1.bl_number, D("180"), "T09"))
+    if s.batch == "b":
+        # Hidden batch only. (T15) Overweight billed on the register weight,
+        # which the weighbridge contradicts. (T16) The per-shipment ISPS fee
+        # billed once per container: only the first line is due.
+        for c in containers(b1):
+            ows = pricing.overweight(world, b1, c, use_register=True)
+            if ows > 0:
+                lines.append(_line("OWS", c.container_no, b1.bl_number, ows, "T15"))
+        for i, c in enumerate(containers(b1)):
+            _, isps = pricing.accessorial(world, b1.vendor, "ISPS", c.ctype, b1.lane, b1.act_sailing)
+            lines.append(_line("ISPS", c.container_no, b1.bl_number, isps, "T16" if i else None))
     lines.append(doc_line(b1))
     inv1 = _inv(s, "NORDVIK", 101, 0, 27, b1.booking_id, b1.bl_number, lines)
     out.append(inv1)

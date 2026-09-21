@@ -139,6 +139,11 @@ def _contract_nordvik(s: BatchSpec) -> Contract:
         "SEAL": ("per_container", D("18")),
         "DET": ("per_container", D("0")),  # priced by the detention schedule
     }
+    if s.batch == "b":
+        # Hidden batch only: a port-security charge on a basis the visible data
+        # never uses. The agreement defines it; a tool whose agreement parsing
+        # or basis handling only covers the phrases it has seen will miss it.
+        accessorials["ISPS"] = ("per_shipment", D("22"))
     tiers = [
         (1, 7, {"20DV": D("75"), "40HC": D("110")}),
         (8, None, {"20DV": D("130"), "40HC": D("190")}),
@@ -321,7 +326,12 @@ def build_world(batch: str) -> World:
     # -- b1: v1 rates, 40HC lane below the contract minimum (legitimate) ------
     b1 = add_booking(1, "NORDVIK", "USSAV-AEJEA", 0, 20)
     add_container(1, 1, b1, "40HC", "AEJEA-T1", kg=18400)
-    add_container(1, 2, b1, "40HC", "AEJEA-T1", kg=17250)
+    if s.batch == "b":
+        # Hidden batch only: the register says overweight, the weighbridge says
+        # not. Visible data only ever shows the weighbridge RAISING a weight.
+        add_container(1, 2, b1, "40HC", "AEJEA-T1", kg=20600, weigh_kg=19400)
+    else:
+        add_container(1, 2, b1, "40HC", "AEJEA-T1", kg=17250)
 
     # -- b2: sailing amended across BOTH the month and the version boundary ---
     b2 = add_booking(2, "NORDVIK", "USHOU-AEJEA", 0, 26, act_sail=s.d(1, 4))
@@ -329,6 +339,23 @@ def build_world(batch: str) -> World:
     # behind an identical floored rate and the trap would price to no variance.
     add_container(2, 1, b2, "20DV", "AEJEA-T2", kg=16100)
     add_container(2, 2, b2, "20DV", "AEJEA-T2", kg=15350)
+    if s.batch == "b":
+        # Hidden batch only: two amendments for the same booking. The later-dated
+        # one is in force, but it has the EARLIER file name (-01 sorts before
+        # -07), so a tool that applies notices in file order ends up on the
+        # superseded date (still v1, still the first month).
+        notices.append(
+            Notice(
+                notice_id=f"N{s.n(2)}-07",
+                vendor="NORDVIK",
+                notice_date=s.d(0, 20),
+                kind="sailing_amendment",
+                subject=f"Revised sailing — booking BK{s.n(2)}",
+                body="",
+                booking_id=b2.booking_id,
+                new_sailing=s.d(0, 28),
+            )
+        )
     notices.append(
         Notice(
             notice_id=f"N{s.n(2)}-01",
@@ -339,6 +366,7 @@ def build_world(batch: str) -> World:
             body="",
             booking_id=b2.booking_id,
             new_sailing=s.d(1, 4),
+            prev_sailing=s.d(0, 28) if s.batch == "b" else None,
         )
     )
 
@@ -368,7 +396,9 @@ def build_world(batch: str) -> World:
     circulars.append(circ_up)
 
     # -- b5: circular lowers BAF; vendor keeps billing the contract row -------
-    b5 = add_booking(5, "ATLASOCEAN", "USHOU-PKQCT", 1, 18)
+    # Hidden batch only: the EUR booking sails on a Sunday, which has no fixing,
+    # so the rate falls back to the Friday. Visible sailings are all weekdays.
+    b5 = add_booking(5, "ATLASOCEAN", "USHOU-PKQCT", 1, 15 if s.batch == "b" else 18)
     add_container(5, 1, b5, "40HC", "PKQCT-QICT", kg=18700)
     add_container(5, 2, b5, "40HC", "PKQCT-QICT", kg=19600)
     circ_down = Circular(

@@ -136,7 +136,7 @@ def _notice_text(world: World, n: Notice) -> str:
             f"Please note the vessel nominated for booking {n.booking_id} "
             f"({b.bl_number}, {b.pol} - {b.pod}) was withdrawn from the rotation.\n"
             f"Your cargo has been re-nominated and the sailing date is now "
-            f"{n.new_sailing.isoformat()} (previously {b.reg_sailing.isoformat()}).\n"
+            f"{n.new_sailing.isoformat()} (previously {(n.prev_sailing or b.reg_sailing).isoformat()}).\n"
             "Cargo, container allocation and destination remain unchanged. "
             "Charges follow the tariff applicable to the revised sailing.\n"
         )

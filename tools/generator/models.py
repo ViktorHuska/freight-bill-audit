@@ -166,6 +166,7 @@ class Notice:
     new_sailing: Optional[date] = None
     new_booking_id: Optional[str] = None
     circular_id: Optional[str] = None
+    prev_sailing: Optional[date] = None      # "previously ..." when not the register date
 
 
 @dataclass

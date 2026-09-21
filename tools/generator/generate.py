@@ -55,7 +55,14 @@ EXPECTED = {
     "T12": ("DISPUTE", "UNMATCHED"),
     "T13": ("APPROVE", "OK"),
     "T14": ("APPROVE", "OK"),
+    "T15": ("DISPUTE", "RATE_MISMATCH"),
+    "T16": ("DISPUTE", "BASIS_ERROR"),
 }
+
+
+# Cases that exist only in the hidden batch B (seed 2490): they exercise code
+# paths the visible data never does, so a tool fitted to what it can see fails.
+HIDDEN_ONLY = {"T15", "T16"}
 
 
 def selfcheck(world, invs, truth: dict) -> None:
@@ -66,6 +73,9 @@ def selfcheck(world, invs, truth: dict) -> None:
 
     for trap, (want_decision, want_reason) in EXPECTED.items():
         planted = truth["trap_index"].get(trap, [])
+        if trap in HIDDEN_ONLY and world.seed != 2490:
+            assert not planted, f"{trap} is hidden-batch only but was planted in seed {world.seed}"
+            continue
         assert planted, f"{trap} was not planted"
         for inv_no, line_no in planted:
             line = by_inv[inv_no]["lines"][line_no - 1]

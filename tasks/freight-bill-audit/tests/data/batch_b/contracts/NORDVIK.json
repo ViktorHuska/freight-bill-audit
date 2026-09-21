@@ -58,6 +58,10 @@
         "DET": {
           "basis": "per_container",
           "amount": 0.0
+        },
+        "ISPS": {
+          "basis": "per_shipment",
+          "amount": 22.0
         }
       },
       "overweight": {
@@ -151,6 +155,10 @@
         "DET": {
           "basis": "per_container",
           "amount": 0.0
+        },
+        "ISPS": {
+          "basis": "per_shipment",
+          "amount": 22.0
         }
       },
       "overweight": {

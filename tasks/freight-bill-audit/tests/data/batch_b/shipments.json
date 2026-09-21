@@ -44,8 +44,8 @@
         {
           "container_no": "NVKU2491200",
           "type": "40HC",
-          "booked_kg": 16350,
-          "gross_kg": 17250,
+          "booked_kg": 19700,
+          "gross_kg": 20600,
           "cbm": 58.0,
           "terminal": "AEJEA-T1",
           "gate_out_date": null,
@@ -53,21 +53,21 @@
           "sales_orders": [
             {
               "so": "SO-2510",
-              "gross_kg": 7336,
-              "cbm": 40.76,
-              "value_usd": 31178.0
+              "gross_kg": 8760,
+              "cbm": 48.67,
+              "value_usd": 37230.0
             },
             {
               "so": "SO-2511",
-              "gross_kg": 5750,
-              "cbm": 31.94,
-              "value_usd": 24437.5
+              "gross_kg": 6866,
+              "cbm": 38.14,
+              "value_usd": 29180.5
             },
             {
               "so": "SO-2512",
-              "gross_kg": 4163,
-              "cbm": 23.13,
-              "value_usd": 17692.75
+              "gross_kg": 4972,
+              "cbm": 27.62,
+              "value_usd": 21131.0
             }
           ]
         }
@@ -262,8 +262,8 @@
       "bl_number": "ATL2495BL",
       "pol": "USHOU",
       "pod": "PKQCT",
-      "sailing_date": "2024-09-18",
-      "eta": "2024-10-09",
+      "sailing_date": "2024-09-15",
+      "eta": "2024-10-06",
       "containers": [
         {
           "container_no": "ATLU2495100",

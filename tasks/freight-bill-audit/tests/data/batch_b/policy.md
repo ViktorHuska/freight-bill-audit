@@ -33,6 +33,9 @@ How the desk prices each charge is implemented in the audit tool at
 always kept up with how our shipments and vendors actually behave. Its
 pricing of a given charge is not authoritative.
 
+When two pieces of vendor correspondence state the same fact differently,
+the one with the later date is in force, whatever order the files are in.
+
 What **is** authoritative is what accounts payable actually paid after the
 senior auditor's review. The settled months in `/app/history/` each contain
 a full batch of the same kind, plus `ap_ledger.csv`: the amount paid on every
@@ -41,8 +44,10 @@ wrong.
 
 ## 3. Deciding a line
 
-`variance = billed_amount − expected_amount`, in USD. EUR invoices are
-converted to USD line by line. Apply the first row that matches.
+`variance = billed_amount − expected_amount`, in USD. EUR amounts are
+converted to USD line by line at the `EUR_USD` fixing for the shipment's
+sailing date, or the most recent earlier fixing when that date has none.
+Apply the first row that matches.
 
 | Condition | Decision | Reason |
 |---|---|---|
