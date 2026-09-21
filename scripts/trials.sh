@@ -31,16 +31,22 @@ N="${N_CONCURRENT:-$ATTEMPTS}"
 SUFFIX=""
 if [ "${CHEAT:-0}" = "1" ]; then SUFFIX="-cheat"; fi
 JOB="$(date +%Y-%m-%d__%H-%M-%S)-${1:-x}${SUFFIX}"
+# Absolute output dir. With Harbor's default relative "jobs/", Docker Compose on
+# Windows resolves the copy target against the task's environment/ or tests/
+# directory, so `compose cp` fails and Harbor falls back to `docker cp` / a tar
+# stream. The fallback works (the oracle scores 1.0 through it), but an absolute
+# path makes the first attempt succeed and keeps the logs clean.
+OUT="$(pwd -W 2>/dev/null || pwd)/jobs"
 
 case "${1:-}" in
   codex)
     harbor run -p "$TASK" --agent codex --model openai/gpt-5.6-sol --env docker --yes \
-      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" \
+      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" -o "$OUT" \
       --ae CODEX_FORCE_AUTH_JSON=1 --ak reasoning_effort=xhigh ;;
   claude)
     : "${CLAUDE_CODE_OAUTH_TOKEN:?export CLAUDE_CODE_OAUTH_TOKEN (from: claude setup-token)}"
     harbor run -p "$TASK" --agent claude-code --model anthropic/claude-opus-5 --env docker --yes \
-      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" \
+      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" -o "$OUT" \
       --ae CLAUDE_FORCE_OAUTH=1 --ae CLAUDE_CODE_OAUTH_TOKEN="$CLAUDE_CODE_OAUTH_TOKEN" \
       --ae CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000 --ak reasoning_effort=max ;;
   *) echo "usage: [CHEAT=1] [N_CONCURRENT=n] $0 codex|claude"; exit 1 ;;
