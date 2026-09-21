@@ -199,6 +199,56 @@ model already has the freight-audit background to act on it. With five
 rules, eleven invoices per month and totals that can be diffed with a
 script, the whole search takes minutes.
 
+### Iteration 3: task v4 (signed agreements, keying errors, notice clause) @ `dbf4df7`, 2026-09-21
+
+v4 kept v3's design and added more domain depth:
+- **Signed agreements as the contract.** Each vendor's signed rate agreement
+  (a PDF) is authoritative. The ERP's hand-keyed JSON copy has digit-
+  transposition errors in *different places every month*, including hidden
+  batch B, so no fix can be hardcoded.
+- **An expert rule.** The agreements carry the US-trade notice clause: a
+  rate increase takes effect no earlier than 30 days after publication, a
+  decrease on its stated date. NORDVIK's THC increase is published 8 days
+  ahead of its effective date. It is not in force for two bookings (billed
+  anyway) and in force for a third, which also receives the rolled
+  container.
+- **More history.** Four settled months with AP ledgers.
+
+Before any trial ran: agreement parsing was exact on 6 batches × 3 vendors,
+the oracle matched the truth, and it reproduced all four ledgers to the cent.
+
+| Agent | Trials | Reward | Wall time | Job |
+|---|---|---|---|---|
+| codex gpt-5.6-sol xhigh | 3 | **1.0 / 1.0 / 1.0** (40/40 tests each) | 18.5 min for the whole job | `jobs/2026-09-21__09-27-16-codex` |
+
+**How it solved it (15 commands).** After reading the evidence it named
+every defect, including the two meant to be hardest: *"stale ERP
+sailing/container facts, terminal move dates and weights being ignored,
+locally defined weekends being ignored, signed-contract transcription
+errors, tariff increases applied before the 30-day notice period, and per-B/L
+fees counted once per invoice instead of once per B/L."* It then replayed
+all four settled months as regression tests and reproduced **44/44**
+historical payments exactly.
+
+### What three iterations show
+
+| | v2 | v3 | v4 |
+|---|---|---|---|
+| Difficulty lever | conflicting sources, precedence stated | doctrine hidden; repair a legacy tool against a sparse ledger | plus authoritative documents, month-specific data errors, an expert notice rule |
+| Codex | 3/3, 19 min | 3/3, 16 min | 3/3, 18.5 min |
+
+Each lever was taken from a pattern in merged TB3 Operations tasks, and
+each was verified to be well specified before any trial ran. None of them
+moved codex's solve time. In every case the model read the whole
+environment, formed the right hypotheses on the first pass, and checked
+them against the evidence before finishing. For a back-office audit whose
+evidence fits in one context and describes its own relevance, gpt-5.6-sol
+at xhigh already performs at the level of an experienced auditor. Raising
+difficulty from here would take levers these designs do not have: evidence
+that cannot be read in one pass (scale, services, partial observability),
+noisy sources (scans), or long stateful workflows. Those are what the
+merged tasks combine, and they cost more than two days to build well.
+
 ## 6. Failure analysis
 
 ```bash
