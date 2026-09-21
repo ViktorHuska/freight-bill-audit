@@ -8,6 +8,10 @@
 
 set -u
 mkdir -p /logs/verifier /output/batch_b
+# Harbor reads reward.json in preference to reward.txt. Never trust a reward
+# file that exists before grading (e.g. planted through a shared log mount):
+# remove both, and write reward.txt below on every path.
+rm -f /logs/verifier/reward.json /logs/verifier/reward.txt
 
 # 1. Ground truth is root-only. The agent's tool runs below as an unprivileged
 #    user, so it cannot read expected outputs even though it executes here.
