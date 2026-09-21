@@ -1,31 +1,37 @@
 # Results
 
-All commands were run from the repository root unless stated otherwise.
-Backend: local Docker (`--env docker`). Harbor version: `harbor --version` → __FILL__.
+Every command below was run from the repository root on Windows 11 with Docker
+Desktop 28.4.0 (Linux containers, 20 CPUs / 31 GB), using the local `docker`
+backend. Harbor 0.23.0, installed with `uv tool install harbor`.
+
+| | |
+|---|---|
+| Task version evaluated | commit `f112776` (task files unchanged since; later commits touch `scripts/` and docs only) |
+| TB3 checks and prompts | `harbor-framework/terminal-bench` @ `2e5fd44` |
+| CI defaults mirrored | `.github/harbor-run-defaults.yml` at that commit: 3 trials per agent; claude-code `anthropic/claude-opus-5`, `reasoning_effort=max`, `CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000`; codex `openai/gpt-5.6-sol`, `reasoning_effort=xhigh` |
 
 ## 1. Static checks
 
 ```bash
-scripts/run_checks.sh
+bash scripts/run_checks.sh
 ```
-| check | result |
-|---|---|
-| check-canary | __ |
-| check-instruction-suffix | __ |
-| check-separate-verifier | __ |
-| check-pip-pinning | __ |
-| check-pytest-version | __ |
-| check-test-file-references | __ |
-| check-test-sh-sanity / verifier-tooling-baked / trial-network-fetch | __ |
-| check-task-fields / slug / package-name / timeout / absolute-path | __ |
-| check-dockerfile-* / nproc / allow-internet | __ |
+
+**25 / 25 pass.** The runner clones the TB3 repo into `.tb3/` and runs every
+`scripts/checks/check-*.sh` against `tasks/freight-bill-audit`, as CI does.
+
+One note for anyone reproducing this on a path containing a space: the
+upstream checks word-split their arguments, so an absolute path such as
+`.../Klavis AI/...` splits into two nonexistent task dirs and several checks
+pass *vacuously*. `run_checks.sh` passes a relative path from the repo root to
+avoid that; the results above come from that run.
 
 ## 2. Implementation rubric
 
 ```bash
-harbor check tasks/freight-bill-audit -r docs/prompts/task-implementation.toml -m <model>
+harbor check tasks/freight-bill-audit -r .tb3/docs/prompts/task-implementation.toml
 ```
-Result: __ (attach `checks/` output or summarise flagged criteria and fixes)
+
+Result: __pending__
 
 ## 3. Oracle and nop
 
@@ -33,52 +39,75 @@ Result: __ (attach `checks/` output or summarise flagged criteria and fixes)
 harbor run -p tasks/freight-bill-audit --agent oracle --env docker --yes
 harbor run -p tasks/freight-bill-audit --agent nop    --env docker --yes
 ```
-| run | reward | verifier time |
-|---|---|---|
-| oracle | __ | __ |
-| nop | __ | __ |
 
-## 4. Standard trials (3 per agent)
+| Agent | Reward | Runtime | Job |
+|---|---|---|---|
+| oracle | **1.000** | 1 m 48 s | `jobs/2026-09-21__00-01-22` |
+| nop | **0.000** | 35 s | `jobs/2026-09-21__00-03-55` |
 
-Config mirrors `.github/harbor-run-defaults.yml` at commit __.
+The oracle run covers the whole pipeline: `solve.sh` installs the reference
+tool and runs it on batch A in the agent container, then the separate verifier
+runs that same tool on hidden batch B as the unprivileged `auditrun` user and
+grades both batches.
+
+### Independent cross-check of ground truth
+
+Ground truth is computed twice, by code that shares nothing: the generator
+(`tools/generator/`, at planting time) and the reference solution
+(`solution/audit.py`, from `policy.md` alone). Diffing them field by field:
+
+| Batch | Invoices | Lines | Sales orders | Result |
+|---|---|---|---|---|
+| A | 11 | 85 (24 disputed) | 32 | identical: every status, match, billed / expected / variance, decision, reason, and landed-cost cell |
+| B | 11 | 85 (24 disputed) | 32 | identical |
+
+Regenerating a batch reproduces every data file, truth file and PDF byte for
+byte.
+
+## 4. Standard trials
 
 ```bash
-harbor run -p tasks/freight-bill-audit --agent codex --model openai/gpt-5.6-sol \
-  --env docker --yes --ae CODEX_FORCE_AUTH_JSON=1 --ak reasoning_effort=xhigh
-harbor run -p tasks/freight-bill-audit --agent claude-code --model anthropic/claude-opus-5 \
-  --env docker --yes --ae CLAUDE_FORCE_OAUTH=1 --ae CLAUDE_CODE_OAUTH_TOKEN=<token> \
-  --ae CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000 --ak reasoning_effort=max
+N_CONCURRENT=3 bash scripts/trials.sh codex
+N_CONCURRENT=2 bash scripts/trials.sh claude     # CLAUDE_CODE_OAUTH_TOKEN from `claude setup-token`
 ```
-| agent | trial | reward | wall time | failure type (genuine / infra) | failing tests |
+
+`trials.sh` runs `harbor run -k 3` with the CI agent/model/kwargs above. Codex
+authenticates from `~/.codex/auth.json` (`CODEX_FORCE_AUTH_JSON=1`).
+
+| Agent | Trial | Reward | Wall time | Genuine / infra | Failing tests |
 |---|---|---|---|---|---|
-| codex gpt-5.6-sol xhigh | 1 | __ | __ | __ | __ |
-| codex gpt-5.6-sol xhigh | 2 | __ | __ | __ | __ |
-| codex gpt-5.6-sol xhigh | 3 | __ | __ | __ | __ |
-| claude-code opus-5 max | 1 | __ | __ | __ | __ |
-| claude-code opus-5 max | 2 | __ | __ | __ | __ |
-| claude-code opus-5 max | 3 | __ | __ | __ | __ |
+| codex gpt-5.6-sol xhigh | 1 | | | | |
+| codex gpt-5.6-sol xhigh | 2 | | | | |
+| codex gpt-5.6-sol xhigh | 3 | | | | |
+| claude-code opus-5 max | 1 | | | | |
+| claude-code opus-5 max | 2 | | | | |
+| claude-code opus-5 max | 3 | | | | |
 
-Infra-failed trials that were rerun (rate limit / crash / timeout): __
+Jobs: `jobs/2026-09-21__00-52-12-codex`, `jobs/2026-09-21__00-52-15-claude`.
 
-## 5. Adversarial trials (hack prompt prepended, 1 per agent)
+Trials rerun because of infrastructure failures (rate limit, crash, timeout): __
 
-Prompt: `docs/prompts/hack-trial-prompt.md` at commit __.
-| agent | reward | what the agent attempted | why it scored 0 |
+## 5. Adversarial trials (`/cheat`)
+
+```bash
+CHEAT=1 bash scripts/trials.sh codex
+CHEAT=1 bash scripts/trials.sh claude
+```
+
+As in `run-cheat-trials.yml`, `docs/prompts/hack-trial-prompt.md` is
+**appended** to the instruction in a throwaway copy of the task, and one trial
+runs per agent.
+
+| Agent | Reward | What the agent attempted | Why it scored 0 |
 |---|---|---|---|
-| codex | __ | __ | __ |
-| claude-code | __ | __ | __ |
+| codex | | | |
+| claude-code | | | |
 
 ## 6. Failure analysis
 
 ```bash
-harbor analyze <job-dir> -m sonnet -r docs/prompts/trial-analysis.toml \
-  --job-prompt docs/prompts/trial-analysis-job.txt
+harbor analyze <job-dir> -m sonnet -r .tb3/docs/prompts/trial-analysis.toml \
+  --job-prompt .tb3/docs/prompts/trial-analysis-job.txt
 ```
-Per trap, which agents got it wrong and how (link to `harbor analyze` verdicts):
 
-| trap | codex 1/2/3 | claude 1/2/3 | typical wrong assumption |
-|---|---|---|---|
-| T01 sailing-month index | | | |
-| ... | | | |
-
-Difficulty crux verdicts vs `difficulty_explanation`: __
+__pending__
