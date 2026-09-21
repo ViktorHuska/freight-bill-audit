@@ -42,7 +42,7 @@ POLICY_SRC = Path(__file__).resolve().parent / "policy.md"
 # traps did not land exactly like this.
 EXPECTED = {
     "T01": ("DISPUTE", "RATE_MISMATCH"),
-    "T02": ("APPROVE", "UNDERBILLED"),
+    "T02": ("DISPUTE", "RATE_MISMATCH"),
     "T03": ("DISPUTE", "RATE_MISMATCH"),
     "T04": ("DISPUTE", "FREE_TIME_MISCOUNT"),
     "T05": ("DISPUTE", "BASIS_ERROR"),
@@ -54,6 +54,7 @@ EXPECTED = {
     "T11": ("APPROVE", "CREDIT_NOTE"),
     "T12": ("DISPUTE", "UNMATCHED"),
     "T13": ("APPROVE", "OK"),
+    "T14": ("APPROVE", "OK"),
 }
 
 
@@ -104,7 +105,7 @@ def selfcheck(world, invs, truth: dict) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--batch", choices=["a", "b", "h1", "h2"], required=True)
+    ap.add_argument("--batch", choices=["a", "b", "h1", "h2", "h3", "h4"], required=True)
     ap.add_argument("--data-out", type=Path, required=True)
     ap.add_argument("--truth-out", type=Path, required=True)
     ap.add_argument("--ledger", action="store_true",

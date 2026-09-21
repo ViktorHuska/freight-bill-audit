@@ -107,6 +107,17 @@ def _contract(world: World, vendor: str) -> dict:
                           for lo, hi, rates in v.detention_tiers],
                 "terminal_mode": v.terminal_modes,
             }
+        # The ERP copy is hand-keyed from the signed agreement; apply this
+        # batch's keying slips. The agreement PDF keeps the agreed values.
+        for kv, ki, section, key, ctype, keyed in world.keying_errors:
+            if kv != vendor or ki != len(versions):
+                continue
+            if section == "lanes":
+                entry["lanes"][key][ctype] = _money(keyed)
+            elif ctype is None:
+                entry["accessorials"][key]["amount"] = _money(keyed)
+            else:
+                entry["accessorials"][key]["amount"][ctype] = _money(keyed)
         versions.append(entry)
     return {"vendor": vendor, "currency": c.currency, "versions": versions}
 
@@ -193,9 +204,12 @@ def write_data(world: World, out: Path) -> None:
     (out / "shipments.json").write_text(
         json.dumps(_shipments(world), indent=2) + "\n", encoding="utf-8", newline=LF)
 
+    import render  # local import: io_utils stays usable without reportlab
     for vendor in sorted(world.contracts):
         (out / "contracts" / f"{vendor}.json").write_text(
             json.dumps(_contract(world, vendor), indent=2) + "\n", encoding="utf-8", newline=LF)
+        render.write_agreement(world, vendor, f"{vendor[:3]}-SC-{world.seed}",
+                               out / "contracts" / f"{vendor}_agreement.pdf")
 
     with (out / "terminal_moves.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f, lineterminator=LF)

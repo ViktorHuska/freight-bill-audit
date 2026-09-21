@@ -34,69 +34,85 @@ def version_for(world: World, vendor: str, on: date) -> ContractVersion:
     raise KeyError(f"no {vendor} contract version covers {on}")
 
 
-def circular_override(world: World, vendor: str, code: str, lane: Optional[str],
-                      on: date) -> Optional[Decimal | dict[str, Decimal]]:
-    """Policy §3.2: the newest circular in force on `on` that revises this code
-    for this lane. Returns None when no circular touches it."""
-    best = None
-    for c in world.circulars:
-        if c.vendor != vendor or c.effective_from > on:
-            continue
-        for r in c.revisions:
-            if r.charge_code != code:
-                continue
-            if r.lane is not None and r.lane != lane:
-                continue
-            if best is None or c.effective_from >= best[0]:
-                best = (c.effective_from, r.amount)
-    return None if best is None else best[1]
+NOTICE_DAYS = 30
 
 
 def _per_ctype(amount: Decimal | dict[str, Decimal], ctype: str) -> Decimal:
     return amount[ctype] if isinstance(amount, dict) else amount
 
 
+def circular_override(world: World, vendor: str, code: str, lane: Optional[str],
+                      on: date, ctype: str, base: Decimal, *,
+                      vendor_view: bool = False) -> Optional[Decimal]:
+    """The newest circular revision in force on `on` for this code, lane and
+    container type, or None.
+
+    The signed agreements carry the US-trade notice clause: an INCREASE over the
+    agreed amount takes effect no earlier than NOTICE_DAYS after the circular's
+    publication; a decrease takes effect on its stated date. `vendor_view=True`
+    ignores the notice period, which is how the carrier bills (effective date
+    only); truth never uses it."""
+    best = None
+    for c in world.circulars:
+        if c.vendor != vendor:
+            continue
+        for r in c.revisions:
+            if r.charge_code != code or (r.lane is not None and r.lane != lane):
+                continue
+            amt = _per_ctype(r.amount, ctype)
+            eff = c.effective_from
+            if not vendor_view and amt > base:
+                eff = max(eff, c.issued + timedelta(days=NOTICE_DAYS))
+            if eff > on:
+                continue
+            if best is None or eff >= best[0]:
+                best = (eff, amt)
+    return None if best is None else best[1]
+
+
 # ------------------------------------------------------------------ rules --
-def ocean_freight(world: World, booking: Booking, ctype: str, *, on: Optional[date] = None) -> Decimal:
-    """Policy §3.4, including the minimum floor."""
+def ocean_freight(world: World, booking: Booking, ctype: str, *, on: Optional[date] = None,
+                  vendor_view: bool = False) -> Decimal:
+    """Lane rate with the minimum floor."""
     sail = on or booking.act_sailing
     v = version_for(world, booking.vendor, sail)
     rate = v.lanes[booking.lane][ctype]
-    override = circular_override(world, booking.vendor, "OFR", booking.lane, sail)
+    override = circular_override(world, booking.vendor, "OFR", booking.lane, sail, ctype, rate,
+                                 vendor_view=vendor_view)
     if override is not None:
-        rate = _per_ctype(override, ctype)
+        rate = override
     return max(rate, v.min_ofr.get(ctype, Decimal("0")))
 
 
 def index_surcharge(world: World, booking: Booking, code: str, ctype: str,
-                    *, on: Optional[date] = None) -> Optional[Decimal]:
-    """Policy §3.5: the row for the month of the sailing date, unless a circular
-    in force on that date revises it (§3.2)."""
+                    *, on: Optional[date] = None, vendor_view: bool = False) -> Optional[Decimal]:
+    """The index row for the month of the sailing date, unless a circular in
+    force on that date revises it."""
     sail = on or booking.act_sailing
     v = version_for(world, booking.vendor, sail)
     table = v.index_surcharges.get(code)
     if table is None:
         return None
-    override = circular_override(world, booking.vendor, code, booking.lane, sail)
-    if override is not None:
-        return _per_ctype(override, ctype)
     row = table.get(f"{sail.year}-{sail.month:02d}")
-    return None if row is None else row[ctype]
+    if row is None:
+        return None
+    override = circular_override(world, booking.vendor, code, booking.lane, sail, ctype,
+                                 row[ctype], vendor_view=vendor_view)
+    return override if override is not None else row[ctype]
 
 
 def accessorial(world: World, vendor: str, code: str, ctype: str, lane: Optional[str],
-                on: date) -> Optional[tuple[str, Decimal]]:
-    """Returns (basis, amount) or None when the contract does not list the code
-    (policy §3.8)."""
+                on: date, *, vendor_view: bool = False) -> Optional[tuple[str, Decimal]]:
+    """Returns (basis, amount), or None when the contract does not list the code."""
     v = version_for(world, vendor, on)
     entry = v.accessorials.get(code)
     if entry is None:
         return None
     basis, amount = entry
-    override = circular_override(world, vendor, code, lane, on)
-    if override is not None:
-        amount = override
-    return basis, _per_ctype(amount, ctype)
+    amount = _per_ctype(amount, ctype)
+    override = circular_override(world, vendor, code, lane, on, ctype, amount,
+                                 vendor_view=vendor_view)
+    return basis, (override if override is not None else amount)
 
 
 def overweight(world: World, booking: Booking, c: Container, *, use_register: bool = False) -> Decimal:

@@ -178,6 +178,10 @@ class World:
     notices: list[Notice]
     terminals: dict[str, Terminal]
     fx: dict[date, Decimal]
+    # ERP keying mistakes: the contracts/*.json the ERP holds differ from the
+    # signed agreement at these points. (vendor, version index or None for all
+    # versions, section, key, container type or None, value keyed in).
+    keying_errors: list[tuple] = field(default_factory=list)
 
     def booking(self, booking_id: str) -> Booking:
         for b in self.bookings:

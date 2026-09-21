@@ -39,6 +39,86 @@ def _title(inv: Invoice) -> str:
     return "CREDIT NOTE" if inv.is_credit_note else "INVOICE"
 
 
+BASIS_TEXT = {"per_container": "per container", "per_bl": "per bill of lading",
+              "per_shipment": "per shipment"}
+CARRIER_NAME = {"NORDVIK": "NORDVIK LINE", "ATLASOCEAN": "ATLAS OCEAN NV",
+                "HARBORLINK": "HARBORLINK LOGISTICS"}
+CODE_TEXT = {"DOC": "Documentation", "THC_O": "Terminal handling, origin",
+             "THC_D": "Terminal handling, destination", "SEAL": "Container seal",
+             "DET": "Detention"}
+
+
+def _amts(amount) -> str:
+    if isinstance(amount, dict):
+        return "  ".join(f"{t} {_us(a)}" for t, a in sorted(amount.items()))
+    return _us(amount)
+
+
+def agreement_lines(world, vendor: str, agreement_no: str) -> list[str]:
+    """Text of the signed agreement, from the AGREED (true) contract values."""
+    c = world.contracts[vendor]
+    L = [
+        "RATE AGREEMENT",
+        f"Agreement no. {agreement_no}",
+        f"Between: International Sales Office (Shipper) and {CARRIER_NAME[vendor]} ({vendor})",
+        f"Currency of all amounts: {c.currency}",
+        "",
+        "Clause 1 - Precedence. This agreement and its amendments govern every charge billed",
+        "to the Shipper. It prevails over any tariff, rate sheet or system record derived from it.",
+        "Clause 2 - Notice. For shipments in the United States trades, an increase in any rate or",
+        "charge agreed here, including by tariff circular, takes effect no earlier than 30 days",
+        "after the carrier publishes it. A decrease takes effect on the date the carrier states.",
+        "Clause 3 - Schedules. Each amendment below applies to shipments whose vessel departs",
+        "within its validity window.",
+        "",
+    ]
+    for n, v in enumerate(c.versions, 1):
+        L += [f"SCHEDULE A - AMENDMENT {n} - valid {v.valid_from.isoformat()} through {v.valid_to.isoformat()}"]
+        if v.lanes:
+            L += ["A.1 Ocean freight per container"]
+            L += [f"  {lane}  {_amts(rates)}" for lane, rates in sorted(v.lanes.items())]
+            L += [f"A.2 Minimum ocean freight per container  {_amts(v.min_ofr)}"]
+        for code, table in sorted(v.index_surcharges.items()):
+            L += [f"A.3 {code} by calendar month of vessel departure"]
+            L += [f"  {month}  {_amts(row)}" for month, row in sorted(table.items())]
+        L += ["A.4 Accessorial charges"]
+        for code, (basis, amount) in sorted(v.accessorials.items()):
+            if code == "DET":
+                L += [f"  {code}  {CODE_TEXT[code]}, {BASIS_TEXT[basis]} per day, see A.6"]
+            else:
+                L += [f"  {code}  {CODE_TEXT.get(code, code)}, {BASIS_TEXT[basis]}  {_amts(amount)}"]
+        if v.overweight:
+            threshold, amounts = v.overweight
+            L += [f"A.5 OWS Overweight surcharge above {threshold:,} kg gross  {_amts(amounts)}"]
+        if v.detention_tiers:
+            L += [f"A.6 Detention free days {v.detention_free_days}"]
+            for lo, hi, rates in v.detention_tiers:
+                span = f"days {lo}-{hi}" if hi is not None else f"days {lo}+"
+                L += [f"  {span}  {_amts(rates)}"]
+            L += ["  Free days and chargeable days are counted in the terminal's mode:"]
+            L += [f"  {t}  {m} days" for t, m in sorted(v.terminal_modes.items())]
+            L += ["  Working days exclude the terminal's weekend and its published closures."]
+        L += [""]
+    L += ["Signed for the Shipper and the Carrier."]
+    return L
+
+
+def write_agreement(world, vendor: str, agreement_no: str, path: Path) -> None:
+    c = rl_canvas.Canvas(str(path), pagesize=LETTER, invariant=1)
+    _, height = LETTER
+    y = height - 54
+    for line in agreement_lines(world, vendor, agreement_no):
+        if y < 54:
+            c.showPage()
+            y = height - 54
+        bold = line.startswith(("RATE AGREEMENT", "SCHEDULE A", "Clause"))
+        c.setFont("Helvetica-Bold" if bold else "Helvetica", 8.5)
+        c.drawString(LEFT, y, line)
+        y -= 11.5
+    c.showPage()
+    c.save()
+
+
 def write_pdfs(invoices: list[Invoice], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     writers = {"table": _table, "lines": _lines, "consolidated": _consolidated}

@@ -11,9 +11,11 @@ carriers and forwarders for our export shipments.
 Each month's batch folder holds the vendor invoices (`invoices/*.pdf`), the
 ERP booking register export (`shipments.json`), the destination terminals'
 container movement log (`terminal_moves.csv`), the vendor correspondence
-received that month (`notices/*.txt`), the rate contracts as keyed into the
-ERP (`contracts/*.json`), the terminal calendars (`holidays.json`) and the
-daily EUR/USD fixings (`fx.csv`).
+received that month (`notices/*.txt`), the rate contracts (`contracts/`), the
+terminal calendars (`holidays.json`) and the daily EUR/USD fixings
+(`fx.csv`). For each vendor, `contracts/` holds the signed rate agreement
+(`<VENDOR>_agreement.pdf`) and the copy our procurement desk keyed into the
+ERP by hand (`<VENDOR>.json`). The signed agreement is the contract.
 
 Every charge line on every invoice receives exactly one decision. The result
 is written as `audit.json`, and the approved cost is allocated to sales

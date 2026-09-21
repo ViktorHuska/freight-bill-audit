@@ -9,7 +9,7 @@ so the verifier can group its assertions per trap.
 Trap ids
 --------
 T01 sailing amendment cascades into contract version, surcharge month and FX date
-T02 tariff circular raises a fee — vendor bills the stale contract amount (under-billed)
+T02 rate increase billed before its 30-day notice period has run (over-billed)
 T03 tariff circular lowers a surcharge — vendor bills the stale contract amount (over-billed)
 T04 detention billed on register dates in calendar mode at a working-day terminal
 T05 per-B/L documentation fee billed once per container on a consolidation
@@ -21,6 +21,7 @@ T10 duplicate invoice re-issued under a new number
 T11 credit note against an over-billed line
 T12 invoice that matches no booking in the register
 T13 EUR invoice converted at the sailing-date fixing (legitimate)
+T14 rate increase correctly in force once its 30-day notice period has run (legitimate)
 """
 from __future__ import annotations
 
@@ -89,13 +90,14 @@ def build_invoices(world: World, s: BatchSpec) -> list[Invoice]:
         for c in containers(booking):
             if "OFR" not in skip:
                 lines.append(_line("OFR", c.container_no, booking.bl_number,
-                                   pricing.ocean_freight(world, booking, c.ctype, on=sail), trap))
+                                   pricing.ocean_freight(world, booking, c.ctype, on=sail,
+                                                         vendor_view=True), trap))
             if "BAF" not in skip:
-                baf = pricing.index_surcharge(world, booking, "BAF", c.ctype, on=sail)
+                baf = pricing.index_surcharge(world, booking, "BAF", c.ctype, on=sail, vendor_view=True)
                 lines.append(_line("BAF", c.container_no, booking.bl_number, baf, trap))
             if "THC_O" not in skip:
                 basis, amt = pricing.accessorial(world, booking.vendor, "THC_O", c.ctype,
-                                                 booking.lane, sail)
+                                                 booking.lane, sail, vendor_view=True)
                 lines.append(_line("THC_O", c.container_no, booking.bl_number, amt))
             if "SEAL" not in skip:
                 _, amt = pricing.accessorial(world, booking.vendor, "SEAL", c.ctype,
@@ -142,12 +144,11 @@ def build_invoices(world: World, s: BatchSpec) -> list[Invoice]:
     out.append(_inv(s, "ATLASOCEAN", 106, 1, 26, b3.booking_id, b3.bl_number, lines))
 
     # ---- INV 5: b4 stale THC_O despite the circular (T02) + overweight (T07) -
-    lines = carrier_lines(b4, skip=("THC_O",))
-    v = pricing.version_for(world, b4.vendor, b4.act_sailing)
+    lines = carrier_lines(b4)
+    for l in lines:
+        if l.charge_code == "THC_O":
+            l.trap = "T02"   # increase billed before the 30-day notice period ran
     for c in containers(b4):
-        _, stale = v.accessorials["THC_O"]
-        amt = stale[c.ctype] if isinstance(stale, dict) else stale
-        lines.append(_line("THC_O", c.container_no, b4.bl_number, amt, "T02"))
         ows = pricing.overweight(world, b4, c)
         if ows > 0:
             lines.append(_line("OWS", c.container_no, b4.bl_number, ows, "T07"))
@@ -184,6 +185,10 @@ def build_invoices(world: World, s: BatchSpec) -> list[Invoice]:
             c = world.container(l.container_no)
             if c.reassigned:
                 l.trap = "T06"
+            elif l.charge_code == "THC_O":
+                # b6 sails before the notice period ends (billed anyway: T02);
+                # b7 sails after it, so the increase is correctly in force (T14).
+                l.trap = "T02" if bk is b6 else "T14"
         lines.append(doc_line(bk))
         out.append(_inv(s, "NORDVIK", num, 2, day, bk.booking_id, bk.bl_number, lines))
 

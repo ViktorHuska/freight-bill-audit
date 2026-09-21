@@ -47,7 +47,7 @@
         "THC_O": {
           "basis": "per_container",
           "amount": {
-            "20DV": 260.0,
+            "20DV": 206.0,
             "40HC": 340.0
           }
         },
@@ -140,7 +140,7 @@
         "THC_O": {
           "basis": "per_container",
           "amount": {
-            "20DV": 260.0,
+            "20DV": 206.0,
             "40HC": 340.0
           }
         },

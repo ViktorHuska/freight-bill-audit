@@ -1,0 +1,431 @@
+{
+  "source": "ERP booking register export",
+  "exported_at": "2023-06-20",
+  "bookings": [
+    {
+      "booking_id": "BK2261",
+      "vendor": "NORDVIK",
+      "bl_number": "NOR2261BL",
+      "pol": "USSAV",
+      "pod": "AEJEA",
+      "sailing_date": "2023-06-20",
+      "eta": "2023-07-11",
+      "containers": [
+        {
+          "container_no": "NVKU2261100",
+          "type": "40HC",
+          "booked_kg": 17500,
+          "gross_kg": 18400,
+          "cbm": 58.0,
+          "terminal": "AEJEA-T1",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2276",
+              "gross_kg": 7825,
+              "cbm": 43.47,
+              "value_usd": 33256.25
+            },
+            {
+              "so": "SO-2277",
+              "gross_kg": 6133,
+              "cbm": 34.07,
+              "value_usd": 26065.25
+            },
+            {
+              "so": "SO-2278",
+              "gross_kg": 4441,
+              "cbm": 24.67,
+              "value_usd": 18874.25
+            }
+          ]
+        },
+        {
+          "container_no": "NVKU2261200",
+          "type": "40HC",
+          "booked_kg": 16350,
+          "gross_kg": 17250,
+          "cbm": 58.0,
+          "terminal": "AEJEA-T1",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2280",
+              "gross_kg": 7336,
+              "cbm": 40.76,
+              "value_usd": 31178.0
+            },
+            {
+              "so": "SO-2281",
+              "gross_kg": 5750,
+              "cbm": 31.94,
+              "value_usd": 24437.5
+            },
+            {
+              "so": "SO-2282",
+              "gross_kg": 4163,
+              "cbm": 23.13,
+              "value_usd": 17692.75
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "booking_id": "BK2262",
+      "vendor": "NORDVIK",
+      "bl_number": "NOR2262BL",
+      "pol": "USHOU",
+      "pod": "AEJEA",
+      "sailing_date": "2023-06-26",
+      "eta": "2023-07-17",
+      "containers": [
+        {
+          "container_no": "NVKU2262100",
+          "type": "20DV",
+          "booked_kg": 15200,
+          "gross_kg": 16100,
+          "cbm": 31.0,
+          "terminal": "AEJEA-T2",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2288",
+              "gross_kg": 9025,
+              "cbm": 50.14,
+              "value_usd": 38356.25
+            },
+            {
+              "so": "SO-2289",
+              "gross_kg": 7074,
+              "cbm": 39.3,
+              "value_usd": 30064.5
+            }
+          ]
+        },
+        {
+          "container_no": "NVKU2262200",
+          "type": "20DV",
+          "booked_kg": 14450,
+          "gross_kg": 15350,
+          "cbm": 31.0,
+          "terminal": "AEJEA-T2",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2292",
+              "gross_kg": 8605,
+              "cbm": 47.81,
+              "value_usd": 36571.25
+            },
+            {
+              "so": "SO-2293",
+              "gross_kg": 6744,
+              "cbm": 37.47,
+              "value_usd": 28662.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "booking_id": "BK2263",
+      "vendor": "ATLASOCEAN",
+      "bl_number": "ATL2263BL",
+      "pol": "USSAV",
+      "pod": "SAJED",
+      "sailing_date": "2023-07-06",
+      "eta": "2023-07-27",
+      "containers": [
+        {
+          "container_no": "ATLU2263100",
+          "type": "20DV",
+          "booked_kg": 14900,
+          "gross_kg": 15800,
+          "cbm": 31.0,
+          "terminal": "SAJED-KCT",
+          "gate_out_date": "2023-07-26",
+          "empty_return_date": "2023-08-11",
+          "sales_orders": [
+            {
+              "so": "SO-2300",
+              "gross_kg": 8857,
+              "cbm": 49.21,
+              "value_usd": 37642.25
+            },
+            {
+              "so": "SO-2301",
+              "gross_kg": 6942,
+              "cbm": 38.57,
+              "value_usd": 29503.5
+            }
+          ]
+        },
+        {
+          "container_no": "ATLU2263200",
+          "type": "20DV",
+          "booked_kg": 14000,
+          "gross_kg": 14900,
+          "cbm": 31.0,
+          "terminal": "SAJED-KCT",
+          "gate_out_date": "2023-07-26",
+          "empty_return_date": "2023-08-06",
+          "sales_orders": [
+            {
+              "so": "SO-2304",
+              "gross_kg": 8353,
+              "cbm": 46.41,
+              "value_usd": 35500.25
+            },
+            {
+              "so": "SO-2305",
+              "gross_kg": 6546,
+              "cbm": 36.37,
+              "value_usd": 27820.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "booking_id": "BK2264",
+      "vendor": "NORDVIK",
+      "bl_number": "NOR2264BL",
+      "pol": "USSAV",
+      "pod": "AEJEA",
+      "sailing_date": "2023-07-12",
+      "eta": "2023-08-02",
+      "containers": [
+        {
+          "container_no": "NVKU2264100",
+          "type": "40HC",
+          "booked_kg": 18300,
+          "gross_kg": 19200,
+          "cbm": 58.0,
+          "terminal": "AEJEA-T2",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2312",
+              "gross_kg": 8165,
+              "cbm": 45.36,
+              "value_usd": 34701.25
+            },
+            {
+              "so": "SO-2313",
+              "gross_kg": 6400,
+              "cbm": 35.56,
+              "value_usd": 27200.0
+            },
+            {
+              "so": "SO-2314",
+              "gross_kg": 4634,
+              "cbm": 25.74,
+              "value_usd": 19694.5
+            }
+          ]
+        },
+        {
+          "container_no": "NVKU2264200",
+          "type": "20DV",
+          "booked_kg": 14500,
+          "gross_kg": 15400,
+          "cbm": 31.0,
+          "terminal": "AEJEA-T2",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2316",
+              "gross_kg": 8633,
+              "cbm": 47.96,
+              "value_usd": 36690.25
+            },
+            {
+              "so": "SO-2317",
+              "gross_kg": 6766,
+              "cbm": 37.59,
+              "value_usd": 28755.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "booking_id": "BK2265",
+      "vendor": "ATLASOCEAN",
+      "bl_number": "ATL2265BL",
+      "pol": "USHOU",
+      "pod": "PKQCT",
+      "sailing_date": "2023-07-18",
+      "eta": "2023-08-08",
+      "containers": [
+        {
+          "container_no": "ATLU2265100",
+          "type": "40HC",
+          "booked_kg": 17800,
+          "gross_kg": 18700,
+          "cbm": 58.0,
+          "terminal": "PKQCT-QICT",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2324",
+              "gross_kg": 7952,
+              "cbm": 44.18,
+              "value_usd": 33796.0
+            },
+            {
+              "so": "SO-2325",
+              "gross_kg": 6233,
+              "cbm": 34.63,
+              "value_usd": 26490.25
+            },
+            {
+              "so": "SO-2326",
+              "gross_kg": 4513,
+              "cbm": 25.07,
+              "value_usd": 19180.25
+            }
+          ]
+        },
+        {
+          "container_no": "ATLU2265200",
+          "type": "40HC",
+          "booked_kg": 18700,
+          "gross_kg": 19600,
+          "cbm": 58.0,
+          "terminal": "PKQCT-QICT",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2328",
+              "gross_kg": 8335,
+              "cbm": 46.31,
+              "value_usd": 35423.75
+            },
+            {
+              "so": "SO-2329",
+              "gross_kg": 6533,
+              "cbm": 36.29,
+              "value_usd": 27765.25
+            },
+            {
+              "so": "SO-2330",
+              "gross_kg": 4731,
+              "cbm": 26.28,
+              "value_usd": 20106.75
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "booking_id": "BK2266",
+      "vendor": "NORDVIK",
+      "bl_number": "NOR2266BL",
+      "pol": "USSAV",
+      "pod": "SAJED",
+      "sailing_date": "2023-07-22",
+      "eta": "2023-08-12",
+      "containers": [
+        {
+          "container_no": "NVKU2266100",
+          "type": "20DV",
+          "booked_kg": 14300,
+          "gross_kg": 15200,
+          "cbm": 31.0,
+          "terminal": "SAJED-KCT",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2336",
+              "gross_kg": 8521,
+              "cbm": 47.34,
+              "value_usd": 36214.25
+            },
+            {
+              "so": "SO-2337",
+              "gross_kg": 6678,
+              "cbm": 37.1,
+              "value_usd": 28381.5
+            }
+          ]
+        },
+        {
+          "container_no": "NVKU2266200",
+          "type": "20DV",
+          "booked_kg": 15500,
+          "gross_kg": 16400,
+          "cbm": 31.0,
+          "terminal": "SAJED-KCT",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2340",
+              "gross_kg": 9193,
+              "cbm": 51.07,
+              "value_usd": 39070.25
+            },
+            {
+              "so": "SO-2341",
+              "gross_kg": 7206,
+              "cbm": 40.03,
+              "value_usd": 30625.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "booking_id": "BK2267",
+      "vendor": "NORDVIK",
+      "bl_number": "NOR2267BL",
+      "pol": "USSAV",
+      "pod": "SAJED",
+      "sailing_date": "2023-08-03",
+      "eta": "2023-08-24",
+      "containers": [
+        {
+          "container_no": "NVKU2267100",
+          "type": "40HC",
+          "booked_kg": 18000,
+          "gross_kg": 18900,
+          "cbm": 58.0,
+          "terminal": "SAJED-KCT",
+          "gate_out_date": null,
+          "empty_return_date": null,
+          "sales_orders": [
+            {
+              "so": "SO-2348",
+              "gross_kg": 8037,
+              "cbm": 44.65,
+              "value_usd": 34157.25
+            },
+            {
+              "so": "SO-2349",
+              "gross_kg": 6300,
+              "cbm": 35.0,
+              "value_usd": 26775.0
+            },
+            {
+              "so": "SO-2350",
+              "gross_kg": 4562,
+              "cbm": 25.34,
+              "value_usd": 19388.5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

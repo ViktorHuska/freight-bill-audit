@@ -28,7 +28,7 @@ BATCHES = ["a", "b"]
 # One entry per planted trap, so a failing test names the rule that was missed.
 TRAPS = {
     "T01": "sailing amendment moves contract version, surcharge month and FX date",
-    "T02": "tariff circular raised a fee; vendor under-billed at the stale amount",
+    "T02": "rate increase billed before its 30-day notice period ran",
     "T03": "tariff circular lowered a surcharge; vendor over-billed at the stale amount",
     "T04": "detention from move-log dates, counted in the terminal's own working days",
     "T05": "per-B/L fee billed once per container on a forwarder consolidation",
@@ -40,6 +40,7 @@ TRAPS = {
     "T11": "credit note approved as billed and allocated",
     "T12": "invoice that matches no booking",
     "T13": "EUR converted at the sailing-date fixing",
+    "T14": "rate increase in force once its notice period has run",
 }
 
 

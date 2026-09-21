@@ -724,7 +724,7 @@
         "duplicate_of": null,
         "invoice_date": "2024-09-30",
         "invoice_number": "NOR-B-0109",
-        "invoice_total_usd": 6945.0,
+        "invoice_total_usd": 7000.0,
         "lines": [
           {
             "billed_amount": 3180.0,
@@ -751,6 +751,18 @@
             "variance": 0.0
           },
           {
+            "billed_amount": 370.0,
+            "billed_amount_original": 370.0,
+            "bl_number": "NOR2494BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2494100",
+            "decision": "DISPUTE",
+            "expected_amount": 340.0,
+            "line_no": 3,
+            "reason": "RATE_MISMATCH",
+            "variance": 30.0
+          },
+          {
             "billed_amount": 18.0,
             "billed_amount_original": 18.0,
             "bl_number": "NOR2494BL",
@@ -758,7 +770,7 @@
             "container_no": "NVKU2494100",
             "decision": "APPROVE",
             "expected_amount": 18.0,
-            "line_no": 3,
+            "line_no": 4,
             "reason": "OK",
             "variance": 0.0
           },
@@ -770,7 +782,7 @@
             "container_no": "NVKU2494200",
             "decision": "APPROVE",
             "expected_amount": 1990.0,
-            "line_no": 4,
+            "line_no": 5,
             "reason": "OK",
             "variance": 0.0
           },
@@ -782,9 +794,21 @@
             "container_no": "NVKU2494200",
             "decision": "APPROVE",
             "expected_amount": 298.0,
-            "line_no": 5,
+            "line_no": 6,
             "reason": "OK",
             "variance": 0.0
+          },
+          {
+            "billed_amount": 285.0,
+            "billed_amount_original": 285.0,
+            "bl_number": "NOR2494BL",
+            "charge_code": "THC_O",
+            "container_no": "NVKU2494200",
+            "decision": "DISPUTE",
+            "expected_amount": 260.0,
+            "line_no": 7,
+            "reason": "RATE_MISMATCH",
+            "variance": 25.0
           },
           {
             "billed_amount": 18.0,
@@ -794,21 +818,9 @@
             "container_no": "NVKU2494200",
             "decision": "APPROVE",
             "expected_amount": 18.0,
-            "line_no": 6,
+            "line_no": 8,
             "reason": "OK",
             "variance": 0.0
-          },
-          {
-            "billed_amount": 340.0,
-            "billed_amount_original": 340.0,
-            "bl_number": "NOR2494BL",
-            "charge_code": "THC_O",
-            "container_no": "NVKU2494100",
-            "decision": "APPROVE",
-            "expected_amount": 370.0,
-            "line_no": 7,
-            "reason": "UNDERBILLED",
-            "variance": -30.0
           },
           {
             "billed_amount": 150.0,
@@ -818,21 +830,9 @@
             "container_no": "NVKU2494100",
             "decision": "APPROVE",
             "expected_amount": 150.0,
-            "line_no": 8,
+            "line_no": 9,
             "reason": "OK",
             "variance": 0.0
-          },
-          {
-            "billed_amount": 260.0,
-            "billed_amount_original": 260.0,
-            "bl_number": "NOR2494BL",
-            "charge_code": "THC_O",
-            "container_no": "NVKU2494200",
-            "decision": "APPROVE",
-            "expected_amount": 285.0,
-            "line_no": 9,
-            "reason": "UNDERBILLED",
-            "variance": -25.0
           },
           {
             "billed_amount": 95.0,
@@ -850,7 +850,7 @@
         "matched_bookings": [
           "BK2494"
         ],
-        "status": "APPROVED",
+        "status": "PARTIALLY_DISPUTED",
         "vendor": "NORDVIK"
       },
       {
@@ -994,7 +994,7 @@
         "duplicate_of": null,
         "invoice_date": "2024-10-06",
         "invoice_number": "NOR-B-0120",
-        "invoice_total_usd": 2851.0,
+        "invoice_total_usd": 2876.0,
         "lines": [
           {
             "billed_amount": 2180.0,
@@ -1021,16 +1021,16 @@
             "variance": 0.0
           },
           {
-            "billed_amount": 260.0,
-            "billed_amount_original": 260.0,
+            "billed_amount": 285.0,
+            "billed_amount_original": 285.0,
             "bl_number": "NOR2496BL",
             "charge_code": "THC_O",
             "container_no": "NVKU2496100",
-            "decision": "APPROVE",
+            "decision": "DISPUTE",
             "expected_amount": 260.0,
             "line_no": 3,
-            "reason": "OK",
-            "variance": 0.0
+            "reason": "RATE_MISMATCH",
+            "variance": 25.0
           },
           {
             "billed_amount": 18.0,
@@ -1060,16 +1060,16 @@
         "matched_bookings": [
           "BK2496"
         ],
-        "status": "APPROVED",
+        "status": "PARTIALLY_DISPUTED",
         "vendor": "NORDVIK"
       },
       {
-        "approved_total_usd": 7291.0,
+        "approved_total_usd": 7346.0,
         "currency": "USD",
         "duplicate_of": null,
         "invoice_date": "2024-10-12",
         "invoice_number": "NOR-B-0123",
-        "invoice_total_usd": 7291.0,
+        "invoice_total_usd": 7346.0,
         "lines": [
           {
             "billed_amount": 2180.0,
@@ -1096,13 +1096,13 @@
             "variance": 0.0
           },
           {
-            "billed_amount": 260.0,
-            "billed_amount_original": 260.0,
+            "billed_amount": 285.0,
+            "billed_amount_original": 285.0,
             "bl_number": "NOR2497BL",
             "charge_code": "THC_O",
             "container_no": "NVKU2496200",
             "decision": "APPROVE",
-            "expected_amount": 260.0,
+            "expected_amount": 285.0,
             "line_no": 3,
             "reason": "OK",
             "variance": 0.0
@@ -1144,13 +1144,13 @@
             "variance": 0.0
           },
           {
-            "billed_amount": 340.0,
-            "billed_amount_original": 340.0,
+            "billed_amount": 370.0,
+            "billed_amount_original": 370.0,
             "bl_number": "NOR2497BL",
             "charge_code": "THC_O",
             "container_no": "NVKU2497100",
             "decision": "APPROVE",
-            "expected_amount": 340.0,
+            "expected_amount": 370.0,
             "line_no": 7,
             "reason": "OK",
             "variance": 0.0
@@ -1379,39 +1379,39 @@
       "total": 1252.65
     },
     "SO-2570": {
-      "accessorials": 182.47,
+      "accessorials": 196.49,
       "detention": 0.0,
       "ocean_freight": 1222.07,
       "surcharges": 173.78,
-      "total": 1578.32
+      "total": 1592.34
     },
     "SO-2571": {
-      "accessorials": 143.03,
+      "accessorials": 154.01,
       "detention": 0.0,
       "ocean_freight": 957.93,
       "surcharges": 136.22,
-      "total": 1237.18
+      "total": 1248.16
     },
     "SO-2578": {
-      "accessorials": 172.44,
+      "accessorials": 185.2,
       "detention": 0.0,
       "ocean_freight": 1467.15,
       "surcharges": 263.66,
-      "total": 1903.25
+      "total": 1916.01
     },
     "SO-2579": {
-      "accessorials": 135.17,
+      "accessorials": 145.17,
       "detention": 0.0,
       "ocean_freight": 1150.06,
       "surcharges": 206.68,
-      "total": 1491.91
+      "total": 1501.91
     },
     "SO-2580": {
-      "accessorials": 97.89,
+      "accessorials": 105.13,
       "detention": 0.0,
       "ocean_freight": 832.79,
       "surcharges": 149.66,
-      "total": 1080.34
+      "total": 1087.58
     }
   },
   "trap_index": {
@@ -1436,11 +1436,15 @@
     "T02": [
       [
         "NOR-B-0109",
-        7
+        3
       ],
       [
         "NOR-B-0109",
-        9
+        7
+      ],
+      [
+        "NOR-B-0120",
+        3
       ]
     ],
     "T03": [
@@ -1494,7 +1498,7 @@
     "T07": [
       [
         "NOR-B-0109",
-        8
+        9
       ]
     ],
     "T08": [
@@ -1583,6 +1587,12 @@
       [
         "ATL-B-0106",
         5
+      ]
+    ],
+    "T14": [
+      [
+        "NOR-B-0123",
+        7
       ]
     ]
   }

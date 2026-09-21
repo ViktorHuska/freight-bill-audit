@@ -62,6 +62,28 @@ class BatchSpec:
         "b": (2024, 8, 2490, "60", 1),
         "h1": (2023, 9, 2310, "30", 2),
         "h2": (2023, 12, 2350, "-30", 0),
+        "h3": (2023, 3, 2210, "15", 1),
+        "h4": (2023, 6, 2260, "-15", 2),
+    }
+
+    # Where the ERP's hand-keyed contract differs from the signed agreement, per
+    # batch: (vendor, version index or None = every version, section, key,
+    # container type or None). The keyed value is a digit transposition of the
+    # agreed one. A different set per batch, so no fix can be hardcoded and the
+    # agreement has to be read every time.
+    KEYING = {
+        "a": [("NORDVIK", 1, "lanes", "USSAV-SAJED", "20DV"),
+              ("HARBORLINK", 0, "accessorials", "THC_D", "40HC")],
+        "b": [("NORDVIK", None, "accessorials", "SEAL", None),
+              ("ATLASOCEAN", 0, "accessorials", "SEAL", None)],
+        "h1": [("NORDVIK", None, "accessorials", "THC_O", "20DV"),
+               ("ATLASOCEAN", 0, "accessorials", "THC_O", "40HC")],
+        "h2": [("NORDVIK", None, "accessorials", "DOC", None),
+               ("HARBORLINK", 0, "accessorials", "DOC", None)],
+        "h3": [("ATLASOCEAN", 0, "lanes", "USSAV-SAJED", "20DV"),
+               ("NORDVIK", 1, "lanes", "USHOU-AEJEA", "20DV")],
+        "h4": [("NORDVIK", 1, "lanes", "USSAV-AEJEA", "20DV"),
+               ("HARBORLINK", 0, "accessorials", "THC_D", "20DV")],
     }
 
     def __init__(self, batch: str):
@@ -329,15 +351,19 @@ def build_world(batch: str) -> World:
     b4 = add_booking(4, "NORDVIK", "USSAV-AEJEA", 1, 12)
     add_container(4, 1, b4, "40HC", "AEJEA-T2", kg=19200, weigh_kg=21400)
     add_container(4, 2, b4, "20DV", "AEJEA-T2", kg=15400)
+    # An INCREASE published only 8 days before its stated effective date. Under
+    # the agreements' 30-day notice clause it is not in force until 30 days
+    # after publication: not for b4 or b6 (the carrier bills it anyway), but in
+    # force for b7, which also receives the rolled container.
     circ_up = Circular(
         circular_id=f"NVK-TAR-{s.n(4)}",
         vendor="NORDVIK",
-        issued=s.d(1, 5),
+        issued=s.d(1, 2),
         effective_from=s.d(1, 10),
         revisions=[
-            Revision("THC_O", "USSAV-AEJEA", {"20DV": D("285"), "40HC": D("370")}),
+            Revision("THC_O", None, {"20DV": D("285"), "40HC": D("370")}),
         ],
-        subject="Revised origin terminal handling — US South Atlantic",
+        subject="General rate increase: origin terminal handling, all US ports",
     )
     circulars.append(circ_up)
 
@@ -399,4 +425,34 @@ def build_world(batch: str) -> World:
         notices=notices,
         terminals=terminals,
         fx=_fx(s),
+        keying_errors=_keying_errors(s, contracts),
     )
+
+
+def _transpose(value: Decimal) -> Decimal:
+    """A plausible keying slip: swap the last two digits of the whole-number
+    part (2180 -> 2108, 315 -> 351, 18 -> 81)."""
+    digits = list(str(int(value)))
+    if len(digits) < 2:
+        return value + 10
+    i, j = len(digits) - 2, len(digits) - 1
+    if digits[i] == digits[j]:
+        i, j = 0, 1
+    digits[i], digits[j] = digits[j], digits[i]
+    keyed = Decimal("".join(digits))
+    return keyed if keyed != value else value + 10
+
+
+def _keying_errors(s: BatchSpec, contracts: dict) -> list[tuple]:
+    out = []
+    for vendor, vidx, section, key, ctype in BatchSpec.KEYING[s.batch]:
+        versions = range(len(contracts[vendor].versions)) if vidx is None else [vidx]
+        for i in versions:
+            v = contracts[vendor].versions[i]
+            if section == "lanes":
+                agreed = v.lanes[key][ctype]
+            else:
+                amount = v.accessorials[key][1]
+                agreed = amount[ctype] if isinstance(amount, dict) else amount
+            out.append((vendor, i, section, key, ctype, _transpose(agreed)))
+    return out
