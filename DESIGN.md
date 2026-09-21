@@ -1,143 +1,147 @@
 # Design: `freight-bill-audit`
 
 The decisions behind the task, for the repository reader and the interview.
-Nothing here ships into the task directory.
+Nothing here ships into the task directory. The iteration history, with the
+trial evidence that drove each change, is in [RESULTS.md](RESULTS.md).
 
-## 1. What the agent delivers
+## 1. The job
+
+A freight auditor at an exporter's international sales office checks every
+ocean-freight invoice (from two carriers and a forwarder) before accounts
+payable releases it, and allocates the approved cost to sales orders. The
+agent does that job by building a reusable tool:
 
 | Artifact | Purpose |
 |---|---|
-| `/app/audit.py` | A single-file CLI that audits a batch of freight invoices against the register, the controlling sources and the house policy. |
-| `/app/output/audit.json` | The tool's result for the visible batch. |
-| `/app/output/landed_cost.csv` | Approved cost allocated to each sales order for the visible batch. |
+| `/app/audit.py` | Single-file CLI that audits a month's batch |
+| `/app/output/audit.json` | Per-invoice status and per-line billed / expected / variance / decision / reason |
+| `/app/output/landed_cost.csv` | Approved cost per sales order, by category |
 
 **The deliverable is a tool, not answers.** The verifier re-runs `audit.py`,
-unchanged, on a hidden second batch: same vendors, layouts and contract
-families, but a different period, ids, rates and index rows. A hand-written
-`audit.json` for the visible batch scores zero, because every batch B test
-fails.
+unchanged, on a hidden batch B. A hand-written answer for the visible batch
+scores zero.
 
-## 2. Where the difficulty lives: source precedence
+## 2. What the agent is given
 
-The first draft put every rule in `policy.md`, including the answer to each
-trap ("sailing date, **not** invoice date"). That made it a careful-reading
-exercise, which frontier models are good at, and the difficulty that remained
-was clerical. The merged TB3 Operations tasks (`heat-pump-warranty`,
-`intrastat-meldung`) point to a better source of difficulty: **the agent must
-reconstruct the facts from sources that disagree** before any rule can be
-applied.
+```
+/app/data/              this month's batch
+  invoices/*.pdf          text PDFs (two carriers) and SCANNED statements (forwarder)
+  shipments.json          ERP booking register export (stale on purpose)
+  terminal_moves.csv      terminal gate dates and weighbridge weights
+  notices/*.txt           sailing amendments, container rolls, tariff circulars
+  contracts/<V>_agreement.pdf   signed rate agreement (authoritative)
+  contracts/<V>.json            the ERP's hand-keyed copy (has keying errors)
+  holidays.json, fx.csv   terminal weekends + closures, EUR/USD fixings
+  policy.md               decision table, duplicates, allocation, schema
+/app/legacy/audit_legacy.py   the desk's current tool, with realistic defects
+/app/history/h1..h4/          four settled months, each with ap_ledger.csv
+```
 
-So the ERP register is stale on purpose, and `policy.md` §2 says which source
-controls each fact:
+`policy.md` deliberately does **not** state the pricing doctrine. Instead it
+says the legacy tool implements how the desk prices charges, that the tool
+is not always right, and that what AP actually paid, recorded in the
+history ledgers after the senior auditor's review, is authoritative.
 
-| Fact | Controlling source | Stale source |
+## 3. Where the difficulty is meant to be
+
+Three layers, each taken from a pattern in merged TB3 Operations tasks:
+
+1. **Reconstructing the facts from conflicting sources.** The register is
+   stale. The controlling facts are in carrier notices (sailing amendments,
+   container rolls), the terminal move log (gate dates, weighbridge
+   weights) and the signed agreements. One wrong fact cascades: a sailing
+   amendment moves the contract version, the surcharge month and the FX date
+   together.
+2. **Repairing a flawed system against sparse evidence.** The legacy tool
+   has these defects:
+   - it ignores amendments and rolls
+   - it uses register dates and a Mon–Fri weekend for detention
+   - it uses register weights
+   - it treats per-B/L fees as once per invoice
+   - it prices from the ERP copy of the contracts
+   - it applies rate increases before their notice period
+   - it skips the scanned statements
+
+   The only feedback is per-invoice paid totals in four settled months. The
+   ERP keying errors differ every month, so nothing can be hardcoded.
+3. **Domain rules that only a careful expert applies.**
+   - Terminals keep their own weekends (Jeddah's is Friday/Saturday).
+   - The US-trade notice clause: a rate increase takes effect no earlier
+     than 30 days after publication, a decrease immediately. A THC increase
+     published 8 days ahead applies to one booking and not to two others.
+   - A per-B/L fee on a two-carrier forwarder consolidation is due once per
+     B/L, not once per invoice.
+
+The hidden batch adds four cases that never occur in the visible data or
+the history, each defined by the documents: superseding notices whose file
+order contradicts their dates, a Sunday EUR sailing (FX falls back to the
+Friday fixing), a per-shipment fee, and a weighbridge weight *below* the
+overweight threshold. The forwarder's statements are scans, so reading them
+needs OCR.
+
+## 4. Traps (16)
+
+| id | Trap | Batches |
 |---|---|---|
-| Sailing date | carrier sailing-amendment notice | `shipments.json` |
-| Container → booking | carrier roll advice | `shipments.json` |
-| Gate-out / empty-return | `terminal_moves.csv` | `shipments.json` (planned dates) |
-| Gross weight | `terminal_moves.csv` weighbridge | `shipments.json` |
-| Rates | tariff circular in force on the sailing date | `contracts/*.json` |
+| T01 | sailing amendment moves contract version, BAF month and FX date | all |
+| T02 | rate increase billed before its 30-day notice period | all |
+| T03 | tariff circular lowers BAF; vendor bills the stale row | all |
+| T04 | detention: move-log dates, terminal's own working days | all |
+| T05 | per-B/L fee billed per container on a consolidation | all |
+| T06 | container rolled to another booking after the export | all |
+| T07 | overweight justified by weighbridge weight (legitimate) | all |
+| T08 | ocean freight at the contract minimum (legitimate) | all |
+| T09 | charge code not in the agreement | all |
+| T10 | duplicate re-issued under a new number | all |
+| T11 | credit note against an over-billed line | all |
+| T12 | invoice for a shipment never booked | all |
+| T13 | EUR at the sailing-date fixing | all |
+| T14 | rate increase correctly in force after its notice period (legitimate) | all |
+| T15 | register says overweight, weighbridge says not; OWS billed anyway | hidden B only |
+| T16 | per-shipment fee billed once per container | hidden B only |
 
-The policy states the precedence but does not list the discrepancies; finding
-them is the agent's job.
+The generator refuses to write a batch unless every trap lands with its
+intended decision and reason, and unless hidden-only traps are absent from
+every other batch.
 
-**Why it is hard rather than long: a single wrong fact cascades.** A sailing
-amendment across a version boundary changes the contract version, the BAF
-month and the EUR fixing date together. Several lines change amount and
-decision, the invoice's status changes, and the landed cost of every sales
-order in those containers moves. A tool that reads only the register produces
-a plausible, internally consistent and wrong result.
+## 5. Ground truth, computed twice
 
-**One genuine domain fact.** Terminals have their own weekends:
-Jeddah (`SAJED-KCT`) runs Friday/Saturday, Karachi Sunday only.
-`holidays.json` states this for each terminal, but a tool that hardcodes
-Mon–Fri miscounts detention days.
+`tools/generator/` builds each batch from an explicit, per-batch world:
+register vs. controlling facts, contracts vs. ERP keying, notices,
+circulars, invoices billed the way each vendor would, and the truth derived
+from the policy. `solution/audit.py` is an independent reading of the same
+rules, written against the documents (it parses the agreement PDFs and OCRs
+the scans). It shares no code with the generator. Before any agent trial:
 
-## 3. Trap registry
+- agreement parsing matches the generator's contracts exactly (6 batches × 3 vendors)
+- oracle output equals the truth on batches A and B, field by field
+- the oracle reproduces all four history ledgers to the cent
+- each legacy defect changes at least one paid total. Only the fully correct
+  detention rule fits every month: one month alone admits a half-fix,
+  another rules it out
+- regenerating any batch is byte-identical, scans included
 
-Each batch plants all 13. The generator refuses to write a batch unless every
-trap lands with exactly the decision and reason below (`generate.py`,
-`EXPECTED`).
+## 6. Verifier
 
-| id | Trap | Outcome | What a careless tool does |
-|---|---|---|---|
-| T01 | Sailing amendment crosses a contract-version and month boundary | DISPUTE / RATE_MISMATCH | reads the register date: old version, old BAF row; misses the over-billing |
-| T02 | Circular raises THC_O; vendor bills the stale amount | APPROVE / UNDERBILLED | ignores the circular: says OK, wrong expected |
-| T03 | Circular lowers BAF; vendor bills the stale row | DISPUTE / RATE_MISMATCH | ignores the circular: approves an over-charge |
-| T04 | Detention on register dates in calendar mode at a Fri/Sat working-day terminal | DISPUTE / FREE_TIME_MISCOUNT | wrong dates, or Mon–Fri weekend: wrong day count |
-| T05 | Per-B/L fee billed per container on a two-carrier forwarder consolidation | DISPUTE / BASIS_ERROR | pays every line, or applies one fee for the whole invoice |
-| T06 | Container rolled to another booking after the export | APPROVE / OK, matched to the new booking | matches the register booking; allocation shifts |
-| T07 | Overweight justified by the weighbridge, not the register weight | APPROVE / OK | disputes a legitimate charge |
-| T08 | Ocean freight at the contract minimum | APPROVE / OK | disputes a legitimate charge |
-| T09 | Charge code absent from the contract | DISPUTE / UNAUTHORIZED_CHARGE | prices it |
-| T10 | Duplicate re-issued under a new number and date | DISPUTE / DUPLICATE_INVOICE | pays twice |
-| T11 | Credit note against an over-billed line | APPROVE / CREDIT_NOTE | ignores it or disputes it |
-| T12 | Invoice for a shipment never booked | DISPUTE / UNMATCHED | invents a match |
-| T13 | EUR converted at the sailing-date fixing | APPROVE / OK | uses the invoice date |
+- `tests/Dockerfile` bakes Python 3.13, pdfplumber, poppler, tesseract,
+  pytest 9.1.1, pytest-json-ctrf 0.5.2, hidden batch B and both truth files.
+  Nothing is fetched at verify time.
+- `tests/test.sh` does four things in order:
+  1. removes any pre-existing reward file
+  2. makes the truth root-only
+  3. runs the agent's tool on batch B as the unprivileged `auditrun` user,
+     under a timeout
+  4. runs pytest as root, with a binary reward
 
-Two traps (T07, T08) are legitimate charges that look wrong, so disputing
-everything unusual fails as well.
-
-## 4. Ground truth: two independent computations
-
-```
-tools/generator/          dev tooling, not in the task dir
-  policy.md               canonical rulebook, copied verbatim into both batches
-  models.py               register (reg_*) vs controlling (act_*) fields
-  world.py                explicit world per batch: bookings, contracts, circulars, notices
-  invoices.py             bills each invoice the way the vendor would, errors included
-  pricing.py              the generator's reading of policy §3, from controlling facts
-  truth.py                decisions, status, matching, largest-remainder allocation
-  render.py               three text-PDF vendor layouts (reportlab, invariant mode)
-  io_utils.py             writes the files the agent receives
-  generate.py             orchestrator plus self-check invariants
-```
-
-* `invoices.py` never decides an outcome; `truth.py` recomputes every expected
-  amount, decision and reason from the policy.
-* `solution/audit.py` is a third reading, written from `policy.md` alone and
-  sharing no code with the generator. On both batches it agrees with the truth
-  on every field (see RESULTS.md §3). A disagreement would have meant an
-  ambiguous policy or a bug on one side.
-* Writing the generator and oracle surfaced two ambiguities in the policy,
-  which were fixed before any agent saw it: how a per-B/L fee is assigned on a
-  multi-B/L invoice, and how a detention variance is classified.
-* The world is written out explicitly rather than sampled, so every trap
-  precondition holds by construction and a batch regenerates byte for byte
-  (LF line endings, reportlab `invariant=1`).
-
-## 5. Verifier
-
-* `tests/Dockerfile` bakes Python 3.13, pdfplumber, pypdf, pandas,
-  python-dateutil, `pytest==9.1.1`, `pytest-json-ctrf==0.5.2`, batch B inputs
-  and both truth files. Nothing is fetched at verify time.
-* `tests/test.sh`: makes the truth root-only (`chmod 700`), runs the agent's
-  tool on batch B as the unprivileged `auditrun` user under `timeout`, then
-  runs pytest as root. The tool's output is only ever parsed as data.
-* **No agent `requirements.txt`.** An earlier design installed the agent's
-  pinned requirements as root before pytest ran as root, so a package with a
-  `pytest11` entry point would have been auto-loaded into the grader. The
-  oracle needs only the preinstalled packages, so the manifest was dropped.
-* Tests are grouped per trap with a one-line description each, so
-  `harbor analyze` can attribute a failure to the rule that was missed.
-* Money is compared exactly at cents. That is fair because the policy fixes
-  the rounding point (§3.10) and the largest-remainder tie-break (§7.4); a
-  correct implementation has no freedom to differ.
-* Reward is binary.
-
-## 6. Rubric fit
-
-* **Verifiable / deterministic:** fixed data, exact comparison, no network, no LLM judge.
-* **Solvable:** the oracle is about 430 lines; an expert who knows the rules writes it in 3–4 hours.
-* **Difficult for a good reason:** the difficulty is reconstructing facts from conflicting evidence, and it cascades. An experienced freight auditor checks the carrier's amendments and the terminal's own records by habit; a junior AP clerk trusts the ERP.
-* **Outcome-verified / agentic:** the agent must explore PDFs, a register, a move log, correspondence and contracts, and build a tool that generalises. Only outputs are graded.
-* **Anti-cheat:** hidden batch, truth unreadable by the tool, no manifest install, no answers anywhere in `/app`.
-* **Novel:** the closest merged task, `freight-dispatch-shift`, plans dispatch. None audits transport invoices or allocates landed cost.
+  The agent's `requirements.txt` is never installed, which closes the
+  pytest-plugin autoload route.
+- Tests compare exactly at cents: status, matching, every line's amounts,
+  decision and reason, landed cost, and reconciliation. They are grouped per
+  trap so failures can be attributed. Exact comparison is fair because the
+  policy fixes the rounding point and the largest-remainder tie-break.
 
 ## 7. Resources
 
-* 2 CPUs / 4096 MB: pdfplumber on 11 small PDFs is light.
-* Agent timeout 28800 s, matching every merged Operations task (TB3 raised
-  them all to 8 h in PR #1800).
-* Verifier timeout 900 s. The tool on batch B plus pytest takes well under a
-  minute; the margin is for slow agent implementations.
+2 CPUs / 4 GB; agent timeout 28 800 s (every merged Operations task uses
+8 h); verifier timeout 900 s (OCR plus the tool on batch B finishes in well
+under a minute).
