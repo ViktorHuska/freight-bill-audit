@@ -1,0 +1,6 @@
+.tb3/
+.cheat/
+jobs/
+__pycache__/
+*.pyc
+.venv/

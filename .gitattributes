@@ -1,0 +1,12 @@
+# Scripts and files that execute inside Linux containers must keep LF endings.
+# A CRLF solve.sh / test.sh fails in the container with: /bin/bash^M: bad interpreter
+*.sh text eol=lf
+*.py text eol=lf
+Dockerfile text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+
+# Generated invoice PDFs are binary.
+*.pdf binary
