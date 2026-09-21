@@ -91,11 +91,14 @@ and `UNMATCHED` override as defined above.
 
 1. Only approved amounts allocate. Duplicate and unmatched invoices allocate
    nothing.
-2. A charge on a container goes to the sales-order lines loaded in that
-   container, in proportion to their `gross_kg`.
-3. A charge on a B/L or booking is split equally across the containers that
-   actually moved under it first, then allocated as in step 2. Do not round
-   the equal split; carry it as an exact fraction into step 4.
+2. A charge whose contractual basis is `per_container` goes to the
+   sales-order lines loaded in the container the line names, in proportion to
+   their `gross_kg`.
+3. A charge whose contractual basis is `per_bl` or `per_shipment` is split
+   equally across the containers that actually moved under that B/L or
+   booking first, even when the vendor printed it against a single container,
+   and then allocated as in step 2. Do not round the equal split; carry it as
+   an exact fraction into step 4.
 4. Allocate each charge line on its own by the largest-remainder method at
    cents, so the shares of a line sum exactly to its approved amount. Where
    two sales orders have the same remainder, the extra cent goes to the one
