@@ -1,0 +1,54 @@
+Failed to convert Codex events to trajectory
+Traceback (most recent call last):
+  File "C:\Users\Vik\AppData\Roaming\uv\tools\harbor\Lib\site-packages\harbor\agents\installed\codex.py", line 1171, in populate_context_post_run
+    trajectory = self._convert_events_to_trajectory(session_dir)
+  File "C:\Users\Vik\AppData\Roaming\uv\tools\harbor\Lib\site-packages\harbor\agents\installed\codex.py", line 793, in _convert_events_to_trajectory
+    for line in handle:
+                ^^^^^^
+  File "C:\Users\Vik\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 2867: character maps to <undefined>
+Failed to convert Codex events to trajectory
+Traceback (most recent call last):
+  File "C:\Users\Vik\AppData\Roaming\uv\tools\harbor\Lib\site-packages\harbor\agents\installed\codex.py", line 1171, in populate_context_post_run
+    trajectory = self._convert_events_to_trajectory(session_dir)
+  File "C:\Users\Vik\AppData\Roaming\uv\tools\harbor\Lib\site-packages\harbor\agents\installed\codex.py", line 793, in _convert_events_to_trajectory
+    for line in handle:
+                ^^^^^^
+  File "C:\Users\Vik\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 2867: character maps to <undefined>
+Failed to convert Codex events to trajectory
+Traceback (most recent call last):
+  File "C:\Users\Vik\AppData\Roaming\uv\tools\harbor\Lib\site-packages\harbor\agents\installed\codex.py", line 1171, in populate_context_post_run
+    trajectory = self._convert_events_to_trajectory(session_dir)
+  File "C:\Users\Vik\AppData\Roaming\uv\tools\harbor\Lib\site-packages\harbor\agents\installed\codex.py", line 793, in _convert_events_to_trajectory
+    for line in handle:
+                ^^^^^^
+  File "C:\Users\Vik\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 2867: character maps to <undefined>
+  3/3 Mean: 1.000 ---------------------------------------- 0:19:03 0:00:00
+adhoc • codex • gpt-5.6-sol
++--------------------------------------+
+| Trials | Exceptions |  Mean | Pass@2 |
+|--------+------------+-------+--------|
+|      3 |          0 | 1.000 |  1.000 |
++--------------------------------------+
+
++----------------+
+| Reward | Count |
+|--------+-------|
+| 1.0    |     3 |
++----------------+
+
+Job Info
+Total runtime: 19m 3s
+Results written to jobs\2026-09-21__00-52-12-codex\result.json
+Inspect results by running `harbor view jobs`
+Share results by running `harbor upload jobs\2026-09-21__00-52-12-codex`
+
+scripts/trials.sh: line 48: syntax error near unexpected token `from:'

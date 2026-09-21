@@ -110,7 +110,17 @@ runs per agent.
 | Agent | Trials | Reward | Wall time | Job |
 |---|---|---|---|---|
 | codex gpt-5.6-sol xhigh | 3 | **1.0 / 1.0 / 1.0** (38/38 tests each, including hidden batch B) | 19 min for the whole job, 3 in parallel | `jobs/2026-09-21__00-52-12-codex` |
-| claude-code opus-5 max | 3 | __running__ | | `jobs/2026-09-21__00-52-15-claude` |
+| claude-code opus-5 max | 3 | **infra error**, not counted | n/a | `jobs/2026-09-21__00-52-15-claude` |
+
+**Claude: infrastructure failure, a Harbor-on-Windows bug.** When each agent
+finished, Harbor decoded the UTF-8 agent log (`claude-code.txt`) with
+Windows' default cp1252 codec, failed on byte `0x9d`, and marked the trial
+errored before the verifier ran. The console spinner (`⠋`) failed the
+same way and aborted the job, so the third trial never started. Codex was
+unaffected because its JSON log happened to be pure ASCII. The fix is
+`PYTHONUTF8=1` for the Harbor process, now set in `scripts/trials.sh`. The
+Claude trials were not rerun on v2: codex's 3/3 already established that v2
+needed a redesign.
 
 **These are genuine passes.** Each agent's own `audit.py` ran on the hidden
 batch B in the verifier (exit 0) and matched the truth on every field. The

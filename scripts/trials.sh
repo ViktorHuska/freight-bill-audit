@@ -14,6 +14,10 @@
 # model failure, and must be rerun). Record every job dir in RESULTS.md.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+# Windows: Python defaults to cp1252. Harbor then crashes reading UTF-8 agent logs
+# (claude-code.txt) after the agent finishes, before the verifier runs, and its
+# progress spinner cannot be printed to a redirected log. UTF-8 mode fixes both.
+export PYTHONUTF8=1 PYTHONIOENCODING=utf-8
 
 TASK=tasks/freight-bill-audit
 ATTEMPTS=3
