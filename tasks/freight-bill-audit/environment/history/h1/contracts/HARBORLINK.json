@@ -1,0 +1,26 @@
+{
+  "vendor": "HARBORLINK",
+  "currency": "USD",
+  "versions": [
+    {
+      "valid_from": "2023-08-01",
+      "valid_to": "2024-01-28",
+      "lanes": {},
+      "minimum_ocean_freight": {},
+      "index_surcharges": {},
+      "accessorials": {
+        "THC_D": {
+          "basis": "per_container",
+          "amount": {
+            "20DV": 240.0,
+            "40HC": 315.0
+          }
+        },
+        "DOC": {
+          "basis": "per_bl",
+          "amount": 110.0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "vendor": "NORDVIK",
+  "currency": "USD",
+  "versions": [
+    {
+      "valid_from": "2023-08-01",
+      "valid_to": "2023-09-29",
+      "lanes": {
+        "USSAV-AEJEA": {
+          "20DV": 1850.0,
+          "40HC": 2930.0
+        },
+        "USHOU-AEJEA": {
+          "20DV": 1920.0,
+          "40HC": 3040.0
+        },
+        "USSAV-SAJED": {
+          "20DV": 2050.0,
+          "40HC": 3290.0
+        }
+      },
+      "minimum_ocean_freight": {
+        "20DV": 0.0,
+        "40HC": 3080.0
+      },
+      "index_surcharges": {
+        "BAF": {
+          "2023-09": {
+            "20DV": 352.0,
+            "40HC": 705.0
+          },
+          "2023-10": {
+            "20DV": 298.0,
+            "40HC": 596.0
+          },
+          "2023-11": {
+            "20DV": 310.0,
+            "40HC": 620.0
+          }
+        }
+      },
+      "accessorials": {
+        "DOC": {
+          "basis": "per_bl",
+          "amount": 95.0
+        },
+        "THC_O": {
+          "basis": "per_container",
+          "amount": {
+            "20DV": 260.0,
+            "40HC": 340.0
+          }
+        },
+        "SEAL": {
+          "basis": "per_container",
+          "amount": 18.0
+        },
+        "DET": {
+          "basis": "per_container",
+          "amount": 0.0
+        }
+      },
+      "overweight": {
+        "threshold_kg": 20000,
+        "amount": {
+          "20DV": 120.0,
+          "40HC": 150.0
+        }
+      },
+      "detention": {
+        "free_days": 7,
+        "tiers": [
+          {
+            "from_day": 1,
+            "to_day": 7,
+            "rate": {
+              "20DV": 75.0,
+              "40HC": 110.0
+            }
+          },
+          {
+            "from_day": 8,
+            "to_day": null,
+            "rate": {
+              "20DV": 130.0,
+              "40HC": 190.0
+            }
+          }
+        ],
+        "terminal_mode": {
+          "AEJEA-T1": "calendar",
+          "AEJEA-T2": "working",
+          "SAJED-KCT": "working",
+          "PKQCT-QICT": "calendar"
+        }
+      }
+    },
+    {
+      "valid_from": "2023-10-01",
+      "valid_to": "2024-01-28",
+      "lanes": {
+        "USSAV-AEJEA": {
+          "20DV": 1990.0,
+          "40HC": 3150.0
+        },
+        "USHOU-AEJEA": {
+          "20DV": 1780.0,
+          "40HC": 2880.0
+        },
+        "USSAV-SAJED": {
+          "20DV": 2180.0,
+          "40HC": 3420.0
+        }
+      },
+      "minimum_ocean_freight": {
+        "20DV": 0.0,
+        "40HC": 3080.0
+      },
+      "index_surcharges": {
+        "BAF": {
+          "2023-09": {
+            "20DV": 352.0,
+            "40HC": 705.0
+          },
+          "2023-10": {
+            "20DV": 298.0,
+            "40HC": 596.0
+          },
+          "2023-11": {
+            "20DV": 310.0,
+            "40HC": 620.0
+          }
+        }
+      },
+      "accessorials": {
+        "DOC": {
+          "basis": "per_bl",
+          "amount": 95.0
+        },
+        "THC_O": {
+          "basis": "per_container",
+          "amount": {
+            "20DV": 260.0,
+            "40HC": 340.0
+          }
+        },
+        "SEAL": {
+          "basis": "per_container",
+          "amount": 18.0
+        },
+        "DET": {
+          "basis": "per_container",
+          "amount": 0.0
+        }
+      },
+      "overweight": {
+        "threshold_kg": 20000,
+        "amount": {
+          "20DV": 120.0,
+          "40HC": 150.0
+        }
+      },
+      "detention": {
+        "free_days": 7,
+        "tiers": [
+          {
+            "from_day": 1,
+            "to_day": 7,
+            "rate": {
+              "20DV": 75.0,
+              "40HC": 110.0
+            }
+          },
+          {
+            "from_day": 8,
+            "to_day": null,
+            "rate": {
+              "20DV": 130.0,
+              "40HC": 190.0
+            }
+          }
+        ],
+        "terminal_mode": {
+          "AEJEA-T1": "calendar",
+          "AEJEA-T2": "working",
+          "SAJED-KCT": "working",
+          "PKQCT-QICT": "calendar"
+        }
+      }
+    }
+  ]
+}

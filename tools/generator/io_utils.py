@@ -170,6 +170,19 @@ def _circular_text(c: Circular) -> str:
     )
 
 
+# ---------------------------------------------------------------- ledger ---
+def write_ledger(truth: dict, path: Path) -> None:
+    """AP ledger for a settled history month: what was actually paid per invoice
+    after the senior auditor's review (duplicates and unmatched pay 0.00, credit
+    notes are negative). Totals only; no lines, decisions or reasons."""
+    with path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f, lineterminator=LF)
+        w.writerow(["invoice_number", "vendor", "invoice_date", "currency", "paid_usd"])
+        for inv in truth["audit"]["invoices"]:
+            w.writerow([inv["invoice_number"], inv["vendor"], inv["invoice_date"],
+                        inv["currency"], f"{inv['approved_total_usd']:.2f}"])
+
+
 # ----------------------------------------------------------------- write ---
 def write_data(world: World, out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)

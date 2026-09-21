@@ -53,20 +53,25 @@ TERMINAL_SPEC = {
 class BatchSpec:
     """Everything that differs between batch A and batch B."""
 
-    def __init__(self, batch: Literal["a", "b"]):
+    # batch -> (year, first month, id sequence base, 40HC rate shift, closure offset)
+    # a, b: the audited batches (visible, hidden). h1, h2: two settled months of
+    # history that ship with the AP ledger, so every legacy-tool defect is
+    # observable in what was actually paid.
+    PARAMS = {
+        "a": (2024, 2, 2400, "0", 0),
+        "b": (2024, 8, 2490, "60", 1),
+        "h1": (2023, 9, 2310, "30", 2),
+        "h2": (2023, 12, 2350, "-30", 0),
+    }
+
+    def __init__(self, batch: str):
         self.batch = batch
-        if batch == "a":
-            self.year = 2024
-            self.m0 = 2                      # contract v1 month
-            self.seq = 2400
-            self.rate_shift = D("0")
-            self.closure_offset = 0
-        else:
-            self.year = 2024
-            self.m0 = 8
-            self.seq = 2490
-            self.rate_shift = D("60")        # different money, same structure
-            self.closure_offset = 1
+        year, m0, seq, shift, closure = self.PARAMS[batch]
+        self.year = year
+        self.m0 = m0                         # contract v1 month
+        self.seq = seq
+        self.rate_shift = D(shift)           # different money, same structure
+        self.closure_offset = closure
 
     def d(self, month_offset: int, day: int) -> date:
         """A date `month_offset` months after the batch's first month."""
@@ -223,7 +228,7 @@ def _sales_orders(s: BatchSpec, idx: int, n: int, total_kg: int) -> list[SalesOr
     return out
 
 
-def build_world(batch: Literal["a", "b"]) -> World:
+def build_world(batch: str) -> World:
     s = BatchSpec(batch)
     terminals = {
         code: Terminal(
@@ -352,7 +357,10 @@ def build_world(batch: Literal["a", "b"]) -> World:
 
     # -- b6 / b7: a container rolled to the next vessel after the ERP export ---
     b6 = add_booking(6, "NORDVIK", "USSAV-SAJED", 1, 22)
-    b7 = add_booking(7, "NORDVIK", "USSAV-SAJED", 1, 29)
+    # The receiving vessel sails in the NEXT month, so the roll moves the rolled
+    # container's BAF row. Without that, ignoring the roll would price
+    # identically, and no paid total could ever reveal that rolls matter.
+    b7 = add_booking(7, "NORDVIK", "USSAV-SAJED", 2, 3)
     add_container(6, 1, b6, "20DV", "SAJED-KCT", kg=15200)
     rolled = add_container(6, 2, b6, "20DV", "SAJED-KCT", kg=16400, act_booking=b7)
     add_container(7, 1, b7, "40HC", "SAJED-KCT", kg=18900)

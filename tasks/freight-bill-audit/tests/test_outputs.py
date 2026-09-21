@@ -70,7 +70,7 @@ def _c(x) -> Decimal:
 
 @pytest.mark.parametrize("batch", BATCHES)
 def test_schema_audit_json(batch):
-    """audit.json follows policy §8.1: invoices sorted, lines numbered from 1."""
+    """audit.json follows policy §7.1: invoices sorted, lines numbered from 1."""
     audit = _audit(batch)
     assert {"batch", "invoices"} <= set(audit)
     numbers = [i["invoice_number"] for i in audit["invoices"]]
@@ -82,7 +82,7 @@ def test_schema_audit_json(batch):
 
 @pytest.mark.parametrize("batch", BATCHES)
 def test_schema_landed_cost_csv(batch):
-    """landed_cost.csv has the exact §8.2 header and one sorted row per register sales order."""
+    """landed_cost.csv has the exact §7.2 header and one sorted row per register sales order."""
     rows = _landed(batch)
     assert rows, "landed_cost.csv is empty"
     assert list(rows[0]) == ["sales_order", "ocean_freight", "surcharges",
@@ -93,7 +93,7 @@ def test_schema_landed_cost_csv(batch):
 @pytest.mark.parametrize("batch", BATCHES)
 def test_invoices_matching_and_status(batch):
     """Every invoice is present with the right vendor, status, duplicate_of and
-    matched bookings (policy §2 mapping, §5, §6)."""
+    matched bookings (policy §4, §5)."""
     truth, agent = _by_number(_truth(batch)["audit"]), _by_number(_audit(batch))
     assert set(agent) == set(truth)
     for n, t in truth.items():
@@ -106,7 +106,7 @@ def test_invoices_matching_and_status(batch):
 
 @pytest.mark.parametrize("batch", BATCHES)
 def test_line_amounts_and_decisions(batch):
-    """Per line: billed (USD), expected, variance, decision and reason equal truth (§3, §4)."""
+    """Per line: billed (USD), expected, variance, decision and reason equal truth (§2, §3)."""
     truth, agent = _by_number(_truth(batch)["audit"]), _by_number(_audit(batch))
     for n, t in truth.items():
         a = agent[n]
@@ -121,7 +121,7 @@ def test_line_amounts_and_decisions(batch):
 
 @pytest.mark.parametrize("batch", BATCHES)
 def test_landed_cost(batch):
-    """Per sales order and category, allocated USD equals truth to the cent (§7)."""
+    """Per sales order and category, allocated USD equals truth to the cent (§6)."""
     truth = _truth(batch)["landed_cost"]
     for r in _landed(batch):
         t = truth[r["sales_order"]]
@@ -150,7 +150,7 @@ def test_trap(batch, trap):
 @pytest.mark.parametrize("batch", BATCHES)
 def test_reconciliation(batch):
     """Each invoice's approved total is the sum of its approved lines, and the
-    batch's landed cost equals its approved total to the cent (§4, §7)."""
+    batch's landed cost equals its approved total to the cent (§3, §6)."""
     approved = Decimal("0")
     for inv in _audit(batch)["invoices"]:
         lines = sum((_c(l["billed_amount"]) if l["decision"] == "APPROVE"

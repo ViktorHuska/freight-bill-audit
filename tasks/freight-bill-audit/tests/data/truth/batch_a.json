@@ -1064,12 +1064,12 @@
         "vendor": "NORDVIK"
       },
       {
-        "approved_total_usd": 7195.0,
+        "approved_total_usd": 7231.0,
         "currency": "USD",
         "duplicate_of": null,
         "invoice_date": "2024-04-12",
         "invoice_number": "NOR-A-0123",
-        "invoice_total_usd": 7195.0,
+        "invoice_total_usd": 7231.0,
         "lines": [
           {
             "billed_amount": 2180.0,
@@ -1084,13 +1084,13 @@
             "variance": 0.0
           },
           {
-            "billed_amount": 298.0,
-            "billed_amount_original": 298.0,
+            "billed_amount": 310.0,
+            "billed_amount_original": 310.0,
             "bl_number": "NOR2407BL",
             "charge_code": "BAF",
             "container_no": "NVKU2406200",
             "decision": "APPROVE",
-            "expected_amount": 298.0,
+            "expected_amount": 310.0,
             "line_no": 2,
             "reason": "OK",
             "variance": 0.0
@@ -1132,13 +1132,13 @@
             "variance": 0.0
           },
           {
-            "billed_amount": 596.0,
-            "billed_amount_original": 596.0,
+            "billed_amount": 620.0,
+            "billed_amount_original": 620.0,
             "bl_number": "NOR2407BL",
             "charge_code": "BAF",
             "container_no": "NVKU2407100",
             "decision": "APPROVE",
-            "expected_amount": 596.0,
+            "expected_amount": 620.0,
             "line_no": 6,
             "reason": "OK",
             "variance": 0.0
@@ -1382,36 +1382,36 @@
       "accessorials": 182.47,
       "detention": 0.0,
       "ocean_freight": 1222.07,
-      "surcharges": 167.05,
-      "total": 1571.59
+      "surcharges": 173.78,
+      "total": 1578.32
     },
     "SO-2481": {
       "accessorials": 143.03,
       "detention": 0.0,
       "ocean_freight": 957.93,
-      "surcharges": 130.95,
-      "total": 1231.91
+      "surcharges": 136.22,
+      "total": 1237.18
     },
     "SO-2488": {
       "accessorials": 172.44,
       "detention": 0.0,
       "ocean_freight": 1441.63,
-      "surcharges": 253.45,
-      "total": 1867.52
+      "surcharges": 263.66,
+      "total": 1877.73
     },
     "SO-2489": {
       "accessorials": 135.17,
       "detention": 0.0,
       "ocean_freight": 1130.06,
-      "surcharges": 198.68,
-      "total": 1463.91
+      "surcharges": 206.68,
+      "total": 1471.91
     },
     "SO-2490": {
       "accessorials": 97.89,
       "detention": 0.0,
       "ocean_freight": 818.31,
-      "surcharges": 143.87,
-      "total": 1060.07
+      "surcharges": 149.66,
+      "total": 1065.86
     }
   },
   "trap_index": {

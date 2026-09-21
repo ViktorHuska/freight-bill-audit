@@ -104,9 +104,11 @@ def selfcheck(world, invs, truth: dict) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--batch", choices=["a", "b"], required=True)
+    ap.add_argument("--batch", choices=["a", "b", "h1", "h2"], required=True)
     ap.add_argument("--data-out", type=Path, required=True)
     ap.add_argument("--truth-out", type=Path, required=True)
+    ap.add_argument("--ledger", action="store_true",
+                    help="history batch: also write ap_ledger.csv (what AP paid per invoice)")
     args = ap.parse_args()
 
     spec = BatchSpec(args.batch)
@@ -119,7 +121,13 @@ def main() -> None:
         shutil.rmtree(args.data_out)
     io_utils.write_data(world, args.data_out)
     render.write_pdfs(invs, args.data_out / "invoices")
-    shutil.copy(POLICY_SRC, args.data_out / "policy.md")
+    if args.ledger:
+        # History ships the settled outcome only: one paid total per invoice,
+        # never line-level decisions. That is all AP's ledger would hold, and it
+        # keeps the evidence sparse enough that defects have to be reasoned out.
+        io_utils.write_ledger(truth, args.data_out / "ap_ledger.csv")
+    else:
+        shutil.copy(POLICY_SRC, args.data_out / "policy.md")
 
     args.truth_out.parent.mkdir(parents=True, exist_ok=True)
     args.truth_out.write_text(json.dumps(truth, indent=2, sort_keys=True) + "\n",
