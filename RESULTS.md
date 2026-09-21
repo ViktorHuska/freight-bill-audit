@@ -230,12 +230,40 @@ fees counted once per invoice instead of once per B/L."* It then replayed
 all four settled months as regression tests and reproduced **44/44**
 historical payments exactly.
 
-### What three iterations show
+### Iteration 4: v4 plus hidden-only cases and scanned statements @ `3154205`, 2026-09-21
 
-| | v2 | v3 | v4 |
-|---|---|---|---|
-| Difficulty lever | conflicting sources, precedence stated | doctrine hidden; repair a legacy tool against a sparse ledger | plus authoritative documents, month-specific data errors, an expert notice rule |
-| Codex | 3/3, 19 min | 3/3, 16 min | 3/3, 18.5 min |
+Two levers were added, both aimed at weaknesses the earlier trajectories had
+not yet tested:
+- **Hidden-batch-only cases (T15, T16 and two more).** None of these occur in
+  batch A or the history, and each is defined in the documents. They are:
+  two sailing amendments for one booking whose file order contradicts their
+  date order; a EUR sailing on a Sunday (the FX rate falls back to the
+  previous fixing); a per-shipment ISPS fee billed per container; and a
+  weighbridge weight *below* the overweight threshold where the register says
+  above. The hypothesis was that LLM-written code is wrong on paths the
+  visible data never exercises.
+- **Scanned statements.** The forwarder's invoices are image-only PDFs with
+  skew and speckle, so they need OCR (tesseract, in both images). The oracle
+  reconciles every scan against its printed subtotals.
+
+| Agent | Trials | Reward | Wall time | Job |
+|---|---|---|---|---|
+| codex gpt-5.6-sol xhigh | 3 | **1.0 / 1.0 / 1.0** (42 passed, 2 skipped each) | 19 min 40 s | `jobs/2026-09-21__10-10-12-codex` |
+
+**The hypothesis was wrong for this model.** The agent's `audit.py`
+recognises `"per shipment"`, a phrase that never occurs in the visible data,
+because it built its parser from the agreement's vocabulary rather than from
+examples. It orders notices by `(notice_date, file name)`, exactly as the
+policy states. It OCR'd both scanned statements and reconciled all 44
+historical payments, scans included, before it finished. It generalises from
+the documents, not from the data it happens to see.
+
+### What four iterations show
+
+| | v2 | v3 | v4 | v4 final |
+|---|---|---|---|---|
+| Difficulty lever | conflicting sources, precedence stated | doctrine hidden; repair a legacy tool against a sparse ledger | plus authoritative documents, month-specific data errors, an expert notice rule | plus hidden-only cases and OCR'd scans |
+| Codex | 3/3, 19 min | 3/3, 16 min | 3/3, 18.5 min | 3/3, 19.7 min |
 
 Each lever was taken from a pattern in merged TB3 Operations tasks, and
 each was verified to be well specified before any trial ran. None of them
