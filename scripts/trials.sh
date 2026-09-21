@@ -28,7 +28,9 @@ fi
 N="${N_CONCURRENT:-$ATTEMPTS}"
 # Unique job dir per run: two runs launched in the same second would otherwise
 # collide on Harbor's timestamp-based default name.
-JOB="$(date +%Y-%m-%d__%H-%M-%S)-${1:-x}$([ "${CHEAT:-0}" = "1" ] && echo -cheat)"
+SUFFIX=""
+if [ "${CHEAT:-0}" = "1" ]; then SUFFIX="-cheat"; fi
+JOB="$(date +%Y-%m-%d__%H-%M-%S)-${1:-x}${SUFFIX}"
 
 case "${1:-}" in
   codex)
