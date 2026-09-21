@@ -69,8 +69,8 @@ Four layers, each taken from a pattern in merged TB3 Operations tasks:
    - it skips the scanned statements
 
    The only feedback is what AP posted per invoice at each run of four
-   settled months, as totals. The
-   ERP keying errors differ every month, so nothing can be hardcoded.
+   settled months, as totals. The ERP keying errors differ every month, so
+   nothing can be hardcoded.
 3. **Domain rules that only a careful expert applies.**
    - Terminals keep their own weekends (Jeddah's is Friday/Saturday).
    - The US-trade notice clause: a rate increase takes effect no earlier

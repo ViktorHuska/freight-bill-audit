@@ -335,6 +335,50 @@ policy states. It OCR'd both scanned statements and reconciled all 44
 historical payments, scans included, before it finished. It generalises from
 the documents, not from the data it happens to see.
 
+### Iteration 5: v5, the month as it happens (payment runs) @ `9e5503f`, 2026-09-21
+
+The earlier analysis pointed at one lever none of the designs had yet used:
+evidence that cannot be taken in one pass. v5 applies the pattern of the
+merged `freight-dispatch-shift` task (a cutoff-scoped event feed with
+irreversible commits):
+- **Partial observability.** Invoices, notices and terminal move-log exports
+  arrive in dated inbox folders. AP pays at 11 to 12 runs a month (Fridays and
+  month-end). The tool makes one run per call and keeps its own state; the
+  verifier stages batch B's inbox run by run, so the future does not exist
+  when a run is made.
+- **Irreversible postings.** Detention invoices are held until the terminal
+  reports the empty return. Payments are final: late evidence (a weighbridge
+  row after an overweight line was short-paid on the register weight, a roll
+  advice the day after the receiving booking's invoice was paid) must be
+  settled by an ADJUSTMENT: a supplementary payment or, in hidden batch B
+  only, a recovery claim.
+- **Allocation fixed at posting time.** Each posting is allocated on the
+  facts on file when it is made and never re-allocated. A month-end
+  recomputation with full knowledge gives a different landed cost.
+
+Rejected on the way: making every invoice a degraded scan. A calibration
+sweep with the task's own tesseract showed a cliff, not a slope. Up to
+moderate blur and JPEG noise, naive OCR misread **0 of 173** key fields; at
+heavy degradation it misread 8%, and no preprocessing recovered them. At that
+point the information is destroyed rather than hard to read, so the
+difficulty would have come from noise, not skill.
+
+Before any trial: the oracle matched the truth at every one of the 12 runs of
+A and B, and reproduced all 52 history postings exactly (`tools/replay_check.py`).
+Oracle 1.0 (46 passed), nop 0.0, static checks 25/25.
+
+| Agent | Trials | Reward | Wall time | Job |
+|---|---|---|---|---|
+| codex gpt-5.6-sol xhigh | 3 | **1.0 / 1.0 / 1.0** | 30 min 9 s for the whole job | `jobs/2026-09-21__17-29-18-codex` |
+
+**How it solved it.** The same way as before, with more work: codex built the
+stateful tool, then replayed all four settled months through it and
+reproduced **52/52 historical postings** before finishing. One trial also
+re-ran its runs to prove they were idempotent. The history ledger, which is
+what makes the undocumented pricing rules fair to discover, is also a
+complete regression test for the new run-by-run rules. v5 moved codex's
+solve time from about 20 minutes to 30, and nothing else.
+
 ### What four iterations show
 
 | | v2 | v3 | v4 | v4 final |
