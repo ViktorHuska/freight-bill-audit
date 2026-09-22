@@ -1,61 +1,17 @@
 # terminal-bench/freight-bill-audit
 
-<!-- Write the four sections below yourself: TB3 requires them to be written
-     completely by a human. One to three sentences each. The bullet notes in
-     each comment are what the section must cover; replace the comment with
-     your prose. -->
-
 ## Difficulty explanation
 
-<!-- Cover:
-     - The real job: a freight auditor at an exporter's sales office checking
-       carrier and forwarder invoices before accounts payable releases them.
-     - The core challenge: the ERP register is stale, and the correct facts are
-       in other sources (carrier notices, the terminal move log, tariff
-       circulars). The agent has to reconstruct them, and one wrong fact
-       cascades: a sailing amendment moves the contract version, the surcharge
-       month and the FX date together.
-     - One real domain fact: terminals have their own weekends (Jeddah runs
-       Fri/Sat), which a Mon-Fri assumption gets wrong.
-     - Two legitimate charges that look wrong, so disputing everything fails.
-     - The tool must generalise to an unseen batch.
-     - One sentence on provenance: the data is synthetic, modelled on real
-       ocean-freight invoices, tariffs and terminal practice.
-     - One sentence on who does this in reality, and why a junior AP clerk
-       gets it wrong where an experienced auditor does not.
-     - No trial results or pass rates (the rubric forbids them). -->
+This is the monthly work of a freight auditor at an exporter's international sales office: checking every carrier and forwarder invoice before accounts payable pays it, and booking what is paid to the sales orders it belongs to. The ERP register is stale, so the facts that decide a charge have to be rebuilt from other sources: carrier notices, the terminal move log, tariff circulars and the signed rate agreements. One wrong fact cascades; a sailing amendment alone moves the contract version, the surcharge month and the FX date. The pricing rules are not written down. They have to be recovered by comparing the desk's flawed legacy tool with what AP actually paid in four settled months. Some rules only a careful expert applies: terminals keep their own weekends (Jeddah's is Friday and Saturday), a rate increase takes effect no earlier than 30 days after publication, and some charges that look wrong are legitimate. The month is also audited as it happens. Evidence arrives day by day, each payment run may use only what is on file by then, payments are final, and late evidence has to be settled with adjustments. The data is synthetic, modelled on real ocean-freight invoices, tariffs and terminal practice. A junior AP clerk pays what the register supports; an experienced auditor knows which source controls each fact and when it became known.
 
 ## Solution explanation
 
-<!-- Cover, as a summary, not a walkthrough:
-     - solution/audit.py: pdfplumber parsers for three vendor layouts (US
-       numbers, European numbers, grouped by B/L).
-     - First establish the facts: apply notices by date over the register, and
-       take the move log over the register for dates and weights.
-     - Then price by policy section 3 (contract version by sailing date,
-       circulars, minimum floor, index month, per-terminal working days, FX at
-       the sailing-date fixing), decide by the section 4 table, and allocate by
-       exact fractions plus the largest-remainder method.
-     - How long it took you once the rules were clear (the evidence for
-       expert_time_estimate_hours = 3). -->
+`solution/audit.py` makes one payment run per call and keeps its state between runs. It reads only the inbox folders dated on or before the run date. It establishes the facts first: notices are applied in date order over the register, and the latest terminal move log wins for gate dates and weights. It prices each line under policy section 2: the contract version by sailing date, parsed from the signed agreement PDF; tariff circulars under the 30-day notice clause; the ocean-freight minimum; the index month; detention in each terminal's own working days; and FX at the sailing-date fixing. The forwarder's scanned statements are read with OCR and checked against their printed subtotals. Each line is decided by the section 3 table. Detention invoices are held until the terminal reports the empty return. A first decision posts a PAYMENT, and any later change posts an ADJUSTMENT. Each posting is allocated on the facts known when it is made, using exact fractions and the largest-remainder method. Once the rules are clear, a domain expert needs about three hours to write this.
 
 ## Verification explanation
 
-<!-- Cover:
-     - A separate verifier image bakes in hidden batch B and the truth for both
-       batches.
-     - test.sh makes the truth root-only, then runs the agent's tool on batch B
-       as an unprivileged user.
-     - Tests compare, exactly at cents, the status, matching, every line's
-       amounts, decision and reason, and the landed cost. Exact comparison is
-       fair because the policy fixes the rounding point and the tie-break.
-     - Per-trap tests exist so failures can be attributed; reward is binary.
-     - Truth is computed twice, independently (generator and oracle), and the
-       two agree on both batches.
-     - Why a hand-written answer for batch A scores 0. -->
+A separate verifier image bakes in hidden batch B and the ground truth for both batches. `test.sh` makes the truth and batch B's inbox readable by root only. It then replays batch B's payment runs through the agent's unchanged `audit.py`, running it as an unprivileged user and staging before each run only the inbox folders that have arrived by that date, so the tool cannot see the future. The tests compare exactly, to the cent, every run's postings and held invoices. After the last run they compare each invoice's status, matching and paid-to-date; every line's amounts, decision and reason; and the landed cost per sales order. Exact comparison is fair because the policy fixes the rounding point and the tie-break. Per-trap tests make failures attributable, and the reward is binary. The truth is computed twice, independently: by the data generator and by the reference solution, which agree at every run of both batches and reproduce all four history ledgers. A hand-written answer for batch A scores 0, because batch B is a different month with different rates, keying errors and hidden-only cases.
 
 ## Relevant experience
 
-<!-- Your own words: the export-sales-office internship, the freight-bill and
-     shipping-document work you did there, and what an auditor there actually
-     checks. -->
+I was doing my internship at Mueller Industries' International Sales Division office for 4 months. I was creating an automated workflow that consolidated related shipping invoices, bills of lading and statements of account (SOAs) together into one merged file with companies like XPI Services, V Alexander, Expeditors, Robinson International.
