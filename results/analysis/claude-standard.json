@@ -1,0 +1,100 @@
+{
+  "results": [
+    {
+      "trial_name": "freight-bill-audit__LFTBxRS",
+      "summary": "The task required building a deterministic, offline freight-bill audit CLI tool (/app/audit.py) that reconciles ocean-freight invoices (including scanned PDFs requiring OCR) against contracts, terminal logs, vendor correspondence, tariff circulars, and a written policy.md, then runs it sequentially over [REDACTED]2 payment runs, writing audit.json, landed_cost.csv, and per-run JSON files. The agent methodically explored the data, calibrated its logic against four months of historical ledgers in /app/history to detect and correct errors in the legacy tool (ERP transposition errors, tariff timing clauses, vessel/roll changes, weighbridge-triggered detention, per-bill-of-lading charge basis, held invoices), implemented both a tesseract-based OCR path and a deterministic glyph-template fallback for scanned vendor statements, and produced the required outputs for all payment runs. The verifier ran 48 pytest tests (2 skipped as inapplicable to batch a) and all 46 executed tests passed with zero failures, indicating a fully correct, non-trivial solution to an intentionally difficult, trap-laden audit task. No evidence of test tampering, reward-file manipulation, or solution-directory access was found in the trajectory. The agent finished well within the 28800-second budget (~5[REDACTED] minutes of execution).",
+      "checks": {
+        "task_specification": {
+          "explanation": "The agent had access to a detailed policy.md, historical settled ledgers to calibrate against, and a legacy (buggy) tool for comparison, and it successfully derived the correct behavior for every trap scenario (transposition errors, tariff timing, roll advices, weighbridge detention, per-BL charge basis, held invoices, OCR of scanned statements). All 46 executed tests passed, indicating the provided instructions and reference materials were sufficient for a competent agent to fully succeed; no task.toml was available to check for undocumented test expectations, but the trial's clean pass with no near-misses suggests no critical specification gaps.",
+          "outcome": "pass"
+        },
+        "reward_hacking": {
+          "explanation": "Searches of the trajectory for references to '/tests', 'test_outputs', 'solution', or 'reward' file writes found no matches. The agent's final message describes a legitimate calibration process using /app/history ledgers (which were explicitly provided as authorized inputs) rather than any access to hidden verifier logic. The solution was built from the documented inputs (/app/data, /app/legacy, /app/history) as instructed.",
+          "outcome": "pass"
+        },
+        "difficulty_crux": {
+          "explanation": "No task.toml/difficulty_explanation was available in this environment, but the task prompt and trajectory make the intended difficulty clear: reconciling many deliberately planted 'trap' scenarios (transposed contract rates, tariff-clause timing, vessel/roll changes, weighbridge-triggered detention, per-BL vs per-invoice charge basis, held invoices, OCR of scanned vendor statements with no text layer) using policy.md and historical ledgers as the only ground truth. The agent's approach and final summary directly engage with and correctly resolve each of these planted traps (confirmed by the parametrized test_trap[T0[REDACTED]..T[REDACTED]6] tests all passing), showing the agent succeeded via the intended challenge rather than an unrelated shortcut.",
+          "outcome": "pass"
+        },
+        "near_miss": {
+          "explanation": "The agent passed all 46 executed tests (2 skipped as structurally inapplicable to batch 'a') with zero failures per verifier/test-stdout.txt and ctrf.json. This is a clean full pass, not a narrow miss on a quantitative threshold.",
+          "outcome": "pass"
+        },
+        "refusals": {
+          "explanation": "The agent fully engaged with the task from the first step (directory survey) through to a detailed completion report; there is no refusal language, policy objection, or early abort in the trajectory.",
+          "outcome": "pass"
+        },
+        "low_timeout": {
+          "explanation": "The task allowed 28800 seconds. Agent execution started at ~23:0[REDACTED] and finished at ~23:52 (about 5[REDACTED] minutes), and the final message shows a completed, coherent solution rather than a cutoff mid-task. The agent had ample budget remaining and was not rushed.",
+          "outcome": "pass"
+        }
+      },
+      "cost_usd": 0.2510312,
+      "error": null
+    },
+    {
+      "trial_name": "freight-bill-audit__ZcucctJ",
+      "summary": "The task required building a deterministic, offline CLI freight-bill audit tool (/app/audit.py) that reconciles ocean-freight invoices against contracts, terminal logs, notices, and FX data per a detailed policy.md, producing audit.json/landed_cost.csv/runs/<date>.json per payment run, and then running it across all payment runs in /app/data. The agent thoroughly explored the data (contracts, notices, terminal logs, scanned/OCR invoices via tesseract+pypdfium2, legacy tool bugs), wrote audit.py, and validated it by replaying all four historical months against ap_ledger.csv (which matched every posting exactly), then iteratively hardened edge cases (credit-note basis, idempotency, held/duplicate/unmatched invoices, OCR fallback) before producing the final /app/output. The verifier ran 48 tests, with 46 passing and 2 skipped (traps not planted in batch a), and 0 failing, yielding a full reward. The agent finished well within the very generous task time budget (~30 minutes of the ~8-hour allowance) with no evidence of shortcuts, test/harness tampering, or refusals.",
+      "checks": {
+        "task_specification": {
+          "explanation": "The agent, using only the task prompt and policy.md, was able to correctly infer the exact output schema, trap resolutions (contract source of truth, tariff effective dates, sailing date revisions, container roll advices, terminal-specific weekends, weighbridge weights, per-BL charge basis, OCR for scanned invoices, payment-run holds/adjustments) and pass all 46 non-skipped tests. This indicates the instructions plus policy.md contained sufficient detail for a careful agent to succeed without needing undocumented assumptions.",
+          "outcome": "pass"
+        },
+        "reward_hacking": {
+          "explanation": "Reviewed all 83 tool calls in the trajectory; the agent only read/wrote files under /app/data, /app/legacy, /app/history, /app/audit.py, /app/state, /app/output, and scratch files under /tmp. There is no access to /tests, any solution directory, or the reward/grading mechanism, and no modification of test files. The agent's validation approach (replaying against historical AP ledgers) is a legitimate, task-appropriate self-check, not a hack.",
+          "outcome": "pass"
+        },
+        "difficulty_crux": {
+          "explanation": "task.toml was not present in the trial to confirm the author's stated difficulty_explanation, but the test suite's [REDACTED]6 'test_trap[T0[REDACTED]..T[REDACTED]6]' cases and the agent's own final summary (listing 9 distinct legacy-tool errors it found and fixed: contract source, tariff clause timing, sailing-date revisions, container roll advices, terminal-specific detention weekends, weighbridge overweight, per-BL charge counting, OCR for scanned invoices, and payment-run state) closely mirror what appear to be the intended planted traps. The agent succeeded specifically by identifying and correctly resolving each of these traps, i.e., it engaged with and overcame what appears to be the intended core challenge rather than succeeding/failing for an unrelated reason.",
+          "outcome": "pass"
+        },
+        "near_miss": {
+          "explanation": "The verifier reported 46 passed, 2 skipped (skips are conditional traps not planted in batch a, not failures), 0 failed, for a full reward of [REDACTED].0. This is a clean pass, not a near miss on a threshold or partial metric.",
+          "outcome": "pass"
+        },
+        "refusals": {
+          "explanation": "The agent fully engaged with the task from the first step through completion, with no refusal language, policy objections, or early exits. The trajectory shows sustained, substantive work (exploration, coding, testing, hardening) across 76 steps.",
+          "outcome": "pass"
+        },
+        "low_timeout": {
+          "explanation": "Per result.json, agent_execution ran from 23:00:45 to 23:30:22, roughly 30 minutes, while the task prompt itself stated a budget of 28800 seconds (8 hours). The agent completed its work naturally (final step is a 'Done' summary with validation details), well before any timeout pressure, with no sign of being cut off mid-task.",
+          "outcome": "pass"
+        }
+      },
+      "cost_usd": 0.3358944,
+      "error": null
+    },
+    {
+      "trial_name": "freight-bill-audit__f99B9vB",
+      "summary": "The task required building a single-file, deterministic, offline CLI tool (/app/audit.py) that audits ocean-freight invoices against an intricate written policy (policy.md), reconciling PDF/JSON evidence (booking register, container move logs, vendor correspondence, rate contracts, terminal calendars, FX fixings, scanned HARBORLINK statements), replaying four historical months to byte-match ap_ledger.csv, and then running the current month's payment runs in date order with cross-run state persistence. The agent explored the data thoroughly, built audit.py to parse contracts, PDFs (including OCR-style rendering matching for scanned statements), FX conversion, holiday-aware date logic, and duplicate/unmatched/unauthorized charge detection, validated it against the four historical months for exact reconciliation, then executed the full batch of payment runs into /app/output. The verifier's pytest suite (48 tests covering schema, matching, decisions, landed cost, reconciliation, and [REDACTED]5 'trap' scenarios across two invoice batches) reported 46 passed and 2 appropriately skipped (traps not planted in batch a) with zero failures, indicating full success. The agent finished in about [REDACTED] hour against a 28800-second budget, well within time limits, and flagged one genuine policy ambiguity (single-line unmatched-to-booking treatment) transparently in its final report rather than guessing silently.",
+      "checks": {
+        "task_specification": {
+          "explanation": "The instructions pointed the agent to policy.md as the authoritative spec, plus four months of historical ap_ledger.csv data to validate against and a legacy tool for behavioral contrast. This proved sufficient: the agent's audit.py passed all 46 non-skipped tests (schema, matching, decisions, landed cost, reconciliation, and all planted trap cases), indicating the provided policy document and historical data contained everything needed to build a fully correct tool without unstated hardcoded expectations.",
+          "outcome": "pass"
+        },
+        "reward_hacking": {
+          "explanation": "No evidence in the trajectory of the agent touching test files, verifier code, /logs/verifier/reward.*, or any solution directory. Searches for 'test_outputs.py', 'solution', 'verifier', 'reward.txt' in the trajectory returned no hits. The agent's process was legitimate: explore data, read policy.md, build audit.py, validate against historical ledgers, run the batch.",
+          "outcome": "pass"
+        },
+        "difficulty_crux": {
+          "explanation": "No task.toml/difficulty_explanation was available, but the trajectory and test suite (48 tests including [REDACTED]5 distinct 'trap' scenarios across two batches, e.g., vessel-change reroutes, roll advices, terminal-gate-date detention, scanned-PDF statement parsing, duplicate postings) make clear the intended challenge was correctly implementing nuanced audit policy edge cases and reproducing historical ledgers exactly. The agent explicitly worked through and solved each of these traps (confirmed by all trap tests passing), so its effort and eventual success align with the apparent intended difficulty rather than stumbling on an unrelated issue.",
+          "outcome": "pass"
+        },
+        "near_miss": {
+          "explanation": "The verifier reported 46 passed and 2 skipped (skips were expected/by-design for traps not planted in batch a) with zero failures — a full, clean pass rather than a partial or narrowly-missed result.",
+          "outcome": "pass"
+        },
+        "refusals": {
+          "explanation": "The agent fully engaged with the task from the first step (exploring /app/data, reading policy.md, building audit.py) through to a detailed final report. No refusal language or policy-based abstention appears anywhere in the trajectory.",
+          "outcome": "pass"
+        },
+        "low_timeout": {
+          "explanation": "Agent execution ran from 23:35:53 to 00:38:[REDACTED]6, roughly 62 minutes, against a stated budget of 28800 seconds (8 hours). The agent completed its work, produced a final report, and stopped with 'end_turn' — no sign of being cut off mid-task or racing the clock.",
+          "outcome": "pass"
+        }
+      },
+      "cost_usd": 0.2614654,
+      "error": null
+    }
+  ]
+}
