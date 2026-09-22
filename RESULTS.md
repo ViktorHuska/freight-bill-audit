@@ -7,7 +7,7 @@ backend. Harbor 0.23.0, installed with `uv tool install harbor`. (TB3 CI pins `0
 
 | | |
 |---|---|
-| Task version evaluated | **final: v5, commit `9e5503f`** (merged to `main` as `b3b9908`) for oracle, nop, all standard and all cheat trials in §3–§6. Earlier versions, including the v4 trials and cheat trials, are in *Iteration history*. |
+| Task version evaluated | **final: v5, commit `7f908ee`** (merged to `main` as `d395de7`) for oracle, nop, all standard and all cheat trials in §3–§6. Earlier versions, including the v4 trials and cheat trials, are in *Iteration history*. |
 | Artefacts in the repo | `jobs/` is git-ignored (full agent transcripts). `results/<job>/` keeps each final trial's grading evidence: `job_result.json`, and per trial `result.json`, `verifier/ctrf.json`, `verifier/reward.txt`, `verifier/batch_b_tool.log` (collected by `tools/collect_results.py`, which refuses any file matching a credential pattern). |
 | Harbor redaction note | Harbor treats every `--ae` value as a secret and scrubs it from the files it saves. `trials.sh` passes `CLAUDE_FORCE_OAUTH=1` / `CODEX_FORCE_AUTH_JSON=1`, so every literal `1` in a saved job file reads `[REDACTED]`: `reward.txt` shows `[REDACTED]` for a reward of 1, `result.json` shows `[REDACTED].0`, and some `ctrf.json` files no longer parse as JSON. Grading happens before the scrub and is unaffected; the tables below read the test counts, which contain no `1`s here (46 / 0 / 2). |
 | TB3 checks and prompts | `harbor-framework/terminal-bench` @ `2e5fd44` |
@@ -220,7 +220,7 @@ verbatim.
 
 ## Iteration history
 
-### Iteration 1: task v2 (source precedence) @ `f112776`, 2026-09-21
+### Iteration 1: task v2 (source precedence) @ `76ee26a`, 2026-09-21
 
 | Agent | Trials | Reward | Wall time | Job |
 |---|---|---|---|---|
@@ -272,7 +272,7 @@ Adding traps, rules, invoices or precision would not change this. It is
 still read-and-solve, and that kind of difficulty is exactly what
 `essential_difficulty` rejects.
 
-### Iteration 2: task v3 (repair a legacy tool against a settled AP ledger) @ `ae40ed9`, 2026-09-21
+### Iteration 2: task v3 (repair a legacy tool against a settled AP ledger) @ `33d15e0`, 2026-09-21
 
 v3 removed the pricing doctrine from the policy. Instead the agent gets the
 desk's legacy audit tool, which has four realistic defects, and two settled
@@ -295,7 +295,7 @@ from basis-keyed wording ("a `per_bl` charge…") to "a charge on a
 container / on a B/L". That wording is ambiguous for the forwarder's per-B/L
 fee, which is printed against a container. Both agents allocated it to the
 named container: $110/2 × 37/87 = $23.40 on SO-2452, exactly the reported
-diff. Fixed in `cbb4201`. **Counting honestly, codex solved v3 3/3.**
+diff. Fixed in `34cb0d5`. **Counting honestly, codex solved v3 3/3.**
 
 **How it solved it (`LMo4gtm`, 16 commands).** It did exactly what the
 design demands. It ran the legacy tool on both history months, diffed the
@@ -314,7 +314,7 @@ model already has the freight-audit background to act on it. With five
 rules, eleven invoices per month and totals that can be diffed with a
 script, the whole search takes minutes.
 
-### Iteration 3: task v4 (signed agreements, keying errors, notice clause) @ `dbf4df7`, 2026-09-21
+### Iteration 3: task v4 (signed agreements, keying errors, notice clause) @ `b305411`, 2026-09-21
 
 v4 kept v3's design and added more domain depth:
 - **Signed agreements as the contract.** Each vendor's signed rate agreement
@@ -345,7 +345,7 @@ fees counted once per invoice instead of once per B/L."* It then replayed
 all four settled months as regression tests and reproduced **44/44**
 historical payments exactly.
 
-### Iteration 4: v4 plus hidden-only cases and scanned statements @ `3154205`, 2026-09-21
+### Iteration 4: v4 plus hidden-only cases and scanned statements @ `4385f61`, 2026-09-21
 
 Two levers were added, both aimed at weaknesses the earlier trajectories had
 not yet tested:
@@ -374,7 +374,7 @@ policy states. It OCR'd both scanned statements and reconciled all 44
 historical payments, scans included, before it finished. It generalises from
 the documents, not from the data it happens to see.
 
-### Iteration 5: v5, the month as it happens (payment runs) @ `9e5503f`, 2026-09-21
+### Iteration 5: v5, the month as it happens (payment runs) @ `7f908ee`, 2026-09-21
 
 The earlier analysis pointed at one lever none of the designs had yet used:
 evidence that cannot be taken in one pass. v5 applies the pattern of the
