@@ -7,3 +7,4 @@ __pycache__/
 jobs_*.log
 .exploit/
 .gen/
+scripts/.trials_run.sh

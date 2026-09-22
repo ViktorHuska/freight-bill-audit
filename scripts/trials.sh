@@ -9,6 +9,10 @@
 #   CHEAT=1 scripts/trials.sh codex    # 1 adversarial codex trial
 #   CHEAT=1 scripts/trials.sh claude   # 1 adversarial claude-code trial
 #
+# SETUP_TIMEOUT_MULT scales Harbor's 360 s agent-install limit only (not the
+# task's agent timeout). The v5 claude trials needed 3: the claude binary was
+# downloading at ~0.8 MB/s and every install timed out at 360 s.
+#
 # N_CONCURRENT (default 3) caps parallel trials; lower it for claude if the
 # subscription rate-limits (a rate-limited trial is an infra failure, not a
 # model failure, and must be rerun). Record every job dir in RESULTS.md.
@@ -45,12 +49,12 @@ OUT="$(pwd -W 2>/dev/null || pwd)/jobs"
 case "${1:-}" in
   codex)
     harbor run -p "$TASK" --agent codex --model openai/gpt-5.6-sol --env docker --yes \
-      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" -o "$OUT" \
+      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" -o "$OUT" --agent-setup-timeout-multiplier "${SETUP_TIMEOUT_MULT:-1}" \
       --ae CODEX_FORCE_AUTH_JSON=1 --ak reasoning_effort=xhigh ;;
   claude)
     : "${CLAUDE_CODE_OAUTH_TOKEN:?export CLAUDE_CODE_OAUTH_TOKEN (from: claude setup-token)}"
     harbor run -p "$TASK" --agent claude-code --model anthropic/claude-opus-5 --env docker --yes \
-      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" -o "$OUT" \
+      -k "$ATTEMPTS" -n "$N" --job-name "$JOB" -o "$OUT" --agent-setup-timeout-multiplier "${SETUP_TIMEOUT_MULT:-1}" \
       --ae CLAUDE_FORCE_OAUTH=1 --ae CLAUDE_CODE_OAUTH_TOKEN="$CLAUDE_CODE_OAUTH_TOKEN" \
       --ae CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000 --ak reasoning_effort=max ;;
   *) echo "usage: [CHEAT=1] [N_CONCURRENT=n] $0 codex|claude"; exit 1 ;;

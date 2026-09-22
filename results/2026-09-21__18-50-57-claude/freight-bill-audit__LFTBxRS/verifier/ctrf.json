@@ -1,0 +1,639 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "0.0.0",
+    "timestamp": "2026-09-2[REDACTED]T23:52:55.5[REDACTED][REDACTED]397+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.[REDACTED].[REDACTED]"
+        },
+        "summary": {
+            "tests": 48,
+            "passed": 46,
+            "failed": 0,
+            "skipped": 2,
+            "pending": 0,
+            "other": 0,
+            "start": [REDACTED]790034775423,
+            "stop": [REDACTED]7900347755[REDACTED]0
+        },
+        "environment": {
+            "buildName": "Pytest JSON CTRF Report",
+            "buildNumber": "000",
+            "buildUrl": "https://ctrf.io"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_payment_runs",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775450,
+                "stop": [REDACTED]79003477545[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_payment_runs",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]79003477545[REDACTED],
+                "stop": [REDACTED]790034775452,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_paid_to_date",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775452,
+                "stop": [REDACTED]790034775453,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_paid_to_date",
+                "status": "passed",
+                "duration": 0,
+                "start": [REDACTED]790034775454,
+                "stop": [REDACTED]790034775454,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_schema_audit_json",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775455,
+                "stop": [REDACTED]790034775456,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_schema_audit_json",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775456,
+                "stop": [REDACTED]790034775457,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_schema_landed_cost_csv",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775457,
+                "stop": [REDACTED]790034775458,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_schema_landed_cost_csv",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775458,
+                "stop": [REDACTED]790034775459,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_invoices_matching_and_status",
+                "status": "passed",
+                "duration": 2,
+                "start": [REDACTED]790034775459,
+                "stop": [REDACTED]79003477546[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_invoices_matching_and_status",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]79003477546[REDACTED],
+                "stop": [REDACTED]790034775462,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_line_amounts_and_decisions",
+                "status": "passed",
+                "duration": 2,
+                "start": [REDACTED]790034775462,
+                "stop": [REDACTED]790034775464,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_line_amounts_and_decisions",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775464,
+                "stop": [REDACTED]790034775465,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_landed_cost",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775466,
+                "stop": [REDACTED]790034775467,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_landed_cost",
+                "status": "passed",
+                "duration": 2,
+                "start": [REDACTED]790034775467,
+                "stop": [REDACTED]790034775469,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775469,
+                "stop": [REDACTED]790034775470,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775470,
+                "stop": [REDACTED]79003477547[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]79003477547[REDACTED],
+                "stop": [REDACTED]790034775472,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775472,
+                "stop": [REDACTED]790034775473,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775473,
+                "stop": [REDACTED]790034775474,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775474,
+                "stop": [REDACTED]790034775475,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775475,
+                "stop": [REDACTED]790034775476,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775476,
+                "stop": [REDACTED]790034775477,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775478,
+                "stop": [REDACTED]790034775479,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775479,
+                "stop": [REDACTED]790034775480,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775480,
+                "stop": [REDACTED]79003477548[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]79003477548[REDACTED],
+                "stop": [REDACTED]790034775482,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775482,
+                "stop": [REDACTED]790034775483,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775483,
+                "stop": [REDACTED]790034775484,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775484,
+                "stop": [REDACTED]790034775485,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775486,
+                "stop": [REDACTED]790034775487,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775487,
+                "stop": [REDACTED]790034775488,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775488,
+                "stop": [REDACTED]790034775489,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775490,
+                "stop": [REDACTED]79003477549[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]79003477549[REDACTED],
+                "stop": [REDACTED]790034775492,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775492,
+                "stop": [REDACTED]790034775493,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775493,
+                "stop": [REDACTED]790034775494,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775494,
+                "stop": [REDACTED]790034775495,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775495,
+                "stop": [REDACTED]790034775496,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": 0,
+                "start": [REDACTED]790034775497,
+                "stop": [REDACTED]790034775497,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775498,
+                "stop": [REDACTED]790034775499,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775499,
+                "stop": [REDACTED]790034775500,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": 2,
+                "start": [REDACTED]790034775500,
+                "stop": [REDACTED]790034775502,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "skipped",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775502,
+                "stop": [REDACTED]790034775503,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "('/tests/test_outputs.py', [REDACTED]78, 'Skipped: T[REDACTED]5 is not planted in batch a')"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775503,
+                "stop": [REDACTED]790034775504,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "skipped",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775505,
+                "stop": [REDACTED]790034775506,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "('/tests/test_outputs.py', [REDACTED]78, 'Skipped: T[REDACTED]6 is not planted in batch a')"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775506,
+                "stop": [REDACTED]790034775507,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_reconciliation",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775507,
+                "stop": [REDACTED]790034775508,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            },
+            {
+                "name": "test_outputs.py::test_reconciliation",
+                "status": "passed",
+                "duration": [REDACTED],
+                "start": [REDACTED]790034775508,
+                "stop": [REDACTED]790034775509,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ]
+            }
+        ]
+    }
+}

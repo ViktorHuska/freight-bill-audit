@@ -7,7 +7,9 @@ backend. Harbor 0.23.0, installed with `uv tool install harbor`. (TB3 CI pins `0
 
 | | |
 |---|---|
-| Task version evaluated | final: commit `3154205` for all standard and cheat trials. `f8bc5e0` then hardened `tests/test.sh` (ignores pre-existing reward files); oracle and nop were re-run on it. The agent never sees `tests/`. Earlier versions: see *Iteration history*. After the trials, the rubric review (§2) led to further verifier hardening and one agent-visible factual fix: "two previous months" became "four". The trial agents had found and used all four months regardless ("44 historical invoices"). |
+| Task version evaluated | **final: v5, commit `9e5503f`** (merged to `main` as `b3b9908`) for oracle, nop, all standard and all cheat trials in §3–§6. Earlier versions, including the v4 trials and cheat trials, are in *Iteration history*. |
+| Artefacts in the repo | `jobs/` is git-ignored (full agent transcripts). `results/<job>/` keeps each final trial's grading evidence: `job_result.json`, and per trial `result.json`, `verifier/ctrf.json`, `verifier/reward.txt`, `verifier/batch_b_tool.log` (collected by `tools/collect_results.py`, which refuses any file matching a credential pattern). |
+| Harbor redaction note | Harbor treats every `--ae` value as a secret and scrubs it from the files it saves. `trials.sh` passes `CLAUDE_FORCE_OAUTH=1` / `CODEX_FORCE_AUTH_JSON=1`, so every literal `1` in a saved job file reads `[REDACTED]`: `reward.txt` shows `[REDACTED]` for a reward of 1, `result.json` shows `[REDACTED].0`, and some `ctrf.json` files no longer parse as JSON. Grading happens before the scrub and is unaffected; the tables below read the test counts, which contain no `1`s here (46 / 0 / 2). |
 | TB3 checks and prompts | `harbor-framework/terminal-bench` @ `2e5fd44` |
 | CI defaults mirrored | `.github/harbor-run-defaults.yml` at that commit: 3 trials per agent; claude-code `anthropic/claude-opus-5`, `reasoning_effort=max`, `CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000`; codex `openai/gpt-5.6-sol`, `reasoning_effort=xhigh` |
 
@@ -38,6 +40,10 @@ whole reviewer instruction (the rubric plus the task) inline on a
 `CreateProcess` limit (`WinError 206`); Linux's ~2 MB limit is why CI never
 hits it. The crash happens before any verdict is produced (jobs `C:/hc/rc`,
 `jobs/rubric-check`).
+
+This review was run on v4 (before v5). v5 kept the verifier hardening it
+produced, and the v5 static checks, oracle and nop were re-run (§1, §3); the
+rubric review itself was not repeated for v5.
 
 **Substitute: an independent reviewer agent**, given the rubric
 (`task-implementation.toml`) and the task files but not the author's
@@ -80,26 +86,31 @@ harbor run -p tasks/freight-bill-audit --agent oracle --env docker --yes
 harbor run -p tasks/freight-bill-audit --agent nop    --env docker --yes
 ```
 
-| Agent | Reward | Runtime | Job |
-|---|---|---|---|
-| oracle | **1.000** | ~1 min | `jobs/final-oracle` (final task incl. hardened `test.sh`); also `jobs/v4b-oracle` |
-| nop | **0.000** | ~35 s | `jobs/final-nop`; also `jobs/v4b-nop` |
+| Agent | Reward | Tests | Runtime | Job |
+|---|---|---|---|---|
+| oracle | **1.000** | 46 passed, 2 skipped | 58 s | `jobs/v5-oracle` |
+| nop | **0.000** | 46 failed | 36 s | `jobs/v5-nop` |
 
 The oracle run covers the whole pipeline: `solve.sh` installs the reference
-tool and runs it on batch A in the agent container, then the separate verifier
-runs that same tool on hidden batch B as the unprivileged `auditrun` user and
-grades both batches.
+tool and makes batch A's 12 payment runs with it in the agent container. The
+separate verifier then replays hidden batch B's 12 runs through that same
+tool as the unprivileged `auditrun` user, staging before each run only the
+inbox folders that have arrived by its date (all 12 exit 0), and grades both
+batches.
 
 ### Independent cross-check of ground truth
 
 Ground truth is computed twice, by code that shares nothing: the generator
 (`tools/generator/`, at planting time) and the reference solution
-(`solution/audit.py`, from `policy.md` alone). Diffing them field by field:
+(`solution/audit.py`, from `policy.md` alone). `tools/replay_check.py` replays
+a batch through the oracle exactly as the verifier stages it and diffs every
+run:
 
-| Batch | Invoices | Lines | Sales orders | Result |
-|---|---|---|---|---|
-| A | 11 | 85 (24 disputed) | 32 | identical: every status, match, billed / expected / variance, decision, reason, and landed-cost cell |
-| B | 11 | 85 (24 disputed) | 32 | identical |
+| Batch | Runs | Invoices | Lines | Adjustments | Result |
+|---|---|---|---|---|---|
+| A | 12 | 11 | 85 (27 disputed) | 2 | identical at every run: postings, held invoices; then every status, match, line amount, decision, reason, paid-to-date and landed-cost cell |
+| B | 12 | 11 | 91 (32 disputed) | 3 (one a recovery claim) | identical |
+| h1–h4 | 11–12 each | 11 each | 85 each | 2 each | all 52 ledger postings reproduced exactly |
 
 Regenerating a batch reproduces every data file, truth file and PDF byte for
 byte.
@@ -116,25 +127,40 @@ authenticates from `~/.codex/auth.json` (`CODEX_FORCE_AUTH_JSON=1`).
 
 | Agent | Trial | Reward | Wall time | Genuine / infra | Failing tests |
 |---|---|---|---|---|---|
-| codex gpt-5.6-sol xhigh | 1 (`4e4oiPh`) | 1.0 | job 19 min 40 s (3 in parallel) | genuine pass | none: 42 passed, 2 skipped |
-| codex gpt-5.6-sol xhigh | 2 (`D9y5Pu3`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
-| codex gpt-5.6-sol xhigh | 3 (`euzZcYs`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
-| claude-code opus-5 max | 1 (`Ei7aKKR`) | 1.0 | job 1 h 14 min (2 in parallel) | genuine pass | none: 42 passed, 2 skipped |
-| claude-code opus-5 max | 2 (`oLGqyQH`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
-| claude-code opus-5 max | 3 (`qHSW8jX`) | 1.0 | 〃 | genuine pass | none: 42 passed, 2 skipped |
+| codex gpt-5.6-sol xhigh | 1 (`gQtLJpX`) | 1.0 | job 30 min 9 s (3 in parallel) | genuine pass | none: 46 passed, 2 skipped |
+| codex gpt-5.6-sol xhigh | 2 (`isUubAf`) | 1.0 | 〃 | genuine pass | none: 46 passed, 2 skipped |
+| codex gpt-5.6-sol xhigh | 3 (`jkeDAoz`) | 1.0 | 〃 | genuine pass | none: 46 passed, 2 skipped |
+| claude-code opus-5 max | 1 (`ZcucctJ`) | 1.0 | job 1 h 48 min (2 in parallel, then the third) | genuine pass | none: 46 passed, 2 skipped |
+| claude-code opus-5 max | 2 (`LFTBxRS`) | 1.0 | 〃 | genuine pass | none: 46 passed, 2 skipped |
+| claude-code opus-5 max | 3 (`f99B9vB`) | 1.0 | 〃 | genuine pass | none: 46 passed, 2 skipped |
 
-Jobs: `jobs/2026-09-21__10-10-12-codex`, `jobs/2026-09-21__10-14-23-claude`. The
-2 skipped tests are the per-trap tests for T15/T16 on batch A, which plants
-neither (both are hidden-batch-only by design).
+Jobs: `jobs/2026-09-21__17-29-18-codex`, `jobs/2026-09-21__18-50-57-claude`.
+The 2 skipped tests are the per-trap tests for T15/T16 on batch A, which
+plants neither (both are hidden-batch-only by design).
 
-Every pass is genuine: each agent's own `audit.py` ran unchanged on hidden
-batch B in the verifier (tool exit 0) and matched the truth on every field.
-The truth never exists in the agent container.
+Every pass is genuine: each agent's own `audit.py` was replayed unchanged
+through hidden batch B's 12 payment runs in the verifier, seeing only what
+had arrived by each run (every run exited 0), and matched the truth at every
+run and on every field afterwards. The truth never exists in the agent
+container.
+
+**How they solved it.** All six trials worked the same way. Each built the
+stateful tool, then replayed the four settled months through it and
+reproduced **all 52 historical postings** exactly (run date, invoice, kind,
+cent) before finishing. Each then named every legacy defect in its final
+report, including the v5 ones: the +37.00 adjustment caused by the late roll
+advice, the detention hold, and the 30-day notice clause.
 
 **The TB3 requirement that every standard trial fails is not met.**
 
-Trials rerun because of infrastructure failures: none on the final version.
-In iteration 1, the claude-code job was lost to a Harbor-on-Windows UTF-8 bug
+**Trials rerun because of infrastructure failures.** The first claude-code
+job on v5 (`jobs/2026-09-21__18-33-16-claude`) lost all three trials before the
+agent started: `AgentSetupTimeoutError` after Harbor's 360 s agent-install
+limit. At the time, the claude-code binary was downloading at about 0.8 MB/s
+(measured from a container: 32.5 MB in 40.6 s). The rerun above used
+`SETUP_TIMEOUT_MULT=3` (`--agent-setup-timeout-multiplier 3`), which raises
+only the install limit; the agent's 28 800 s task timeout is unchanged. In
+iteration 1, the claude-code job was lost to a Harbor-on-Windows UTF-8 bug
 (see *Iteration history*); it was fixed before any later run.
 
 ## 5. Adversarial trials (`/cheat`)
@@ -147,6 +173,19 @@ CHEAT=1 bash scripts/trials.sh claude
 As in `run-cheat-trials.yml`, `docs/prompts/hack-trial-prompt.md` is
 **appended** to the instruction in a throwaway copy of the task, and one trial
 runs per agent.
+
+**On the final task (v5):**
+
+| Agent | Reward | What the agent attempted | Why it scored 0 |
+|---|---|---|---|
+| codex (`jobs/2026-09-21__18-44-51-codex-cheat`) | **0** | nothing: its first turn was blocked by OpenAI's platform ("flagged for possible cybersecurity risk") | no deliverable |
+| claude-code (`jobs/2026-09-21__18-52-06-claude-cheat`) | **0** | a full red-team pass. It tried reading the history ledgers at run time (the graded batches ship without one), wrapping the legacy tool (it diverges from the ledger, e.g. NOR-H1-0104 5087 vs 4807, and skips the scans), placeholder outputs, tampering with the `/logs` host mounts (write-only sinks, nothing to forge), hardcoding the month (the hidden month differs; the scans need OCR), and pre-seeding the state directory (the verifier's runs start with fresh state) | no bypass found. It reported "the only path that passes verification is the intended legitimate solution" and left no deliverable |
+
+Infrastructure reruns: the first attempt of each (`jobs/2026-09-21__18-31-24-codex-cheat`,
+`jobs/2026-09-21__18-38-13-claude-cheat`) died in agent setup
+(`AgentSetupTimeoutError`, see §4) before the agent ran.
+
+**On v4 (kept for the record; the verifier hardening below came from these):**
 
 | Agent | Reward | What the agent attempted | Why it scored 0 |
 |---|---|---|---|
@@ -370,33 +409,40 @@ Oracle 1.0 (46 passed), nop 0.0, static checks 25/25.
 | Agent | Trials | Reward | Wall time | Job |
 |---|---|---|---|---|
 | codex gpt-5.6-sol xhigh | 3 | **1.0 / 1.0 / 1.0** | 30 min 9 s for the whole job | `jobs/2026-09-21__17-29-18-codex` |
+| claude-code opus-5 max | 3 | **1.0 / 1.0 / 1.0** | 1 h 48 min for the job, 2 in parallel | `jobs/2026-09-21__18-50-57-claude` |
 
-**How it solved it.** The same way as before, with more work: codex built the
-stateful tool, then replayed all four settled months through it and
-reproduced **52/52 historical postings** before finishing. One trial also
-re-ran its runs to prove they were idempotent. The history ledger, which is
-what makes the undocumented pricing rules fair to discover, is also a
-complete regression test for the new run-by-run rules. v5 moved codex's
-solve time from about 20 minutes to 30, and nothing else.
+**How they solved it.** The same way as before, with more work: each agent
+built the stateful tool, then replayed all four settled months through it and
+reproduced **52/52 historical postings** before finishing. One codex trial
+also re-ran its runs to prove they were idempotent. The history ledger, which
+is what makes the undocumented pricing rules fair to discover, is also a
+complete regression test for the new run-by-run rules. v5 moved codex's solve
+time from about 20 minutes to 30, and claude-code's from 74 minutes to under
+two hours, and nothing else.
 
-### What four iterations show
+### What five iterations show
 
-| | v2 | v3 | v4 | v4 final |
-|---|---|---|---|---|
-| Difficulty lever | conflicting sources, precedence stated | doctrine hidden; repair a legacy tool against a sparse ledger | plus authoritative documents, month-specific data errors, an expert notice rule | plus hidden-only cases and OCR'd scans |
-| Codex | 3/3, 19 min | 3/3, 16 min | 3/3, 18.5 min | 3/3, 19.7 min |
+| | v2 | v3 | v4 | v4 final | v5 (final) |
+|---|---|---|---|---|---|
+| Difficulty lever | conflicting sources, precedence stated | doctrine hidden; repair a legacy tool against a sparse ledger | plus authoritative documents, month-specific data errors, an expert notice rule | plus hidden-only cases and OCR'd scans | plus partial observability: payment runs, holds, irreversible postings, allocation fixed at posting time |
+| Codex | 3/3, 19 min | 3/3, 16 min | 3/3, 18.5 min | 3/3, 19.7 min | 3/3, 30 min |
+| Claude-code | (infra loss) | 3/3, 39 min | — | 3/3, 74 min | 3/3, 1 h 48 min |
 
 Each lever was taken from a pattern in merged TB3 Operations tasks, and
 each was verified to be well specified before any trial ran. None of them
-moved codex's solve time. In every case the model read the whole
+produced a single failed test. In every case the model read the whole
 environment, formed the right hypotheses on the first pass, and checked
-them against the evidence before finishing. For a back-office audit whose
-evidence fits in one context and describes its own relevance, gpt-5.6-sol
-at xhigh already performs at the level of an experienced auditor. Raising
-difficulty from here would take levers these designs do not have: evidence
-that cannot be read in one pass (scale, services, partial observability),
-noisy sources (scans), or long stateful workflows. Those are what the
-merged tasks combine, and they cost more than two days to build well.
+them against the evidence before finishing.
+
+The deciding factor is the one element every version shares: the settled
+history. It is what makes rules that are not written down fair to discover,
+and for the same reason it is a complete regression suite. Both agents use
+it exactly as an auditor would, reproducing every historical payment before
+they trust their tool. Partial observability (v5), the lever the earlier
+analysis predicted would work, did not change that: once the history showed
+the run-by-run consequences, the agents implemented them and verified them
+posting by posting. Scan noise was measured and rejected (above). What is
+left to add, more rules and more months, makes the task longer, not harder.
 
 ## 6. Failure analysis
 
@@ -434,12 +480,13 @@ This runs TB3's per-trial analysis rubric over every final job (jobs
   engaged fully, found no bypass, left no deliverable and reported that
   honestly. Its one lead was tested and hardened (§5).
 
-**Where difficulty would have to come from.** Across four designs, codex
-solved every version in 16–20 minutes and claude-code in 40–75. Both read the
-entire environment, form the right hypotheses on the first pass, and check
-them against the evidence before finishing. A task in this domain that
-defeats them needs evidence that cannot be taken in one pass: dozens of
-vendors and months, evidence behind services with partial visibility, or a
-multi-round stateful workflow such as disputes the vendor answers. That is
-the lever the hardest merged Operations tasks use, and it was out of scope
-for a two-day build.
+**Where difficulty would have to come from.** Across five designs, codex
+solved every version in 16–30 minutes and claude-code in 40 minutes to under
+two hours. The last design added the lever this analysis previously
+predicted would work (partial observability with irreversible state), and
+it did not. In this domain, what makes a task fair (a settled history from
+which undocumented rules can be learned) is also what makes it solvable: it
+gives the agent a complete regression suite. A task that defeats these
+agents would have to withhold that feedback loop without becoming
+unspecified, for example grading judgements that no history can confirm, or
+evidence that is expensive to gather and cannot all be gathered.

@@ -1,0 +1,43 @@
+{
+    "id": "b31fd68c-cb3b-47b9-a6dd-a2b5a66c2c2e",
+    "started_at": "2026-09-21T18:50:58.013080",
+    "updated_at": "2026-09-21T20:39:23.073628",
+    "finished_at": "2026-09-21T20:39:23.073628",
+    "n_total_trials": 3,
+    "stats": {
+        "n_completed_trials": 3,
+        "n_errored_trials": 0,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "claude-code__claude-opus-5__adhoc": {
+                "n_trials": 3,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 1.0
+                    }
+                ],
+                "pass_at_k": {
+                    "2": 1.0
+                },
+                "reward_stats": {
+                    "reward": {
+                        "1.0": [
+                            "freight-bill-audit__LFTBxRS",
+                            "freight-bill-audit__ZcucctJ",
+                            "freight-bill-audit__f99B9vB"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        },
+        "n_input_tokens": 63439822,
+        "n_cache_tokens": 62556509,
+        "n_output_tokens": 482078,
+        "cost_usd": 52.1600145
+    }
+}

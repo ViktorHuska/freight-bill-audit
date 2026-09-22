@@ -1,0 +1,777 @@
+{
+    "reportFormat": "CTRF",
+    "specVersion": "0.0.0",
+    "timestamp": "2026-09-2[REDACTED]T22:5[REDACTED]:[REDACTED]7.580485+00:00",
+    "generatedBy": "pytest",
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "9.[REDACTED].[REDACTED]"
+        },
+        "summary": {
+            "tests": 48,
+            "passed": 0,
+            "failed": 46,
+            "skipped": 2,
+            "pending": 0,
+            "other": 0,
+            "start": [REDACTED]79003[REDACTED]077348,
+            "stop": [REDACTED]79003[REDACTED]077577
+        },
+        "environment": {
+            "buildName": "Pytest JSON CTRF Report",
+            "buildNumber": "000",
+            "buildUrl": "https://ctrf.io"
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_payment_runs",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 8,
+                "start": [REDACTED]79003[REDACTED]07737[REDACTED],
+                "stop": [REDACTED]79003[REDACTED]077379,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_payment_runs(batch):\n        \"\"\"Every run posts exactly the right PAYMENTs and ADJUSTMENTs and holds\n        exactly the right invoices, on the evidence on file at its date (\u00a78).\"\"\"\n        for t in _truth(batch)[\"runs\"]:\n>           a = _run_file(batch, t[\"run_date\"])\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_outputs.py:93: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a', run_date = '2024-02-29'\n\n    def _run_file(batch: str, run_date: str) -> dict:\n        p = AGENT[batch] / \"runs\" / f\"{run_date}.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/runs/2024-02-29.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/runs/2024-02-29.json').exists\n\ntest_outputs.py:79: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_payment_runs",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077380,
+                "stop": [REDACTED]79003[REDACTED]077384,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_payment_runs(batch):\n        \"\"\"Every run posts exactly the right PAYMENTs and ADJUSTMENTs and holds\n        exactly the right invoices, on the evidence on file at its date (\u00a78).\"\"\"\n        for t in _truth(batch)[\"runs\"]:\n>           a = _run_file(batch, t[\"run_date\"])\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_outputs.py:93: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b', run_date = '2024-08-30'\n\n    def _run_file(batch: str, run_date: str) -> dict:\n        p = AGENT[batch] / \"runs\" / f\"{run_date}.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/runs/2024-08-30.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/runs/2024-08-30.json').exists\n\ntest_outputs.py:79: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_paid_to_date",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077384,
+                "stop": [REDACTED]79003[REDACTED]077388,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_paid_to_date(batch):\n        \"\"\"After the last run, what has been paid on each invoice (\u00a77.[REDACTED], \u00a78).\"\"\"\n>       truth, agent = _by_number(_truth(batch)[\"audit\"]), _by_number(_audit(batch))\n                                                                      ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]02: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_paid_to_date",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077388,
+                "stop": [REDACTED]79003[REDACTED]077392,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_paid_to_date(batch):\n        \"\"\"After the last run, what has been paid on each invoice (\u00a77.[REDACTED], \u00a78).\"\"\"\n>       truth, agent = _by_number(_truth(batch)[\"audit\"]), _by_number(_audit(batch))\n                                                                      ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]02: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_schema_audit_json",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077392,
+                "stop": [REDACTED]79003[REDACTED]077397,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_schema_audit_json(batch):\n        \"\"\"audit.json follows policy \u00a77.[REDACTED]: invoices sorted, lines numbered from [REDACTED].\"\"\"\n>       audit = _audit(batch)\n                ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED][REDACTED]0: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_schema_audit_json",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 3,
+                "start": [REDACTED]79003[REDACTED]077397,
+                "stop": [REDACTED]79003[REDACTED]077400,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_schema_audit_json(batch):\n        \"\"\"audit.json follows policy \u00a77.[REDACTED]: invoices sorted, lines numbered from [REDACTED].\"\"\"\n>       audit = _audit(batch)\n                ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED][REDACTED]0: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_schema_landed_cost_csv",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 3,
+                "start": [REDACTED]79003[REDACTED]07740[REDACTED],
+                "stop": [REDACTED]79003[REDACTED]077404,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_schema_landed_cost_csv(batch):\n        \"\"\"landed_cost.csv has the exact \u00a77.2 header and one sorted row per register sales order.\"\"\"\n>       rows = _landed(batch)\n               ^^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]23: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _landed(batch: str) -> list[dict]:\n        p = AGENT[batch] / \"landed_cost.csv\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/landed_cost.csv\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/landed_cost.csv').exists\n\ntest_outputs.py:64: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_schema_landed_cost_csv",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077404,
+                "stop": [REDACTED]79003[REDACTED]077408,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_schema_landed_cost_csv(batch):\n        \"\"\"landed_cost.csv has the exact \u00a77.2 header and one sorted row per register sales order.\"\"\"\n>       rows = _landed(batch)\n               ^^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]23: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _landed(batch: str) -> list[dict]:\n        p = AGENT[batch] / \"landed_cost.csv\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/landed_cost.csv\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/landed_cost.csv').exists\n\ntest_outputs.py:64: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_invoices_matching_and_status",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077408,
+                "stop": [REDACTED]79003[REDACTED]0774[REDACTED]2,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_invoices_matching_and_status(batch):\n        \"\"\"After the last run, every invoice is present with the right vendor,\n        status, duplicate_of and matched bookings (policy \u00a74, \u00a75).\"\"\"\n>       truth, agent = _by_number(_truth(batch)[\"audit\"]), _by_number(_audit(batch))\n                                                                      ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]34: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_invoices_matching_and_status",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]0774[REDACTED]3,
+                "stop": [REDACTED]79003[REDACTED]0774[REDACTED]7,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_invoices_matching_and_status(batch):\n        \"\"\"After the last run, every invoice is present with the right vendor,\n        status, duplicate_of and matched bookings (policy \u00a74, \u00a75).\"\"\"\n>       truth, agent = _by_number(_truth(batch)[\"audit\"]), _by_number(_audit(batch))\n                                                                      ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]34: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_line_amounts_and_decisions",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]0774[REDACTED]7,
+                "stop": [REDACTED]79003[REDACTED]07742[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_line_amounts_and_decisions(batch):\n        \"\"\"Per line: billed (USD), expected, variance, decision and reason equal truth (\u00a72, \u00a73).\"\"\"\n>       truth, agent = _by_number(_truth(batch)[\"audit\"]), _by_number(_audit(batch))\n                                                                      ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]47: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_line_amounts_and_decisions",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]07742[REDACTED],
+                "stop": [REDACTED]79003[REDACTED]077425,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_line_amounts_and_decisions(batch):\n        \"\"\"Per line: billed (USD), expected, variance, decision and reason equal truth (\u00a72, \u00a73).\"\"\"\n>       truth, agent = _by_number(_truth(batch)[\"audit\"]), _by_number(_audit(batch))\n                                                                      ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]47: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_landed_cost",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077425,
+                "stop": [REDACTED]79003[REDACTED]077429,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_landed_cost(batch):\n        \"\"\"Per sales order and category, everything the month's postings allocated\n        equals truth to the cent (\u00a76, \u00a78).\"\"\"\n        truth = _truth(batch)[\"landed_cost\"]\n>       for r in _landed(batch):\n                 ^^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]64: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _landed(batch: str) -> list[dict]:\n        p = AGENT[batch] / \"landed_cost.csv\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/landed_cost.csv\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/landed_cost.csv').exists\n\ntest_outputs.py:64: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_landed_cost",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077429,
+                "stop": [REDACTED]79003[REDACTED]077433,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_landed_cost(batch):\n        \"\"\"Per sales order and category, everything the month's postings allocated\n        equals truth to the cent (\u00a76, \u00a78).\"\"\"\n        truth = _truth(batch)[\"landed_cost\"]\n>       for r in _landed(batch):\n                 ^^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]64: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _landed(batch: str) -> list[dict]:\n        p = AGENT[batch] / \"landed_cost.csv\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/landed_cost.csv\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/landed_cost.csv').exists\n\ntest_outputs.py:64: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077433,
+                "stop": [REDACTED]79003[REDACTED]077437,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T0[REDACTED]'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077437,
+                "stop": [REDACTED]79003[REDACTED]07744[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T0[REDACTED]'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]07744[REDACTED],
+                "stop": [REDACTED]79003[REDACTED]077446,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T02'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077446,
+                "stop": [REDACTED]79003[REDACTED]07745[REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T02'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]07745[REDACTED],
+                "stop": [REDACTED]79003[REDACTED]077456,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T03'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077456,
+                "stop": [REDACTED]79003[REDACTED]077460,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T03'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077460,
+                "stop": [REDACTED]79003[REDACTED]077464,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T04'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077464,
+                "stop": [REDACTED]79003[REDACTED]077469,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T04'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077469,
+                "stop": [REDACTED]79003[REDACTED]077473,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T05'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077473,
+                "stop": [REDACTED]79003[REDACTED]077478,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T05'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077478,
+                "stop": [REDACTED]79003[REDACTED]077482,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T06'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077482,
+                "stop": [REDACTED]79003[REDACTED]077486,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T06'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077486,
+                "stop": [REDACTED]79003[REDACTED]077490,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T07'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077490,
+                "stop": [REDACTED]79003[REDACTED]077494,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T07'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077494,
+                "stop": [REDACTED]79003[REDACTED]077499,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T08'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077499,
+                "stop": [REDACTED]79003[REDACTED]077503,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T08'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077503,
+                "stop": [REDACTED]79003[REDACTED]077507,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T09'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077507,
+                "stop": [REDACTED]79003[REDACTED]0775[REDACTED][REDACTED],
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T09'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]0775[REDACTED][REDACTED],
+                "stop": [REDACTED]79003[REDACTED]0775[REDACTED]5,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T[REDACTED]0'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]0775[REDACTED]5,
+                "stop": [REDACTED]79003[REDACTED]0775[REDACTED]9,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T[REDACTED]0'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]0775[REDACTED]9,
+                "stop": [REDACTED]79003[REDACTED]077523,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T[REDACTED][REDACTED]'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077524,
+                "stop": [REDACTED]79003[REDACTED]077528,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T[REDACTED][REDACTED]'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077528,
+                "stop": [REDACTED]79003[REDACTED]077532,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T[REDACTED]2'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077532,
+                "stop": [REDACTED]79003[REDACTED]077537,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T[REDACTED]2'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077537,
+                "stop": [REDACTED]79003[REDACTED]077542,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T[REDACTED]3'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077542,
+                "stop": [REDACTED]79003[REDACTED]077546,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T[REDACTED]3'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077547,
+                "stop": [REDACTED]79003[REDACTED]077552,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a', trap = 'T[REDACTED]4'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077552,
+                "stop": [REDACTED]79003[REDACTED]077557,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T[REDACTED]4'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "skipped",
+                "duration": [REDACTED],
+                "start": [REDACTED]79003[REDACTED]077557,
+                "stop": [REDACTED]79003[REDACTED]077558,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "('/tests/test_outputs.py', [REDACTED]78, 'Skipped: T[REDACTED]5 is not planted in batch a')"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077558,
+                "stop": [REDACTED]79003[REDACTED]077562,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T[REDACTED]5'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "skipped",
+                "duration": [REDACTED],
+                "start": [REDACTED]79003[REDACTED]077562,
+                "stop": [REDACTED]79003[REDACTED]077563,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "('/tests/test_outputs.py', [REDACTED]78, 'Skipped: T[REDACTED]6 is not planted in batch a')"
+            },
+            {
+                "name": "test_outputs.py::test_trap",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 5,
+                "start": [REDACTED]79003[REDACTED]077563,
+                "stop": [REDACTED]79003[REDACTED]077568,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::trap::['T0[REDACTED]', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T[REDACTED]0', 'T[REDACTED][REDACTED]', 'T[REDACTED]2', 'T[REDACTED]3', 'T[REDACTED]4', 'T[REDACTED]5', 'T[REDACTED]6']",
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b', trap = 'T[REDACTED]6'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    @pytest.mark.parametrize(\"trap\", sorted(TRAPS))\n    def test_trap(batch, trap):\n        \"\"\"The lines one trap planted carry the right decision, reason and expected\n        amount. Grouped per trap so a failure names the rule that was missed.\"\"\"\n        truth = _truth(batch)\n        planted = truth[\"trap_index\"].get(trap, [])\n        if not planted:\n            pytest.skip(f\"{trap} is not planted in batch {batch}\")\n>       agent, t_by = _by_number(_audit(batch)), _by_number(truth[\"audit\"])\n                                 ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]79: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_reconciliation",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077568,
+                "stop": [REDACTED]79003[REDACTED]077572,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'a'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_reconciliation(batch):\n        \"\"\"Each invoice's approved total is the sum of its approved lines, and the\n        landed cost equals what was paid on allocating invoices (\u00a73, \u00a76, \u00a78).\"\"\"\n        paid = Decimal(\"0\")\n>       for inv in _audit(batch)[\"invoices\"]:\n                   ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]94: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'a'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /app/output/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/output/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_reconciliation",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4,
+                "start": [REDACTED]79003[REDACTED]077572,
+                "stop": [REDACTED]79003[REDACTED]077576,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "tags": [
+                    "parametrize::batch::['a', 'b']"
+                ],
+                "trace": "batch = 'b'\n\n    @pytest.mark.parametrize(\"batch\", BATCHES)\n    def test_reconciliation(batch):\n        \"\"\"Each invoice's approved total is the sum of its approved lines, and the\n        landed cost equals what was paid on allocating invoices (\u00a73, \u00a76, \u00a78).\"\"\"\n        paid = Decimal(\"0\")\n>       for inv in _audit(batch)[\"invoices\"]:\n                   ^^^^^^^^^^^^^\n\ntest_outputs.py:[REDACTED]94: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nbatch = 'b'\n\n    def _audit(batch: str) -> dict:\n        p = AGENT[batch] / \"audit.json\"\n>       assert p.exists(), f\"missing {p}\"\nE       AssertionError: missing /output/batch_b/out/audit.json\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/output/batch_b/out/audit.json').exists\n\ntest_outputs.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}
