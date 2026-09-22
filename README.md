@@ -34,8 +34,8 @@ by run.
 | 3 × claude-code opus-5 max, all failing | ❌ **3 / 3 passed** (1 h 48 min) |
 | 1 × cheat per agent, reward 0 | ✅ 0 and 0. Claude made a full red-team attempt and found no bypass; codex was blocked by OpenAI's platform filter |
 
-**The difficulty requirement was not met, and this repository documents
-why.** Over two days the task went through five designs, each driven by the
+**Unfortunately, the difficulty requirement was not met, and this repository documents
+why.** Over three days the task went through five designs, each driven by the
 previous trial evidence and each verified as well specified before any trial
 ran:
 
@@ -61,4 +61,3 @@ posting before they trust their tool.
 - [x] 3 × codex, 3 × claude-code standard trials (all passed; difficulty requirement not met)
 - [x] 1 × codex, 1 × claude-code adversarial trials (reward 0)
 - [x] Failure / iteration analysis; grading evidence in [`results/`](results/)
-- [ ] Task README sections written by the author (TB3 requires human prose)
