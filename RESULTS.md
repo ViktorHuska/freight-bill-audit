@@ -8,6 +8,7 @@ backend. Harbor 0.23.0, installed with `uv tool install harbor`. (TB3 CI pins `0
 | | |
 |---|---|
 | Task version evaluated | **final: v5, commit `7f908ee`** (merged to `main` as `d395de7`) for oracle, nop, all standard and all cheat trials in §3–§6. Earlier versions, including the v4 trials and cheat trials, are in *Iteration history*. |
+| Paths | `/app/...` and `/tests/...` are inside the two trial containers. README's *Where things live* and DESIGN.md §1–§2, §6 map each one to the file in this repository it is built from. |
 | Artefacts in the repo | `jobs/` is git-ignored (full agent transcripts). `results/<job>/` keeps each final trial's grading evidence: `job_result.json`, and per trial `result.json`, `verifier/ctrf.json`, `verifier/reward.txt`, `verifier/batch_b_tool.log` (collected by `tools/collect_results.py`, which refuses any file matching a credential pattern). |
 | Harbor redaction note | Harbor treats every `--ae` value as a secret and scrubs it from the files it saves. `trials.sh` passes `CLAUDE_FORCE_OAUTH=1` / `CODEX_FORCE_AUTH_JSON=1`, so every literal `1` in a saved job file reads `[REDACTED]`: `reward.txt` shows `[REDACTED]` for a reward of 1, `result.json` shows `[REDACTED].0`, and some `ctrf.json` files no longer parse as JSON. Grading happens before the scrub and is unaffected; the tables below read the test counts, which contain no `1`s here (46 / 0 / 2). |
 | TB3 checks and prompts | `harbor-framework/terminal-bench` @ `2e5fd44` |

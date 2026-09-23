@@ -23,6 +23,25 @@ by run.
 | Reproduce checks / oracle / trials | [`scripts/`](scripts/) |
 | Grading evidence of the final trials | [`results/`](results/) |
 
+## Where things live
+
+The task is shipped as source; the `/app/...` and `/tests/...` paths quoted in
+the documents exist only inside the two Docker images a trial builds.
+
+| Repository | Becomes, at trial time | What it is |
+|---|---|---|
+| [`tasks/freight-bill-audit/environment/`](tasks/freight-bill-audit/environment/) | the **agent** image: `data/` → `/app/data/`, `history/` → `/app/history/`, `legacy/` → `/app/legacy/` | what the agent can read |
+| [`tasks/freight-bill-audit/tests/`](tasks/freight-bill-audit/tests/) | the **verifier** image at `/tests/` (hidden batch B and the truth included) | grading, in a separate container |
+| [`tasks/freight-bill-audit/solution/`](tasks/freight-bill-audit/solution/) | run by the `oracle` agent, installed as `/app/audit.py` | the reference solution |
+| [`tasks/freight-bill-audit/instruction.md`](tasks/freight-bill-audit/instruction.md), [`task.toml`](tasks/freight-bill-audit/task.toml) | the prompt and the trial configuration | what the agent is asked, and with what limits |
+| [`tools/generator/`](tools/generator/) | never shipped; run on the host | builds both batches, the four history months and the ground truth |
+| [`results/`](results/) | — | the grading evidence of the final trials |
+
+The agent's own outputs (`/app/audit.py`, `/app/output/…`) are written inside
+the container while a trial runs and are not in this repository; copies from
+real runs are under `results/`. [DESIGN.md](DESIGN.md) gives the full
+file-by-file mapping.
+
 ## Outcome
 
 | Requirement (current TB3 CI) | Result |

@@ -13,12 +13,18 @@ audited as it happens: documents arrive day by day, AP pays at weekly payment
 runs, and a run can only use what has arrived by then. The agent does that
 job by building a reusable, stateful tool:
 
-| Artifact | Purpose |
-|---|---|
-| `/app/audit.py` | Single-file CLI that makes one payment run, keeping state between runs |
-| `/app/output/runs/<date>.json` | Each run's postings (PAYMENT / ADJUSTMENT) and held invoices |
-| `/app/output/audit.json` | After the last run: per-invoice status, paid to date, and per-line billed / expected / variance / decision / reason |
-| `/app/output/landed_cost.csv` | Paid cost per sales order, by category, summed over all postings |
+| In the container (what the agent writes) | In this repository | Purpose |
+|---|---|---|
+| `/app/audit.py` | written by the agent; the reference version is [`tasks/freight-bill-audit/solution/audit.py`](tasks/freight-bill-audit/solution/audit.py) | Single-file CLI that makes one payment run, keeping state between runs |
+| `/app/output/runs/<date>.json` | produced at run time only | Each run's postings (PAYMENT / ADJUSTMENT) and held invoices |
+| `/app/output/audit.json` | produced at run time only; the expected values are [`tests/data/truth/batch_a.json`](tasks/freight-bill-audit/tests/data/truth/batch_a.json) | After the last run: per-invoice status, paid to date, and per-line billed / expected / variance / decision / reason |
+| `/app/output/landed_cost.csv` | produced at run time only | Paid cost per sales order, by category, summed over all postings |
+
+Container paths beginning `/app/` do not exist on disk: the image is built
+from [`tasks/freight-bill-audit/environment/`](tasks/freight-bill-audit/environment/)
+by its [`Dockerfile`](tasks/freight-bill-audit/environment/Dockerfile), and
+`/app/output/` is filled only while a trial runs. Copies of a real run's
+output are kept under `results/` (see [RESULTS.md](RESULTS.md)).
 
 **The deliverable is a tool, not answers.** The verifier replays hidden
 batch B through `audit.py`, unchanged, one payment run at a time, staging
@@ -27,21 +33,35 @@ hand-written answer for the visible batch scores zero.
 
 ## 2. What the agent is given
 
-```
-/app/data/              this month's batch
-  payment_runs.txt        the month's run dates (every Friday and month-end)
-  inbox/YYYY-MM-DD/       what arrived that day:
-    invoices/*.pdf          text PDFs (two carriers) and SCANNED statements (forwarder)
-    notices/*.txt           sailing amendments, container rolls, tariff circulars
-    terminal_moves.csv      the terminals' full move log as of that day
-  shipments.json          ERP booking register export (stale on purpose)
-  contracts/<V>_agreement.pdf   signed rate agreement (authoritative)
-  contracts/<V>.json            the ERP's hand-keyed copy (has keying errors)
-  holidays.json, fx.csv   terminal weekends + closures, EUR/USD fixings
-  policy.md               decision table, duplicates, allocation, payment runs, schema
-/app/legacy/audit_legacy.py   the desk's current tool (month-end, whole inbox at once)
-/app/history/h1..h4/          four settled months, each with ap_ledger.csv (every posting, by run)
-```
+Inside the container, everything the agent can read sits under `/app/`. Each
+line below gives the container path and, in the right-hand column, the file
+in this repository that the image is built from:
+
+| In the container | In this repository | What it is |
+|---|---|---|
+| `/app/data/` | [`tasks/freight-bill-audit/environment/data/`](tasks/freight-bill-audit/environment/data/) | this month's batch (batch A) |
+| `/app/data/payment_runs.txt` | `…/environment/data/payment_runs.txt` | the month's run dates (every Friday and month-end) |
+| `/app/data/inbox/YYYY-MM-DD/invoices/*.pdf` | `…/environment/data/inbox/<date>/invoices/` | text PDFs (two carriers) and SCANNED statements (forwarder) |
+| `/app/data/inbox/YYYY-MM-DD/notices/*.txt` | `…/environment/data/inbox/<date>/notices/` | sailing amendments, container rolls, tariff circulars |
+| `/app/data/inbox/YYYY-MM-DD/terminal_moves.csv` | `…/environment/data/inbox/<date>/` | the terminals' full move log as of that day |
+| `/app/data/shipments.json` | `…/environment/data/shipments.json` | ERP booking register export (stale on purpose) |
+| `/app/data/contracts/<V>_agreement.pdf` | `…/environment/data/contracts/` | signed rate agreement (authoritative) |
+| `/app/data/contracts/<V>.json` | `…/environment/data/contracts/` | the ERP's hand-keyed copy (has keying errors) |
+| `/app/data/holidays.json`, `/app/data/fx.csv` | `…/environment/data/` | terminal weekends + closures, EUR/USD fixings |
+| `/app/data/policy.md` | `…/environment/data/policy.md`, generated from [`tools/generator/policy.md`](tools/generator/policy.md) | decision table, duplicates, allocation, payment runs, schema |
+| `/app/legacy/audit_legacy.py` | [`…/environment/legacy/audit_legacy.py`](tasks/freight-bill-audit/environment/legacy/audit_legacy.py) | the desk's current tool (month-end, whole inbox at once) |
+| `/app/history/h1..h4/` | [`…/environment/history/`](tasks/freight-bill-audit/environment/history/) | four settled months, each with `ap_ledger.csv` (every posting, by run) |
+
+The agent never sees the hidden batch or the answers. They live in the
+**verifier** image, built from
+[`tasks/freight-bill-audit/tests/`](tasks/freight-bill-audit/tests/):
+
+| In the verifier container | In this repository | What it is |
+|---|---|---|
+| `/tests/data/batch_b/` | [`…/tests/data/batch_b/`](tasks/freight-bill-audit/tests/data/batch_b/) | the hidden month, staged run by run |
+| `/tests/data/truth/batch_{a,b}.json` | [`…/tests/data/truth/`](tasks/freight-bill-audit/tests/data/truth/) | expected results for both batches (root-only at verify time) |
+| `/tests/test_outputs.py`, `/tests/test.sh` | [`…/tests/`](tasks/freight-bill-audit/tests/) | the graded assertions and the verifier entrypoint |
+| `/output/batch_b/out/` | produced at verify time | where the agent's tool writes while the hidden month is replayed |
 
 `policy.md` deliberately does **not** state the pricing doctrine. Instead it
 says the legacy tool implements how the desk prices charges, that the tool
@@ -132,17 +152,23 @@ every other batch. For the run-by-run effects it also requires, in every
 batch: the detention invoice held for at least one run, an ADJUSTMENT on the
 overweight invoice and on the invoice carrying the rolled container, and (in
 B) the recovery of the register-weight overweight charge. The dates that make
-these land are derived from the run calendar in `tools/generator/timeline.py`,
-so they hold whatever weekday a batch's month starts on.
+these land are derived from the run calendar in
+[`tools/generator/timeline.py`](tools/generator/timeline.py), so they hold
+whatever weekday a batch's month starts on.
 
 ## 5. Ground truth, computed twice
 
-`tools/generator/` builds each batch from an explicit, per-batch world:
-register vs. controlling facts, contracts vs. ERP keying, notices,
-circulars, invoices billed the way each vendor would, and the truth derived
-from the policy. `solution/audit.py` is an independent reading of the same
-rules, written against the documents (it parses the agreement PDFs and OCRs
-the scans). It shares no code with the generator. Before any agent trial:
+[`tools/generator/`](tools/generator/) builds each batch from an explicit,
+per-batch world: register vs. controlling facts, contracts vs. ERP keying,
+notices, circulars, invoices billed the way each vendor would, and the truth
+derived from the policy. It runs on the host, not in any container, and
+writes the three directories the images are built from:
+`environment/data/` (batch A), `environment/history/h1..h4/` and
+`tests/data/batch_b/` with `tests/data/truth/`.
+[`tasks/freight-bill-audit/solution/audit.py`](tasks/freight-bill-audit/solution/audit.py)
+is an independent reading of the same rules, written against the documents
+(it parses the agreement PDFs and OCRs the scans). It shares no code with the
+generator. Before any agent trial:
 
 - agreement parsing matches the generator's contracts exactly (6 batches × 3 vendors)
 - oracle output equals the truth on batches A and B, field by field, at
@@ -156,10 +182,16 @@ the scans). It shares no code with the generator. Before any agent trial:
 
 ## 6. Verifier
 
-- `tests/Dockerfile` bakes Python 3.13, pdfplumber, poppler, tesseract,
+The verifier is a second image, built from
+[`tasks/freight-bill-audit/tests/`](tasks/freight-bill-audit/tests/), which
+the agent never sees. Repo paths below are relative to that directory; inside
+the container the same files are at `/tests/`.
+
+- [`tests/Dockerfile`](tasks/freight-bill-audit/tests/Dockerfile) bakes
+  Python 3.13, pdfplumber, poppler, tesseract,
   pytest 9.1.1, pytest-json-ctrf 0.5.2, hidden batch B and both truth files.
   Nothing is fetched at verify time.
-- `tests/test.sh` does four things in order:
+- [`tests/test.sh`](tasks/freight-bill-audit/tests/test.sh) does four things in order:
   1. removes any pre-existing reward file
   2. makes the truth and batch B's inbox root-only
   3. for each of batch B's payment runs, stages the inbox folders that have
@@ -169,7 +201,8 @@ the scans). It shares no code with the generator. Before any agent trial:
 
   The agent's `requirements.txt` is never installed, which closes the
   pytest-plugin autoload route.
-- Tests compare exactly at cents: every run's postings and held invoices,
+- [`tests/test_outputs.py`](tasks/freight-bill-audit/tests/test_outputs.py)
+  compares exactly at cents: every run's postings and held invoices,
   then, after the last run, status, matching, paid to date, every line's
   amounts, decision and reason, landed cost, and reconciliation. They are grouped per
   trap so failures can be attributed. Exact comparison is fair because the
