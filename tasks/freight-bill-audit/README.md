@@ -14,4 +14,4 @@ A separate verifier image bakes in hidden batch B and the ground truth for both 
 
 ## Relevant experience
 
-I was doing my internship at Mueller Industries' International Sales Division office for 4 months. I was creating an automated workflow that consolidated related shipping invoices, bills of lading and statements of account (SOAs) together into one merged file with companies like XPI Services, V Alexander, Expeditors, Robinson International.
+I was doing my internship at Mueller Industries' International Sales Division office for 4 months. I was creating an automated workflow that consolidated related shipping invoices, bills of lading and statements of account (SOAs) together into one merged file with companies like XPI Services, V Alexander, Expeditors, Robinson International. To merge them, I had to match each invoice to its bill of lading and statement-of-account line by booking, B/L and container numbers, which is the same cross-referencing a freight auditor does before payment.
